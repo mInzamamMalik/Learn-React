@@ -23,7 +23,14 @@ var Excel = React.createClass({
                         this.props.headers.map(function (eachElement, index, wholeArray) {
                             return React.DOM.th({ key: index }, eachElement)
                         })
-                    )
+                    ),
+                    this.props.initialData.map(function (eachElement, index, wholeArray) {
+                        return React.DOM.tr(null,
+                            eachElement.map(function (eachElement, index, wholeArray) {
+                                return React.DOM.td({ key: index }, eachElement)
+                            })
+                        )
+                    })
 
                 )
             )

@@ -11,8 +11,6 @@ var Component = React.createClass({
         return React.DOM.span(null, "My name is " + this.props.name);
     }
 });
-
-
 ReactDOM.render(
     React.createElement(Component, { name: "ali bhai" })
     , document.getElementById("root"));
@@ -138,6 +136,67 @@ var textAreaCounter = React.createClass({
 ReactDOM.render(
     React.createElement(textAreaCounter, { text: "ali bhai" })
     , document.getElementById("root3"));
+
+
+
+//---------------------------------------------------------------------
+//use of mixin in component
+
+var logMixin = {
+    _log: function (methodName, args) {
+        console.log(this.name + '::' + methodName, args);
+    },
+    componentWillUpdate: function () {
+        this._log('componentWillUpdate', arguments);
+    },
+    componentDidUpdate: function () {
+        this._log('componentDidUpdate', arguments);
+    },
+    componentWillMount: function () {
+        this._log('componentWillMount', arguments);
+    },
+    componentDidMount: function () {
+        this._log('componentDidMount', arguments);
+    },
+    componentWillUnmount: function () {
+        this._log('componentWillUnmount', arguments);
+    },
+};
+var textAreaCounter = React.createClass({
+    mixins: [logMixin],
+    propType: {
+        text: React.PropTypes.string
+    },
+    getDefaultProps: function () {
+        return {
+            text: 'not provided',
+        };
+    },
+    getInitialState: function () {
+        return {
+            text: this.props.text,
+        }
+    },
+    _textChange: function (ev) {
+        this.setState({
+            text: ev.target.value,
+        });
+    },
+    render: function () {
+        return React.DOM.div(null,
+            React.DOM.textarea({
+                value: this.state.text,
+                onChange: this._textChange,
+            }),
+            React.DOM.h3(null, "text count: " + this.state.text.length),
+            React.DOM.h3(null, "text: " + this.state.text)
+        );
+    }
+});
+
+ReactDOM.render(
+    React.createElement(textAreaCounter, { text: "ali bhai" })
+    , document.getElementById("root4"));
 
 
 

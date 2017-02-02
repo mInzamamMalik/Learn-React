@@ -20,7 +20,8 @@ var Excel = React.createClass({
         return {
             data: this.props.initialData,
             sortby: null,
-            descending: false
+            descending: false,
+            edit: null, // {row: index, cell: index}
         };
     },
     _sort: function (e) {
@@ -39,7 +40,25 @@ var Excel = React.createClass({
             descending: descending
         })
     },
+    _showEditor: function (e) {
+        this.setState({
+            edit: {
+                row: parseInt(e.target.dataset.row, 10),
+                cell: e.target.cellIndex
+            }
+        })
+    },
+    _save: function (e) {
+        e.preventDefault();
+        var input = e.target.firstChild;
+        var data = this.state.data.slice();
+        data[this.state.edit.row][this.state.edit.cell] = input.value;
 
+        this.setState({
+            edit: null, // done editing
+            data: data,
+        });
+    },
     render: function () {
         return (
             React.DOM.table(null,
@@ -53,14 +72,35 @@ var Excel = React.createClass({
                         }, this)
                     )
                 ),
-                React.DOM.tbody(null,
-                    this.state.data.map(function (eachElement, index, wholeArray) {
-                        return React.DOM.tr({ key: index },
-                            eachElement.map(function (eachElement, index, wholeArray) {
-                                return React.DOM.td({ key: index }, eachElement)
-                            })
-                        )
-                    })
+                React.DOM.tbody({ onDoubleClick: this._showEditor },
+                    this.state.data.map(function (eachElement, rowIndex, wholeArray) {
+                        return (
+                            React.DOM.tr({ key: rowIndex },
+                                eachElement.map(function (eachElement, index, wholeArray) {
+
+                                    var content = eachElement;
+                                    var edit = this.state.edit;
+
+                                    console.log("state: ", edit);
+
+                                    console.log(edit && edit.row === rowIndex && edit.cell === index);
+                                    if (edit && edit.row === rowIndex && edit.cell === index) {
+                                        content = React.DOM.form({ onSubmit: this._save },
+                                            React.DOM.input({
+                                                type: 'text',
+                                                defaultValue: content,
+                                            })
+                                        );
+                                    }
+                                    
+                                    return React.DOM.td({
+                                        key: index,
+                                        "data-row": rowIndex
+                                    }, content);
+                                }, this)
+                            )
+                        );
+                    }, this)
                 )
             )
         )

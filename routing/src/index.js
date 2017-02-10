@@ -1,21 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from './router.jsx';
-import logo from './logo.svg';
+
+//requiring components
+import Home from './components/home.jsx'
+import Profile from './components/profile.jsx'
+import Contacts from './components/contacts.jsx'
+import About from './components/about.jsx'
 
 const mapping = {
-    '#profile': <div >This is profile page (<a href="#">home</a>)</div>,
-    '#contacts': <div >This is Contacts page (<a href="#">home</a>)</div>,
-    '#about': <div >This is About Us page (<a href="#">home</a>)</div>,
-    '*': <div>
-        <h1>This is Dashboard </h1>
-        <br />
-        <a href="#profile">Profile</a>
-        <br />
-        <a href="#contacts">Contacts</a>
-        <br />
-        <a href="#about">About</a>
-    </div>
+    '#profile': <Profile></Profile>,
+    '#contacts': <Contacts></Contacts>,
+    '#about': <About></About>,
+    '*': <Home></Home>
 }
 
 ReactDOM.render(

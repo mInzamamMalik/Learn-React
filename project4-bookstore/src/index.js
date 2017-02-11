@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
-const { hashHistory,
-    Router,
-    Route,
-    IndexRoute,
-    Link,
-    IndexLink
-} = require('react-router')
+import { hashHistory, Router, Route, IndexRoute, Link, IndexLink } from 'react-router';
 
 import Modal from './components/modal.jsx'
 import Cart from './components/cart.jsx'
@@ -43,30 +40,42 @@ const addToCart = (id) => {
         cartItems[id] = 1
 }
 
-ReactDOM.render((
-    <Router history={hashHistory}>
-        <Route path="/" component={App}>
-            <IndexRoute component={Index} />
-            <Route path="/products/:id" component={Product}
-                addToCart={addToCart}
-                products={PRODUCTS} />
-            <Route path="/cart" component={Cart}
-                cartItems={cartItems} products={PRODUCTS} />
-        </Route>
-        <Route path="/checkout" component={Checkout}
-            cartItems={cartItems} products={PRODUCTS} />
-    </Router>
-), document.getElementById('root'))
-
-
 class Index extends React.Component {
     render() {
-        return <div></div>
+        return <div>
+            this is index
+        </div>
     }
 }
 class App extends Component {
     render() {
-        return <div>dasfasdf</div>
+        return <div>
+
+            this is app
+
+
+            <Link to="/cart">Cart</Link>
+
+            {this.props.children}
+        </div>
     }
 }
-export default App;
+
+ReactDOM.render((
+    <Router history={hashHistory}>
+
+        <Route path="/" component={App}>
+
+            <IndexRoute component={Index} />
+
+            <Route path="/products/:id" component={Product} addToCart={addToCart} products={PRODUCTS} />
+            <Route path="/cart" component={Cart} cartItems={cartItems} products={PRODUCTS} />
+        </Route>
+
+        <Route path="/checkout" component={Checkout} cartItems={cartItems} products={PRODUCTS} />
+
+    </Router>
+), document.getElementById('root'))
+
+
+

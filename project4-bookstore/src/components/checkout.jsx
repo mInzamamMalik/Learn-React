@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class Checkout extends Component {
     render() {
-        return <div>dasfasdf</div>
+        return <div>this is check out</div>
     }
 }
 export default Checkout;

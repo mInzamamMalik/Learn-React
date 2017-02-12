@@ -13,7 +13,7 @@ class App extends Component {
 
         return <Autocomplete
             options={[]}
-            url={"http://localhost:4000/autocomplete/v1/rooms"} />
+            url={"https://malikasinger-demo-server.herokuapp.com/autocomplete/v1/rooms"} />
     }
 }
 export default App;

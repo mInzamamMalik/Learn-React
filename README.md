@@ -1,29 +1,18 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### About this repository: ###
 
-### What is this repository for? ###
+Each and every folder in this repo is a full flag project in its own
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### How to use: ###
+just do `npm install` and npm `start` in each folder to run the project in action
 
-### How do I get set up? ###
+some project may not work due to speedy technology revolution 
+but dont worry if you found any thingk like that just correct it and make *pull request*
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Who is this repo for: ###
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+people may use this repo for educational purpose
+like quick review of react 
+other guidelines
+want some practice code

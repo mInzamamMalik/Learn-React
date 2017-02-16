@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import firebase from 'firebase';
 import ReactFireMixin from 'reactfire';
+import reactMixin from 'react-mixin';
 
 import CommentForm from './components/commentForm'
 import CommentList from './components/commentList'
@@ -14,24 +15,24 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var App = React.createClass({
-    mixins: [ReactFireMixin],
-
-    handleCommentSubmit: function (comment) {
-        // Here we push the update out to Firebase and let ReactFire update this.state.data
-        this.firebaseRefs['data'].push(comment);
-    },
-    getInitialState: function () {
-        return {
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             data: []
         };
-    },
-    componentWillMount: function () {
+        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+    }
+    handleCommentSubmit(comment) {
+        // Here we push the update out to Firebase and let ReactFire update this.state.data
+        this.firebaseRefs['data'].push(comment);
+    }
+    componentWillMount() {
         // Here we bind the component to Firebase and it handles all data updates,
         // no need to poll as in the React example.
         this.bindAsArray(firebase.database().ref('commentsBox'), 'data');
-    },
-    render: function () {
+    }
+    render() {
         return (
             <div className='commentBox'>
                 <h1>Comments</h1>
@@ -40,6 +41,8 @@ var App = React.createClass({
             </div>
         );
     }
-});
+};
+
+reactMixin(App.prototype, ReactFireMixin);
 
 export default App;

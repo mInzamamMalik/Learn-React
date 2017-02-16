@@ -9,6 +9,7 @@
     "firebase": "^3.6.9",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-mixin": "^2.0.2",
     "reactfire": "^1.0.0"
   },
   "scripts": {

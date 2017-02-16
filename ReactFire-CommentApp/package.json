@@ -7,9 +7,11 @@
   },
   "dependencies": {
     "firebase": "^3.6.9",
+    "material-ui": "^0.17.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-mixin": "^2.0.2",
+    "react-tap-event-plugin": "^2.0.1",
     "reactfire": "^1.0.0"
   },
   "scripts": {

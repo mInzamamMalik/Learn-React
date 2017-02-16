@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
 class Comment extends Component {
     constructor(props) {
@@ -6,13 +10,26 @@ class Comment extends Component {
     }
     render() {
         return (
-            <div className='comment'>
-                <h2 className='commentAuthor'>{this.props.author}</h2>
-                <span>{this.props.children.toString()}</span>
-            </div>
+            <ListItem
+                leftAvatar={<Avatar />}
+                rightIcon={<CommunicationChatBubble />}
+                primaryText={this.props.author}
+                secondaryText={this.props.children.toString()}
+            >
+            </ListItem>
         );
     }
 }
+/*
+<List>
+    <Subheader>Recent chats</Subheader>
+    <ListItem
+        primaryText="Brendan Lim"
+        leftAvatar={<Avatar src="images/ok-128.jpg" />}
+        rightIcon={<CommunicationChatBubble />}
+    />*/
+
+
 
 class CommentList extends Component {
     constructor(props) {

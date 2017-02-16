@@ -8,6 +8,8 @@ import reactMixin from 'react-mixin';
 import CommentForm from './components/commentForm'
 import CommentList from './components/commentList'
 
+import AppBar from 'material-ui/AppBar';
+
 var config = {
     apiKey: "AIzaSyDspeNWtv6xycKzfsFA2mcVWxIYaKA1Mkk",
     authDomain: "test-project-5a3f4.firebaseapp.com",
@@ -35,7 +37,7 @@ class App extends Component {
     render() {
         return (
             <div className='commentBox'>
-                <h1>Comments</h1>
+                <AppBar title="Comments"></AppBar>
                 <CommentList data={this.state.data} />
                 <CommentForm onCommentSubmit={this.handleCommentSubmit} />
             </div>

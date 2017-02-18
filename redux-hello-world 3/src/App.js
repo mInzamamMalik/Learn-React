@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
-import { createStore } from 'redux';
-import allReducers from './reducers/index.js'
-
-const store = createStore(allReducers)
-
+import UserList from './components/user-list'
 class App extends Component {
     render() {
         return (
-            <h2>Welcome to React</h2>
+            <div>
+                <h2>Welcome to React</h2>
+                <UserList></UserList>
+            </div>
         );
-    }
+    } 
 }
 
 export default App;

@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { bindActionCreator } from 'redux';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 class UserList extends Component {
+
+
+    createListItem() {
+        return this.props.users.map((user) => {
+            return (
+                <div key={user.id}>{user.first} {user.last}</div>
+            )
+        })
+    }
+
     render() {
         return (
             <div>
                 <ul>
-                    <li>one</li>
-                    <li>two</li>
-                    <li>three</li>
+                    {this.createListItem()}
                 </ul>
             </div>
         );
@@ -17,7 +25,9 @@ class UserList extends Component {
 }
 
 function mapStateToProps(state) {
-    users: state.users
+    return {
+        users: state.users
+    }
 }
 
 export default connect(mapStateToProps)(UserList);

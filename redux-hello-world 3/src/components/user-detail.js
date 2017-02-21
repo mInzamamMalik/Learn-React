@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 
 class UserDetail extends Component {
     render() {
+
+        if (!this.props.user.first)
+            return <p>please select a name...</p>
+
         return (
             <div>
                 <h2>first name: {this.props.user.first}</h2>

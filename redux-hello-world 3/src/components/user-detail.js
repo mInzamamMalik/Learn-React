@@ -5,9 +5,9 @@ class UserDetail extends Component {
     render() {
         return (
             <div>
-                <h2>asdf: {this.props.user.first}</h2>
-                <h3>vfgs: {this.props.user.last}</h3>
-                <h3>sdfgr: {this.props.user.age}</h3>
+                <h2>first name: {this.props.user.first}</h2>
+                <h3>last name: {this.props.user.last}</h3>
+                <h3>age: {this.props.user.age}</h3>
 
             </div>
         );

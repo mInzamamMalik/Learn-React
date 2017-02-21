@@ -4,4 +4,16 @@ export const selectUser = (user) => {
         type: "USER_SELECTED",
         payload: user
     }
-} 
+}
+export const increment = () => {
+    return {
+        type: "INCREMENT",
+        payload: null
+    }
+}
+export const decrement = () => {
+    return {
+        type: "DECREMENT",
+        payload: null
+    }
+}

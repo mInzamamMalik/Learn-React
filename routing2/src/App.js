@@ -19,6 +19,10 @@ class Home extends Component {
     }
 }
 class Login extends Component {
+    
+    doLogin() {
+        browserHistory.push('/dashboard');
+    }
     render() {
         return (<div>
             <div>this is Login</div>
@@ -26,8 +30,8 @@ class Login extends Component {
             <input type="text" placeholder="username" /> <br />
             <input type="text" placeholder="password" /> <br />
 
-            <button>
-                <Link to="/dashboard">Do Login</Link>
+            <button onClick={this.doLogin}>
+                Login
             </button>
         </div>)
     }
@@ -58,7 +62,6 @@ class Dashboard extends Component {
             <Link to="/dashboard/profile">Profile</Link>
             <Link to="/dashboard/about">About</Link>
             <Link to="/dashboard/contact">Contact</Link>
-
 
             {this.props.children}
         </div>)
@@ -114,8 +117,8 @@ class App extends Component {
                     <Route path="profile" component={Profile} />
                     <Route path="about" component={About} />
                     <Route path="contact" component={Contact} />
-                    <Route path="*" component={NoMatch} />
                 </Route>
+                <Route path="*" component={NoMatch} />
 
             </Router>
         )

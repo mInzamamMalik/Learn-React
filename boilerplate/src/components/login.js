@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router'
 
+import {RaisedButton} from 'material-ui';
+
 class Login extends Component {
     doLogin() {
         browserHistory.push('/dashboard');
@@ -12,9 +14,9 @@ class Login extends Component {
             <input type="text" placeholder="username" /> <br />
             <input type="text" placeholder="password" /> <br />
 
-            <button onClick={this.doLogin}>
+            <RaisedButton onClick={this.doLogin} primary={true}>
                 Login
-            </button>
+            </RaisedButton>
         </div>)
     }
 }

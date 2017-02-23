@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router'
 
+import {RaisedButton} from 'material-ui';
+
 class Signup extends Component {
 
     doSignup() {
@@ -15,9 +17,9 @@ class Signup extends Component {
             <input type="text" placeholder="username" /> <br />
             <input type="text" placeholder="password" /> <br />
 
-            <button onClick={this.doSignup}>
+            <RaisedButton primary={true}  onClick={this.doSignup}>
                 Signup
-            </button>
+            </RaisedButton>
         </div>)
     }
 }

@@ -5,12 +5,24 @@ import { bindActionCreators } from 'redux';
 import { increment, decrement } from '../store/actions/index'
 
 class Counter extends Component {
+
+    constructor(props) {
+        super(props);
+        this._handel = this._handel.bind(this);
+    }
+
+    _handel() {
+        return this.props.dec()
+    }
+
     render() {
         return (
             <div>
                 Counter: {this.props.counter}
+                
                 <button onClick={() => this.props.inc()}>Increment</button>
-                <button onClick={() => this.props.dec()}>Deccrement</button>
+
+                <button onClick={this._handel}>Deccrement</button>
             </div>
         );
     }

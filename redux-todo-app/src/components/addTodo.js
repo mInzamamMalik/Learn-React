@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addTodo, removeTodo } from '../store/actions/actions-todo'
 
 class AddTodo extends Component {
     constructor(props) {
@@ -9,18 +12,21 @@ class AddTodo extends Component {
     _submithandler(event) {
         event.preventDefault()
 
+        console.log("refs: ",this.refs.todoText.value)
+
         var todo = {
-            text: event.target.value,
+            text: this.refs.todoText.value,
             done: false
         }
         //dispatch add todo action with todo data
+        return this.props.add(todo);
     }
     render() {
         return (
             <div>
                 <form onSubmit={this._submithandler}>
                     <label htmlFor="addtodo"></label>
-                    <input id="addTodo" type="text" />
+                    <input id="addTodo" type="text" ref="todoText" />
                     <button type="submit">Add</button>
                 </form>
             </div>
@@ -28,4 +34,18 @@ class AddTodo extends Component {
     }
 }
 
-export default AddTodo;
+
+
+function mapStateToProps(state) {
+    return {
+        todos: state.todos
+    }
+}
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        add: addTodo,
+        remove: removeTodo
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(AddTodo);

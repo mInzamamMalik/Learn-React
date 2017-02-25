@@ -1,4 +1,4 @@
-
+import { TodoActions } from '../actions/actions-todo';
 const InitailState = {
     todos: []
 }
@@ -7,7 +7,7 @@ export default function (state = InitailState, action) {
 
     switch (action.type) {
 
-        case "ADD_TODO":
+        case TodoActions.ADD_TODO:
 
             console.log("all todos: ", state);
 
@@ -19,7 +19,7 @@ export default function (state = InitailState, action) {
             };
             break;
 
-        case "REMOVE_TODO":
+        case TodoActions.REMOVE_TODO:
             var allTodo = state.todos;
             allTodo.splice(action.payload, 1)
 

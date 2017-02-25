@@ -1,6 +1,11 @@
+import { combineReducers } from 'redux';
 import { createStore } from 'redux'
 
-import allReducers from './reducers/index.js'
+import TodoReducer from './reducers/reducer-todo';
+
+const allReducers = combineReducers({
+    todoStore: TodoReducer
+})
 
 const store = createStore(
     allReducers,

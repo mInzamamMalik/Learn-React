@@ -12,7 +12,7 @@ class AddTodo extends Component {
     _submithandler(event) {
         event.preventDefault()
 
-        console.log("refs: ",this.refs.todoText.value)
+        console.log("refs: ", this.refs.todoText.value)
 
         var todo = {
             text: this.refs.todoText.value,
@@ -38,7 +38,7 @@ class AddTodo extends Component {
 
 function mapStateToProps(state) {
     return {
-        todos: state.todos
+        todo: state.todoStore
     }
 }
 function matchDispatchToProps(dispatch) {

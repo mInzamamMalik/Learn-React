@@ -23,7 +23,7 @@ export default function (state = InitailState, action) {
             return state - 1;
             break;
     }
-    console.log("this is action: ",action);
+    console.log("this is action: ", action, state);
     return state;
 
 

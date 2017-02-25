@@ -20,7 +20,12 @@ export default function (state = InitailState, action) {
             break;
 
         case "REMOVE_TODO":
-            return state - 1;
+            var allTodo = state.todos;
+            allTodo.splice(action.payload, 1)
+
+            return {
+                todos: allTodo
+            };
             break;
     }
     console.log("this is action: ", action, state);

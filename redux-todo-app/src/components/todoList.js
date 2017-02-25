@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { addTodo, removeTodo } from '../store/actions/actions-todo'
 
 class TodoList extends Component {
     constructor(props, context) {
         super(props, context);
 
+    }
+    _removeTodo(index) {
+        console.log("index: ", index);
+        this.props.remove(index)
     }
 
     _list() {
@@ -14,7 +19,7 @@ class TodoList extends Component {
             return this.props.todo.todos.map((todo, index) => {
                 return (
                     <li key={index}>
-                        {todo.text}                       
+                        <p>{todo.text} <button onClick={() => this._removeTodo(index)}>Remove</button></p>
                     </li>
                 )
             })
@@ -41,4 +46,11 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(TodoList);
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        add: addTodo,
+        remove: removeTodo
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(TodoList);

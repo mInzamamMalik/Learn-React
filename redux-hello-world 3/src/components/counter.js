@@ -2,18 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { increment, decrement } from '../store/actions/index'
+import { increment } from '../store/actions/index'
 
 class Counter extends Component {
-
-    constructor(props) {
-        super(props);
-        this._handel = this._handel.bind(this);
-    }
-
-    _handel() {
-        return this.props.dec()
-    }
 
     render() {
         return (
@@ -22,7 +13,6 @@ class Counter extends Component {
                 
                 <button onClick={() => this.props.inc()}>Increment</button>
 
-                <button onClick={this._handel}>Deccrement</button>
             </div>
         );
     }
@@ -37,8 +27,7 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        inc: increment,
-        dec: decrement
+        inc: increment
     }, dispatch)
 }
 

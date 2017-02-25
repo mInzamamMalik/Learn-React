@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addTodo, removeTodo } from '../store/actions/actions-todo'
+import { TodoActions as Action } from '../store/actions/actions-todo'
 
 class AddTodo extends Component {
     constructor(props) {
@@ -43,8 +43,8 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        add: addTodo,
-        remove: removeTodo
+        add: Action.addTodo,
+        remove: Action.removeTodo
     }, dispatch)
 }
 

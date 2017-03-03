@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-
 import { RaisedButton, TextField } from 'material-ui';
+import { AuthMiddleware } from './../store/epic/auth'
 
+
+function mapStateToProps(state) {
+    return {
+        isRegistered: state.AuthReducer.isRegistered,
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        signup: (credentials) => dispatch(AuthMiddleware.signup(credentials))
+    };
+}
 class Signup extends Component {
 
     constructor(props) {
@@ -11,11 +23,18 @@ class Signup extends Component {
     }
     doSignup() {
         var name = this.refs.name.getValue();
-        var username = this.refs.username.getValue();
+        var email = this.refs.email.getValue();
         var password = this.refs.password.getValue();
-        console.log(name, username, password);
+        console.log(name, email, password);
 
-        browserHistory.push('/login');
+        this.props.signup(
+            {
+                "fullName": name,
+                "email": email,
+                "password": password,
+            })
+
+        //browserHistory.push('/login');
     }
 
     render() {
@@ -23,8 +42,8 @@ class Signup extends Component {
             <div>This is Login</div>
 
             <TextField type="text" hintText="name" ref="name" /> <br />
-            <TextField type="text" hintText="username" ref="username" /> <br />
-            <TextField type="text" hintText="password" ref="password" /> <br />
+            <TextField type="text" hintText="email" ref="email" /> <br />
+            <TextField type="password" hintText="password" ref="password" /> <br />
 
             <RaisedButton primary={true} onClick={this.doSignup}>
                 Signup
@@ -32,4 +51,4 @@ class Signup extends Component {
         </div>)
     }
 }
-export default Signup;
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)

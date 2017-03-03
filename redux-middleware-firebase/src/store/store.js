@@ -2,11 +2,15 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 import { gitReducer } from './reducer/git';
+import { AuthReducer } from './reducer/auth';
+
+import { AuthEpic } from './epic/auth';
 import { gitEpic } from './epic/git';
+
 
 //combine epic
 const rootEpic = combineEpics(
-    gitEpic.getUserData
+    gitEpic.getUserData, AuthEpic
 );
 //creating middleware
 const epicMiddleware = createEpicMiddleware(rootEpic);
@@ -17,7 +21,8 @@ const createStoreWithMiddleware = applyMiddleware(epicMiddleware)(createStore);
 
 //combine reducers
 const allReducers = combineReducers({
-    gitReducer
+    gitReducer,
+    AuthReducer
 })
 
 //creating store

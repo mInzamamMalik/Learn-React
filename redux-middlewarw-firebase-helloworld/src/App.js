@@ -12,7 +12,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        startSignup: () => dispatch(   AuthAction.signup()   )
+        startSignup: (data) => dispatch(AuthAction.signup(data))
     };
 }
 class Signup extends Component {
@@ -27,7 +27,11 @@ class Signup extends Component {
         var password = this.refs.password.value;
         console.log(name, email, password);
 
-        this.props.startSignup()
+        this.props.startSignup({
+            "fullName": name,
+            "email": email,
+            "password": password,
+        })
 
         //browserHistory.push('/login');
     }

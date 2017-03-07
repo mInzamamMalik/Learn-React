@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 
 export function AuthReducer(state = INITIAL_STATE, action) {
 
-    console.log("auth reducer");
+    console.log("auth reducer: ", action.type);
 
     switch (action.type) {
         case AuthAction.SIGNUP_DONE:

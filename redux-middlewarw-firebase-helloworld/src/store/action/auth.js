@@ -4,9 +4,12 @@ export class AuthAction {
     static SIGNUP_DONE = 'SIGNUP_DONE';
 
     //static NULL = 'NULL';
-    static signup() {
+    static signup(data) {
+        console.log("data in action file: ", data);
+
         return {
-            type: AuthAction.SIGNUP
+            type: AuthAction.SIGNUP,
+            payload: data
         }
     }   
 }

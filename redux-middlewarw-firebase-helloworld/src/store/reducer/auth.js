@@ -14,7 +14,8 @@ export function AuthReducer(state = INITIAL_STATE, action) {
     console.log("auth reducer");
 
     switch (action.type) {
-        case AuthAction.SIGNUP:
+        case AuthAction.SIGNUP_DONE:
+        console.log("signup done");
             return { ...state, isProcessing: true, isRegistered: false, isError: false };
 
         default:

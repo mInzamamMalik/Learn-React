@@ -9,7 +9,7 @@ import { AuthEpic } from './epic/auth';
 
 //combine epic
 const rootEpic = combineEpics(
-    AuthEpic
+    AuthEpic.signup
 );
 //combine reducers
 const rootReducer = combineReducers({

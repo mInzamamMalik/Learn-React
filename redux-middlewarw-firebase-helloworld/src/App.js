@@ -15,6 +15,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         addTodo: (data) => dispatch(TodoAction.addTodo(data)),
+        getTodos: () => dispatch(TodoAction.getTodos()),
     };
 }
 class Todo extends Component {
@@ -25,7 +26,7 @@ class Todo extends Component {
 
     componentDidMount() {
         console.log('Check to see if firing')
-
+        this.props.getTodos();
     }
 
 

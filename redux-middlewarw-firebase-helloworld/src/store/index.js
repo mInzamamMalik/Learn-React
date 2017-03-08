@@ -9,7 +9,8 @@ import { TodoEpic } from './epic/todo';
 
 //combine epic
 const rootEpic = combineEpics(
-    TodoEpic.addTodo
+    TodoEpic.addTodo,
+    TodoEpic.getTodos
 );
 //combine reducers
 const rootReducer = combineReducers({

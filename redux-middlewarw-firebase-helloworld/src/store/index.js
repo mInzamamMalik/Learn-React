@@ -2,18 +2,18 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 //requiring all reducers
-import { AuthReducer } from './reducer/auth';
+import { TodoReducer } from './reducer/todo';
 
 //requiring all epics
-import { AuthEpic } from './epic/auth';
+import { TodoEpic } from './epic/todo';
 
 //combine epic
 const rootEpic = combineEpics(
-    AuthEpic.signup
+    TodoEpic.addTodo
 );
 //combine reducers
 const rootReducer = combineReducers({
-    AuthReducer
+    TodoReducer
 })
 
 //creating middleware

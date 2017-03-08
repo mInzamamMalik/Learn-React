@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Signup from './App';
+import Todo from './App';
 import './index.css';
+
+import firebaseConfig from './config';
 
 import { Provider } from 'react-redux'
 import { store } from './store'
 
 ReactDOM.render(
   <Provider store={store}>
-    <Signup></Signup>
+    <Todo></Todo>
   </Provider>
 , document.getElementById('root'));

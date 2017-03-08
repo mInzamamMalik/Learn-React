@@ -3,52 +3,52 @@ import logo from './logo.svg';
 import './App.css';
 
 import { connect } from 'react-redux'
-import { AuthAction } from './store/action/auth'
+import { TodoAction } from './store/action/todo'
 
 function mapStateToProps(state) {
     return {
-        isRegistered: state.AuthReducer.isRegistered,
+        todos: state.TodoReducer.todos,
+        loading: state.TodoReducer.loading,
+        isError: state.TodoReducer.isError,
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        startSignup: (data) => dispatch(AuthAction.signup(data))
+        addTodo: (data) => dispatch(TodoAction.addTodo(data)),
     };
 }
-class Signup extends Component {
-
+class Todo extends Component {
     constructor(props) {
         super(props)
-        this.doSignup = this.doSignup.bind(this);
+        this.addTodo = this.addTodo.bind(this);
     }
-    doSignup() {
-        var name = this.refs.name.value;
-        var email = this.refs.email.value;
-        var password = this.refs.password.value;
-        console.log(name, email, password);
 
-        this.props.startSignup({
-            "fullName": name,
-            "email": email,
-            "password": password,
+    componentDidMount() {
+        console.log('Check to see if firing')
+
+    }
+
+
+
+    addTodo() {
+        var todo = this.refs.todo.value;
+        this.props.addTodo({
+            todo: todo
         })
-
-        //browserHistory.push('/login');
     }
 
     render() {
         return (<div>
-            <div>This is Login</div>
+            <div>This is Todo App using redux-observable and epic</div>
 
-            <input type="text" placeholder="name" ref="name" /> <br />
-            <input type="text" placeholder="email" ref="email" /> <br />
-            <input type="password" placeholder="password" ref="password" /> <br />
+            <input type="text" placeholder="todo" ref="todo" /> <br />
 
-            <button onClick={this.doSignup}>
-                Signup
+            <button onClick={this.addTodo}>
+                Add Todo
             </button>
+
+            {(this.props.loading) ? <p>Loading...</p> : ""}
         </div>)
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Signup)
-
+export default connect(mapStateToProps, mapDispatchToProps)(Todo)

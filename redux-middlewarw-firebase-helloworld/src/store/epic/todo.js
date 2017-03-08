@@ -36,10 +36,10 @@ export class TodoEpic {
                 return new Observable((observer) => {
                     ref.on("child_added", (snapshot) => {
                         console.log("firebase data arrived: ", snapshot.val());
-                        // TodoAction.getTodoDone(snapshot.val());
+
                         observer.next({
                             type: TodoAction.GET_TODO_DONE,
-                            payload: { name: "abc" }
+                            payload: snapshot.val()
                         })
                     })
                 });

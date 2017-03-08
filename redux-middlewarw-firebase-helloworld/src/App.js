@@ -41,6 +41,17 @@ class Todo extends Component {
     render() {
         return (<div>
             <div>This is Todo App using redux-observable and epic</div>
+            <br />
+            <br />
+            <ul>
+                {this.props.todos.map((val, index) => {
+                    return (<li key={index}>
+                        <p> {val.todo}</p>
+                        <p> {(val.isDone) ? "   done" : "    not done yet"} </p>
+                    </li>)
+                })}
+            </ul>
+
 
             <input type="text" placeholder="todo" ref="todo" /> <br />
 

@@ -42,6 +42,15 @@ export function TodoReducer(state = INITIAL_STATE, action) {
 
             console.log("newTodos: ", newTodos);
             return { ...state, todos: newTodos, loading: false, isError: false, counter: state.counter + 1 };
+        
+        case TodoAction.GET_TODO_CHANGED:
+            console.log("reducer todo changed: ", action.payload);
+
+            var newTodos = Object.assign({}, state.todos);
+            newTodos[action.payload.key] = action.payload.val; 
+
+            console.log("newTodos: ", newTodos);
+            return { ...state, todos: newTodos, loading: false, isError: false, counter: state.counter + 1 };
 
         default:
             return state;

@@ -47,6 +47,17 @@ export class TodoEpic {
                             payload: snapshot.key
                         })
                     })
+                    ref.on("child_changed", (snapshot) => {
+                        console.log("firebase data arrived: ", snapshot.key);
+
+                        observer.next({
+                            type: TodoAction.GET_TODO_CHANGED,
+                            payload: {
+                                key: snapshot.key,
+                                val: snapshot.val()
+                            }
+                        })
+                    })
 
 
                 }).takeUntil(action$.ofType(TodoAction.GET_TODO_CANCELLED));

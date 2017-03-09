@@ -1,6 +1,6 @@
-export default class AuthActions {
+export class AuthActions {
 
-    static SIGNUP = 'SIGNUP';
+    static SIGNUP_START = 'SIGNUP_START';
     static SIGNUP_SUCCESSFUL = 'SIGNUP_SUCCESSFUL';
     static SIGNUP_REJECTED = 'SIGNUP_REJECTED';
 
@@ -15,21 +15,21 @@ export default class AuthActions {
 
     static ISLOGGEDIN = 'ISLOGGEDIN';
 
-    //static NULL = 'NULL';
+    static NULL = 'NULL';
 
-    static signup() {
+    static signup(credentials) {
+        console.log("action signup credentials", credentials);
         return {
-            type: AuthActions.SIGNUP
+            type: AuthActions.SIGNUP_START,
+            payload: credentials
         }
     }
-
     static signupupSuccessful(authUser) {
         return {
             type: AuthActions.SIGNUP_SUCCESSFUL,
             payload: authUser
         }
     }
-
     static signupRejected(error) {
         return {
             type: AuthActions.SIGNUP_REJECTED,

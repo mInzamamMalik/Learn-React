@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
+import firebaseConfig from './config'
+
 import { Provider } from 'react-redux';
-import store from './store/store'
+import { store } from './store/index'
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 

@@ -10,25 +10,20 @@ import { gitEpic } from './epic/git';
 
 //combine epic
 const rootEpic = combineEpics(
-    gitEpic.getUserData, AuthEpic
+    gitEpic.getUserData,
+    AuthEpic.signup
 );
+//combine reducers
+const rootReducer = combineReducers({
+    gitReducer,
+    AuthReducer
+})
+
 //creating middleware
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
 //appling middleware
 const createStoreWithMiddleware = applyMiddleware(epicMiddleware)(createStore);
 
-
-//combine reducers
-const allReducers = combineReducers({
-    gitReducer,
-    AuthReducer
-})
-
 //creating store
-const store = createStoreWithMiddleware(
-    allReducers,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
-export default store;
-
+export let store = createStoreWithMiddleware(rootReducer)

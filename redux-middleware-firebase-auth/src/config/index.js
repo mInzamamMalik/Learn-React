@@ -2,10 +2,10 @@ import * as firebase from 'firebase'
 
 //malikasinger1@gmail
 var firebaseConfig = {
-    apiKey: "AIzaSyDgmFWuRajSdNaFHPrd_r0nB0N_rXAtJhU",
-    authDomain: "crime-reporter-718f9.firebaseapp.com",
-    databaseURL: "https://crime-reporter-718f9.firebaseio.com",
-    storageBucket: "crime-reporter-718f9.appspot.com",
-    messagingSenderId: "683511002626"
+    apiKey: "AIzaSyDspeNWtv6xycKzfsFA2mcVWxIYaKA1Mkk",
+    authDomain: "test-project-5a3f4.firebaseapp.com",
+    databaseURL: "https://test-project-5a3f4.firebaseio.com",
+    storageBucket: "test-project-5a3f4.appspot.com",
+    messagingSenderId: "523897901107"
 }
 firebase.initializeApp(firebaseConfig);

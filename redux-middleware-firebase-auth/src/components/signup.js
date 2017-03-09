@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-import { RaisedButton, TextField } from 'material-ui';
-import { AuthMiddleware } from './../store/epic/auth'
+import { FlatButton, RaisedButton, TextField, Dialog } from 'material-ui';
+import { AuthActions } from './../store/action/auth'
 
 
 function mapStateToProps(state) {
     return {
         isRegistered: state.AuthReducer.isRegistered,
+        isError: state.AuthReducer.isError,
+        errorMessage: state.AuthReducer.errorMessage,
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        signup: (credentials) => dispatch(AuthMiddleware.signup(credentials))
+        signup: (credentials) => dispatch(AuthActions.signup(credentials))
     };
 }
 class Signup extends Component {
@@ -20,7 +22,27 @@ class Signup extends Component {
     constructor(props) {
         super(props)
         this.doSignup = this.doSignup.bind(this);
+        this.state = {
+            errorPopup: false
+        }
     }
+
+    componentWillReceiveProps(nextProps) {
+
+        console.log("nextProps: ", nextProps);
+
+        if (nextProps.isError) {
+            // alert(nextProps.errorMessage);
+            this.setState({
+                errorPopup: true
+            })
+        }
+        if (nextProps.isRegistered) {
+            browserHistory.push('/login');
+        }
+    }
+
+
     doSignup() {
         var name = this.refs.name.getValue();
         var email = this.refs.email.getValue();
@@ -34,21 +56,37 @@ class Signup extends Component {
                 "password": password,
             })
 
-        //browserHistory.push('/login');
     }
 
     render() {
         return (<div>
+
+            <Dialog
+                title={"Signup Failed"}
+                modal={false}
+                open={this.state.errorPopup}
+                actions={<FlatButton
+                    label="Submit"
+                    primary={true}
+                    keyboardFocused={true}
+                    onTouchTap={() => { this.setState({ errorPopup: false }) }}
+                />}
+            >
+
+                <p>{this.props.errorMessage}</p>
+
+            </Dialog>
+
             <div>This is Login</div>
 
-            <TextField type="text" hintText="name" ref="name" /> <br />
-            <TextField type="text" hintText="email" ref="email" /> <br />
-            <TextField type="password" hintText="password" ref="password" /> <br />
+            <TextField defaultValue="abc" type="text" hintText="name" ref="name" /> <br />
+            <TextField defaultValue="abc@abc.com" type="text" hintText="email" ref="email" /> <br />
+            <TextField defaultValue="aaaaaa" type="password" hintText="password" ref="password" /> <br />
 
             <RaisedButton primary={true} onClick={this.doSignup}>
                 Signup
             </RaisedButton>
-        </div>)
+        </div >)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Signup)

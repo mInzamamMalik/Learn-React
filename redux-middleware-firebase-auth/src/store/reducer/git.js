@@ -6,9 +6,6 @@ const INITIAL_STATE = {
 };
 
 export function gitReducer(state = INITIAL_STATE, action) {
-
-    console.log("fired: ", action);
-
     switch (action.type) {
         case GitAction.GetDataFromUrl:
             return Object.assign({}, state, { isLoading: true });

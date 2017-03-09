@@ -17,7 +17,8 @@ function mapDispatchToProps(dispatch) {
         addTodo: (data) => dispatch(TodoAction.addTodo(data)),
         getTodos: () => dispatch(TodoAction.getTodos()),
         getTodosCancel: () => dispatch(TodoAction.getTodosCancel()),
-        markTodoArchived: (key) => dispatch(TodoAction.markTodoArchived(key)),
+        markTodoArchived: (data) => dispatch(TodoAction.markTodoArchived(data)),
+        deleteTodo: (data) => dispatch(TodoAction.deleteTodo(data)),
     };
 }
 class Todo extends Component {
@@ -40,6 +41,10 @@ class Todo extends Component {
     toggleMarkArchived(key, isDone) {
         this.props.markTodoArchived({ key: key, isDone: !isDone })
     }
+    
+    deleteTodo(key){
+        this.props.deleteTodo({key: key})
+    }
 
     render() {
         return (<div>
@@ -52,8 +57,10 @@ class Todo extends Component {
                     return (
                         <li key={index}>
                             <p> {val.todo}</p>
-                            <p> {(val.isDone) ? "Archived" : "NotArchived"} </p>
-                            <button onClick={() => { this.toggleMarkArchived(key, val.isDone) }} >Toggle Mark as Archived</button>
+                            <p>
+                                {(val.isDone) ? <span>"Archived" <button onClick={()=>{this.deleteTodo(key)}}>Delete</button></span> : ""}
+                                <button onClick={() => { this.toggleMarkArchived(key, val.isDone) }} >{val.isDone ? "Undo Archive" : "Mark Archive"}</button>
+                            </p>
                         </li>
                     )
                 })}

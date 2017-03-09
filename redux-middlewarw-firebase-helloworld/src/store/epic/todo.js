@@ -31,6 +31,18 @@ export class TodoEpic {
                         };
                     })
             })
+    static deleteTodo = (action$) =>
+        action$.ofType(TodoAction.DELETE_TODO)
+            .switchMap(({ payload }) => {
+
+                console.log("Deleting started: ", payload);
+                return Observable.fromPromise(ref.child(payload.key).set(null))
+                    .map((x) => {
+                        return {
+                            type: TodoAction.NULL
+                        };
+                    })
+            })
 
     static getTodos = (action$) =>
         action$.ofType(TodoAction.GET_TODO)

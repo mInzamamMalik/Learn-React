@@ -13,6 +13,7 @@ const rootEpic = combineEpics(
     TodoEpic.getTodos,
     TodoEpic.getTodosCancel,
     TodoEpic.markArchived,
+    TodoEpic.deleteTodo,
 );
 //combine reducers
 const rootReducer = combineReducers({

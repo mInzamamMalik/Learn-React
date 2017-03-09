@@ -45,10 +45,12 @@ class Todo extends Component {
             <br />
             <br />
             <ul>
-                {this.props.todos.map((val, index) => {
+                {Object.keys(this.props.todos).map((key, index) => {
+                    var val = this.props.todos[key]
                     return (<li key={index}>
                         <p> {val.todo}</p>
                         <p> {(val.isDone) ? "   done" : "    not done yet"} </p>
+                        <button >Delete todo</button>
                     </li>)
                 })}
             </ul>

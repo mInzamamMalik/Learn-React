@@ -1,7 +1,8 @@
 export class TodoAction {
 
     static GET_TODO = 'GET_TODO';
-    static GET_TODO_DONE = 'GET_TODO_DONE';
+    static GET_TODO_ADDED = 'GET_TODO_ADDED';
+    static GET_TODO_REMOVED = 'GET_TODO_REMOVED';
     static GET_TODO_CANCELLED = 'GET_TODO_CANCELLED';
 
     static ADD_TODO = 'ADD_TODO';

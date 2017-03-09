@@ -37,8 +37,19 @@ export class TodoEpic {
                         console.log("firebase data arrived: ", snapshot.val());
 
                         observer.next({
-                            type: TodoAction.GET_TODO_DONE,
-                            payload: snapshot.val()
+                            type: TodoAction.GET_TODO_ADDED,
+                            payload: {
+                                key: snapshot.key,
+                                val: snapshot.val()
+                            }
+                        })
+                    })
+                    ref.on("child_removed", (snapshot) => {
+                        console.log("firebase data arrived: ", snapshot.key);
+
+                        observer.next({
+                            type: TodoAction.GET_TODO_REMOVED,
+                            payload: snapshot.key
                         })
                     })
 

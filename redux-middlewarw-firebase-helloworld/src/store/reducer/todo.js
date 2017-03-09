@@ -1,7 +1,7 @@
 import { TodoAction } from "./../action/todo";
 
 const INITIAL_STATE = {
-    todos: [],
+    todos: {},
     loading: false,
     isError: false,
     counter: 0,
@@ -25,11 +25,20 @@ export function TodoReducer(state = INITIAL_STATE, action) {
             console.log("get todo start: ", action.payload);
             return { ...state, loading: true, isError: false };
 
-        case TodoAction.GET_TODO_DONE:
-            // console.log("get todo done: ", action.payload);
+        case TodoAction.GET_TODO_ADDED:
+            console.log("reducer todo added: ", action.payload);
 
             var newTodos = state.todos;
-            newTodos.push(action.payload);
+            newTodos[action.payload.key] = action.payload.val;
+
+            console.log("newTodos: ", newTodos);
+            return { ...state, todos: newTodos, loading: false, isError: false, counter: state.counter + 1 };
+        
+        case TodoAction.GET_TODO_REMOVED:
+             console.log("reducer todo removed: ", action.payload);
+
+            var newTodos = state.todos;
+            delete newTodos[action.payload];
 
             console.log("newTodos: ", newTodos);
             return { ...state, todos: newTodos, loading: false, isError: false, counter: state.counter + 1 };

@@ -25,5 +25,26 @@ export class AuthEpic {
                         });
                     })
             })
+
+    static login = (action$) =>
+        action$.ofType(AuthActions.LOGIN)
+            .switchMap(({ payload }) => {
+                
+                console.log("Credentials ", payload);
+                return Observable.fromPromise(firebaseService.login(payload.email, payload.password))
+                    .map((authUser) => {
+                        return {
+                            type: AuthActions.LOGIN_SUCCESSFUL,
+                            payload: authUser
+                        };
+                    })
+                    .catch(function (error) {
+                        console.error(error.code, error.message);
+                        return Observable.of({
+                            type: AuthActions.LOGIN_REJECTED,
+                            payload: error
+                        });
+                    })
+            })
 }
 

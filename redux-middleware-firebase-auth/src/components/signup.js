@@ -4,12 +4,13 @@ import { browserHistory } from 'react-router'
 import { FlatButton, RaisedButton, TextField, Dialog } from 'material-ui';
 import { AuthActions } from './../store/action/auth'
 
-
+ 
 function mapStateToProps(state) {
     return {
         isRegistered: state.AuthReducer.isRegistered,
         isError: state.AuthReducer.isError,
         errorMessage: state.AuthReducer.errorMessage,
+        isProcessing: state.AuthReducer.isProcessing,
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -28,9 +29,7 @@ class Signup extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
-        console.log("nextProps: ", nextProps);
-
+        console.log("Signup component nextProps: ", nextProps);
         if (nextProps.isError) {
             // alert(nextProps.errorMessage);
             this.setState({

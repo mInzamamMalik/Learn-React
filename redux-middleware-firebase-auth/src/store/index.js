@@ -11,7 +11,8 @@ import { gitEpic } from './epic/git';
 //combine epic
 const rootEpic = combineEpics(
     gitEpic.getUserData,
-    AuthEpic.signup
+    AuthEpic.signup,
+    AuthEpic.login,
 );
 //combine reducers
 const rootReducer = combineReducers({

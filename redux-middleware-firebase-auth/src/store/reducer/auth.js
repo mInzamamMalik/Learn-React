@@ -24,12 +24,14 @@ export function AuthReducer(state = INITIAL_STATE, action) {
             return { ...state, isProcessing: false, isRegistered: false, isError: true, errorMessage: action.payload.message };
 
 
-        // case AuthActions.SIGNIN:
-        //     return { ...state, isProcessing: true, isAuthenticated: false, isError: false };
-        // case AuthActions.SIGNIN_SUCCESSFUL:
-        //     return { ...state, isProcessing: false, isAuthenticated: true, isError: false, authUser: action.payload, errorMessage: {} };
-        // case AuthActions.SIGNIN_REJECTED:
-        //     return { ...state, isProcessing: false, isAuthenticated: false, authUser: {}, isError: true, errorMessage: action.payload };
+        case AuthActions.LOGIN:
+            return { ...state, isProcessing: true, isAuthenticated: false, isError: false };
+        case AuthActions.LOGIN_SUCCESSFUL:
+            return { ...state, isProcessing: false, isAuthenticated: true, isError: false, authUser: action.payload, errorMessage: {} };
+        case AuthActions.LOGIN_REJECTED:
+            return { ...state, isProcessing: false, isAuthenticated: false, authUser: {}, isError: true, errorMessage: action.payload.message };
+
+
         // case AuthActions.LOGOUT:
         //     return { ...state, isProcessing: true };
         // case AuthActions.LOGOUT_SUCCESSFUL:

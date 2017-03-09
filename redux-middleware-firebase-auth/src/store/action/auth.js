@@ -4,9 +4,9 @@ export class AuthActions {
     static SIGNUP_SUCCESSFUL = 'SIGNUP_SUCCESSFUL';
     static SIGNUP_REJECTED = 'SIGNUP_REJECTED';
 
-    static SIGNIN = 'SIGNIN';
-    static SIGNIN_SUCCESSFUL = 'SIGNIN_SUCCESSFUL';
-    static SIGNIN_REJECTED = 'SIGNIN_REJECTED';
+    static LOGIN = 'SIGNIN';
+    static LOGIN_SUCCESSFUL = 'SIGNIN_SUCCESSFUL';
+    static LOGIN_REJECTED = 'SIGNIN_REJECTED';
 
     static LOGOUT = 'LOGOUT';
     static LOGOUT_SUCCESSFUL = 'LOGOUT_SUCCESSFUL';
@@ -38,23 +38,19 @@ export class AuthActions {
     }
 
 
-    static signin() {
+    static login(credentials) {
         return {
-            type: AuthActions.SIGNIN
+            type: AuthActions.LOGIN, payload: credentials
         }
     }
-
-    static signinSuccessful(authUser) {
+    static loginSuccessful(authUser) {
         return {
-            type: AuthActions.SIGNIN_SUCCESSFUL,
-            payload: authUser
+            type: AuthActions.LOGIN_SUCCESSFUL, payload: authUser
         }
     }
-
-    static signinRejected(error) {
+    static loginRejected(error) {
         return {
-            type: AuthActions.SIGNIN_REJECTED,
-            payload: error
+            type: AuthActions.LOGIN_REJECTED, payload: error
         }
     }
 

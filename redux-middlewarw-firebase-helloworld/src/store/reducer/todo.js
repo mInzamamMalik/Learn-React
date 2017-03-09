@@ -18,7 +18,7 @@ export function TodoReducer(state = INITIAL_STATE, action) {
             return { ...state, loading: true, isError: false };
 
         case TodoAction.ADD_TODO_DONE:
-            // console.log("Add todo done: ",action.payload);
+             console.log("reducer Add todo done: ",action.payload);
             return { ...state, loading: false, isError: false };
 
         case TodoAction.GET_TODO:

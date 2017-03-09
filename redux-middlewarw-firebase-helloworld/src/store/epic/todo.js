@@ -21,7 +21,6 @@ export class TodoEpic {
                         } else {
                             return {
                                 type: TodoAction.NULL,
-                                payload: {}
                             };
                         }
                     })
@@ -42,9 +41,20 @@ export class TodoEpic {
                             payload: snapshot.val()
                         })
                     })
-                });
 
-                
+
+                }).takeUntil(action$.ofType(TodoAction.GET_TODO_CANCELLED));
+            })
+
+    static getTodosCancel = (action$) =>
+        action$.ofType(TodoAction.GET_TODO_CANCELLED)
+            .switchMap(({ payload }) => {
+
+                ref.off();
+                return Observable.of({
+                    type: TodoAction.NULL
+                })
+
             })
 
 }

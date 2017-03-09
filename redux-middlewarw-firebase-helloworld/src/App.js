@@ -16,6 +16,7 @@ function mapDispatchToProps(dispatch) {
     return {
         addTodo: (data) => dispatch(TodoAction.addTodo(data)),
         getTodos: () => dispatch(TodoAction.getTodos()),
+        getTodosCancel: () => dispatch(TodoAction.getTodosCancel()),
     };
 }
 class Todo extends Component {
@@ -52,11 +53,13 @@ class Todo extends Component {
                 })}
             </ul>
 
-
             <input type="text" placeholder="todo" ref="todo" /> <br />
 
             <button onClick={this.addTodo}>
                 Add Todo
+            </button>
+            <button onClick={this.props.getTodosCancel}>
+                Cancel getting todo
             </button>
 
             {(this.props.loading) ? <p>Loading...</p> : ""}

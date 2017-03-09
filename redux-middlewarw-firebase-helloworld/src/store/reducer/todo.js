@@ -18,7 +18,7 @@ export function TodoReducer(state = INITIAL_STATE, action) {
             return { ...state, loading: true, isError: false };
 
         case TodoAction.ADD_TODO_DONE:
-             console.log("reducer Add todo done: ",action.payload);
+            console.log("reducer Add todo done: ", action.payload);
             return { ...state, loading: false, isError: false };
 
         case TodoAction.GET_TODO:
@@ -28,16 +28,16 @@ export function TodoReducer(state = INITIAL_STATE, action) {
         case TodoAction.GET_TODO_ADDED:
             console.log("reducer todo added: ", action.payload);
 
-            var newTodos = state.todos;
+            var newTodos = Object.assign({}, state.todos);
             newTodos[action.payload.key] = action.payload.val;
 
             console.log("newTodos: ", newTodos);
             return { ...state, todos: newTodos, loading: false, isError: false, counter: state.counter + 1 };
-        
-        case TodoAction.GET_TODO_REMOVED:
-             console.log("reducer todo removed: ", action.payload);
 
-            var newTodos = state.todos;
+        case TodoAction.GET_TODO_REMOVED:
+            console.log("reducer todo removed: ", action.payload);
+
+            var newTodos = Object.assign({}, state.todos);
             delete newTodos[action.payload];
 
             console.log("newTodos: ", newTodos);

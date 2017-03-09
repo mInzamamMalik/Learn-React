@@ -50,7 +50,6 @@ class Todo extends Component {
                     return (<li key={index}>
                         <p> {val.todo}</p>
                         <p> {(val.isDone) ? "   done" : "    not done yet"} </p>
-                        <button >Delete todo</button>
                     </li>)
                 })}
             </ul>

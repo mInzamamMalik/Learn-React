@@ -14,15 +14,10 @@ export class TodoEpic {
                 console.log("adding started");
                 return Observable.fromPromise(ref.push(payload))
                     .map((x) => {
-                        if (!x) {
-                            return {
-                                type: TodoAction.ADD_TODO_DONE
-                            };
-                        } else {
-                            return {
-                                type: TodoAction.NULL,
-                            };
-                        }
+                        return {
+                            type: TodoAction.ADD_TODO_DONE
+                        };
+
                     })
             })
 
@@ -34,7 +29,7 @@ export class TodoEpic {
 
                 return new Observable((observer) => {
                     ref.on("child_added", (snapshot) => {
-                        console.log("firebase data arrived: ", snapshot.val());
+                        console.log("firebase data arrived: ");
 
                         observer.next({
                             type: TodoAction.GET_TODO_ADDED,

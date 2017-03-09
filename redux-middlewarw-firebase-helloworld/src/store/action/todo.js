@@ -8,7 +8,8 @@ export class TodoAction {
 
     static ADD_TODO = 'ADD_TODO';
     static ADD_TODO_DONE = 'ADD_TODO_DONE';
-
+    
+    static MARK_TODO_ARCHIVED = 'MARK_TODO_ARCHIVED';
 
     static NULL = 'NULL';
 
@@ -36,6 +37,14 @@ export class TodoAction {
         console.log("get todo cancel: ", data);
         return {
             type: TodoAction.GET_TODO_CANCELLED,
+        }
+    }
+
+    static markTodoArchived(data) {
+        console.log("get todo archived: ", data);
+        return {
+            type: TodoAction.MARK_TODO_ARCHIVED,
+            payload: data
         }
     }
 

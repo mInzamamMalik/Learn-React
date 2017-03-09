@@ -17,7 +17,18 @@ export class TodoEpic {
                         return {
                             type: TodoAction.ADD_TODO_DONE
                         };
+                    })
+            })
+    static markArchived = (action$) =>
+        action$.ofType(TodoAction.MARK_TODO_ARCHIVED)
+            .switchMap(({ payload }) => {
 
+                console.log("Archive started: ", payload);
+                return Observable.fromPromise(ref.child(payload.key + "/isDone").set(payload.isDone))
+                    .map((x) => {
+                        return {
+                            type: TodoAction.NULL
+                        };
                     })
             })
 
@@ -58,8 +69,6 @@ export class TodoEpic {
                             }
                         })
                     })
-
-
                 }).takeUntil(action$.ofType(TodoAction.GET_TODO_CANCELLED));
             })
 

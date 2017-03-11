@@ -29,10 +29,12 @@ export class AuthEpic {
     static login = (action$) =>
         action$.ofType(AuthActions.LOGIN)
             .switchMap(({ payload }) => {
-                
+
                 console.log("Credentials ", payload);
                 return Observable.fromPromise(firebaseService.login(payload.email, payload.password))
                     .map((authUser) => {
+                        firebaseService.auth = authUser;
+                        console.log(firebaseService);
                         return {
                             type: AuthActions.LOGIN_SUCCESSFUL,
                             payload: authUser
@@ -42,6 +44,25 @@ export class AuthEpic {
                         console.error(error.code, error.message);
                         return Observable.of({
                             type: AuthActions.LOGIN_REJECTED,
+                            payload: error
+                        });
+                    })
+            })
+    static logout = (action$) =>
+        action$.ofType(AuthActions.LOGOUT)
+            .switchMap(({ payload }) => {
+
+                return Observable.fromPromise(firebaseService.logout())
+                    .map((loggedout) => {
+                        console.log("loggedout: ", loggedout)
+                        return {
+                            type: AuthActions.LOGOUT_SUCCESSFUL,
+                        };
+                    })
+                    .catch(function (error) {
+                        console.error(error.code, error.message);
+                        return Observable.of({
+                            type: AuthActions.LOGOUT_REJECTED,
                             payload: error
                         });
                     })

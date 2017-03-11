@@ -27,4 +27,7 @@ const epicMiddleware = createEpicMiddleware(rootEpic);
 const createStoreWithMiddleware = applyMiddleware(epicMiddleware)(createStore);
 
 //creating store
-export let store = createStoreWithMiddleware(rootReducer)
+export let store = createStoreWithMiddleware(
+    rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)

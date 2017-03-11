@@ -13,7 +13,7 @@ const rootEpic = combineEpics(
     gitEpic.getUserData,
     AuthEpic.signup,
     AuthEpic.login,
-    AuthEpic.logout,
+    AuthEpic.isLogin,
 );
 //combine reducers
 const rootReducer = combineReducers({

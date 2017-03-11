@@ -10,7 +10,6 @@ export class AuthActions {
 
     static LOGOUT = 'LOGOUT';
     static LOGOUT_SUCCESSFUL = 'LOGOUT_SUCCESSFUL';
-    static LOGOUT_REJECTED = 'LOGOUT_REJECTED';
 
     static UPDATE_USER = 'UPDATE_USER';
 
@@ -20,24 +19,39 @@ export class AuthActions {
 
     static signup(credentials) {
         console.log("action signup credentials", credentials);
-        return { type: AuthActions.SIGNUP_START, payload: credentials }
+        return {
+            type: AuthActions.SIGNUP_START,
+            payload: credentials
+        }
     }
     static signupupSuccessful(authUser) {
-        return { type: AuthActions.SIGNUP_SUCCESSFUL, payload: authUser }
+        return {
+            type: AuthActions.SIGNUP_SUCCESSFUL,
+            payload: authUser
+        }
     }
     static signupRejected(error) {
-        return { type: AuthActions.SIGNUP_REJECTED, payload: error }
+        return {
+            type: AuthActions.SIGNUP_REJECTED,
+            payload: error
+        }
     }
 
 
     static login(credentials) {
-        return { type: AuthActions.LOGIN, payload: credentials }
+        return {
+            type: AuthActions.LOGIN, payload: credentials
+        }
     }
     static loginSuccessful(authUser) {
-        return { type: AuthActions.LOGIN_SUCCESSFUL, payload: authUser }
+        return {
+            type: AuthActions.LOGIN_SUCCESSFUL, payload: authUser
+        }
     }
     static loginRejected(error) {
-        return { type: AuthActions.LOGIN_REJECTED, payload: error }
+        return {
+            type: AuthActions.LOGIN_REJECTED, payload: error
+        }
     }
 
     static logout() {
@@ -46,13 +60,12 @@ export class AuthActions {
     static logoutSuccessful() {
         return { type: AuthActions.LOGOUT_SUCCESSFUL }
     }
-    static logoutRejected() {
-        return { type: AuthActions.LOGOUT_REJECTED }
-    }
 
     static isLoggedIn() {
+        console.log("ISLOGGEDIN ");
         return { type: AuthActions.ISLOGGEDIN }
     }
+
     static updateUser(updatedUser) {
         return {
             type: AuthActions.UPDATE_USER,

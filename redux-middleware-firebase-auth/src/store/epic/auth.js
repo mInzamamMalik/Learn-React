@@ -33,8 +33,6 @@ export class AuthEpic {
                 console.log("Credentials ", payload);
                 return Observable.fromPromise(firebaseService.login(payload.email, payload.password))
                     .map((authUser) => {
-                        firebaseService.auth = authUser;
-                        console.log(firebaseService);
                         return {
                             type: AuthActions.LOGIN_SUCCESSFUL,
                             payload: authUser
@@ -48,24 +46,24 @@ export class AuthEpic {
                         });
                     })
             })
-    static logout = (action$) =>
-        action$.ofType(AuthActions.LOGOUT)
+    static isLogin = (action$) =>
+        action$.ofType(AuthActions.ISLOGGEDIN)
             .switchMap(({ payload }) => {
 
-                return Observable.fromPromise(firebaseService.logout())
-                    .map((loggedout) => {
-                        console.log("loggedout: ", loggedout)
-                        return {
-                            type: AuthActions.LOGOUT_SUCCESSFUL,
-                        };
-                    })
-                    .catch(function (error) {
-                        console.error(error.code, error.message);
-                        return Observable.of({
-                            type: AuthActions.LOGOUT_REJECTED,
-                            payload: error
-                        });
-                    })
+                return new Observable((observer) => {
+                    firebase.auth().onAuthStateChanged(function (user) {
+                        if (user) {
+                            observer.next({
+                                type: AuthActions.LOGIN_SUCCESSFUL,
+                                payload: user
+                            })
+                        } else {
+                            observer.next({
+                                type: AuthActions.LOGOUT_SUCCESSFUL
+                            })
+                        }
+                    });
+                })
             })
 }
 

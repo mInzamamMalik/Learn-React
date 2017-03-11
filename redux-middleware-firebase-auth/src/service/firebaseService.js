@@ -1,42 +1,17 @@
-import * as firebase from 'firebase';
-import { browserHistory } from 'react-router';
+import * as firebase from 'firebase'
 
 export class firebaseService {
-  constructor() {
-      let list = "daniyal";
-      console.log("dasdasd");
-        //    console.log("aaaaaa",this.list)
-        //    console.log(this.list)
-            // .then((x)=> {console.log(x)});
-            // .then((auth) => auth !== null ? this.adminreplytouser = this.af.database.list('feedback/' + auth.uid) : console.log('sorry'))
-    }
 
-    static auth = null;
-
-    static signup(email, password) {//promise
+    static signup(email, password) {
         return firebase.auth().createUserWithEmailAndPassword(email, password);
     }
-    static login(email, password) {//promise
+    static login(email, password) {
         return firebase.auth().signInWithEmailAndPassword(email, password);
     }
     static auth() {
-        return firebase.auth().currentUser;
+        return firebase.auth();
     }
-    static logout() {//promise
-        console.log("logging out");
-        return firebase.auth().signOut();
-    }
-}
 
-//logout check
-(() => {
-    console.log("executing");
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            
-        } else {
-            browserHistory.push('/login');
-        }
-    });
-})();
+
+}
 

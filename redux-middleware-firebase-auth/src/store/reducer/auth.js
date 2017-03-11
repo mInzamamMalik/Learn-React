@@ -32,11 +32,10 @@ export function AuthReducer(state = INITIAL_STATE, action) {
             return { ...state, isProcessing: false, isAuthenticated: false, authUser: {}, isError: true, errorMessage: action.payload.message };
 
 
-        case AuthActions.LOGOUT:
-            return { ...state, isProcessing: true };
-        case AuthActions.LOGOUT_SUCCESSFUL:
-            return { ...state, isProcessing: false, isAuthenticated: false, authUser: {} };
-        
+        // case AuthActions.LOGOUT:
+        //     return { ...state, isProcessing: true };
+        // case AuthActions.LOGOUT_SUCCESSFUL:
+        //     return { ...state, isProcessing: false, isAuthenticated: false, authUser: {} };
         // case AuthActions.ISLOGGEDIN:
         //     return { ...state, isProcessing: false, isAuthenticated: true, authUser: action.payload };
         // case AuthActions.UPDATE_USER:

@@ -1,9 +1,9 @@
-import firebaseConfig from './config'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
+import firebaseConfig from './config'
 
 import { Provider } from 'react-redux';
 import { store } from './store/index'

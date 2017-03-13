@@ -8,7 +8,7 @@ export class AuthEpic {
         action$.ofType(AuthActions.SIGNUP_START)
             .switchMap(({ payload }) => {
 
-                console.log("Credentials ", payload);
+                // console.log("Credentials ", payload);
                 return Observable.fromPromise(firebaseService.signup(payload.email, payload.password))
 
                     .map((authUser) => {
@@ -30,7 +30,7 @@ export class AuthEpic {
         action$.ofType(AuthActions.LOGIN)
             .switchMap(({ payload }) => {
 
-                console.log("Credentials ", payload);
+                // console.log("Credentials ", payload);
                 return Observable.fromPromise(firebaseService.login(payload.email, payload.password))
                     .map((authUser) => {
                         return {
@@ -49,20 +49,17 @@ export class AuthEpic {
     static isLogin = (action$) =>
         action$.ofType(AuthActions.ISLOGGEDIN)
             .switchMap(({ payload }) => {
-
-                return new Observable((observer) => {
-                    firebase.auth().onAuthStateChanged(function (user) {
-                        if (user) {
-                            observer.next({
-                                type: AuthActions.LOGIN_SUCCESSFUL,
-                                payload: user
-                            })
-                        } else {
-                            observer.next({
-                                type: AuthActions.LOGOUT_SUCCESSFUL
-                            })
+                return Observable.fromPromise(firebaseService.getUser()).map((user) => {
+                    if (user) {
+                        return {
+                            type: AuthActions.ISLOGGEDIN_SUCCESSFUL,
+                            payload: user
                         }
-                    });
+                    } else {
+                        return {
+                            type: AuthActions.ISLOGGEDIN_FAIL
+                        }
+                    }
                 })
             })
 }

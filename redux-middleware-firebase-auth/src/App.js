@@ -21,7 +21,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     //auto dispatch
-    dispatch(AuthActions.isLoggedIn());
+    // dispatch(AuthActions.isLoggedIn());
     return {
         isLoggedIn: () => dispatch(AuthActions.isLoggedIn())
     };
@@ -43,22 +43,22 @@ function isLogout(nextState, replace) {
     //     }
     // });
 
-    setTimeout(function () {
-        //    return replace({
-        //         pathname: 'dashboard',
-        //         state: { nextPathname: nextState.location.pathname }
-        //     });
-        //     let user = firebase.auth().currentUser;
-        //     console.log("user: ", user);
-        //     if (user) {
-        //         console.log("user: ", user);
+    // setTimeout(function () {
+    //    return replace({
+    //         pathname: 'dashboard',
+    //         state: { nextPathname: nextState.location.pathname }
+    //     });
+    //     let user = firebase.auth().currentUser;
+    //     console.log("user: ", user);
+    //     if (user) {
+    //         console.log("user: ", user);
 
-        //         // replace({
-        //         //     pathname: 'dashboard',
-        //         //     state: { nextPathname: nextState.location.pathname }
-        //         // });
-        //     }
-    }, 3000);
+    //         // replace({
+    //         //     pathname: 'dashboard',
+    //         //     state: { nextPathname: nextState.location.pathname }
+    //         // });
+    //     }
+    // }, 3000);
 }
 function isLogin(nextState, replace) {
 
@@ -72,10 +72,7 @@ function isLogin(nextState, replace) {
 class App extends Component {
     constructor(props) {
         super(props);
-    }
-
-    componentWillReceiveProps(props) {
-        // this.props.isLoggedIn();
+        this.props.isLoggedIn();
     }
 
     render() {

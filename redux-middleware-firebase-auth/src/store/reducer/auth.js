@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 
 export function AuthReducer(state = INITIAL_STATE, action) {
 
-    console.log("all auth reducer: ", action.type);
+    console.log("all auth reducer: ", action);
 
     switch (action.type) {
         case AuthActions.SIGNUP_START:
@@ -31,13 +31,16 @@ export function AuthReducer(state = INITIAL_STATE, action) {
         case AuthActions.LOGIN_REJECTED:
             return { ...state, isProcessing: false, isAuthenticated: false, authUser: {}, isError: true, errorMessage: action.payload.message };
 
+        case AuthActions.ISLOGGEDIN_SUCCESSFUL:
+        // console.log("islogin success reducer", action.payload);
+            return { ...state, isAuthenticated: true, authUser: action.payload };
+        case AuthActions.ISLOGGEDIN_fail:
+            return { ...state, isAuthenticated: false, authUser: {} };
 
         // case AuthActions.LOGOUT:
         //     return { ...state, isProcessing: true };
         // case AuthActions.LOGOUT_SUCCESSFUL:
         //     return { ...state, isProcessing: false, isAuthenticated: false, authUser: {} };
-        // case AuthActions.ISLOGGEDIN:
-        //     return { ...state, isProcessing: false, isAuthenticated: true, authUser: action.payload };
         // case AuthActions.UPDATE_USER:
         //     return { ...state, isProcessing: false, isAuthenticated: true, authUser: action.payload };
         default:

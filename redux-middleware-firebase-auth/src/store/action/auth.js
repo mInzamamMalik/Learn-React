@@ -10,15 +10,18 @@ export class AuthActions {
 
     static LOGOUT = 'LOGOUT';
     static LOGOUT_SUCCESSFUL = 'LOGOUT_SUCCESSFUL';
+    static LOGOUT_REJECTED = 'LOGOUT_REJECTED';
 
     static UPDATE_USER = 'UPDATE_USER';
 
     static ISLOGGEDIN = 'ISLOGGEDIN';
+    static ISLOGGEDIN_SUCCESSFUL = 'ISLOGGEDIN_SUCCESSFUL';
+    static ISLOGGEDIN_FAIL = 'ISLOGGEDIN_FAIL';
 
     static NULL = 'NULL';
 
     static signup(credentials) {
-        console.log("action signup credentials", credentials);
+        // console.log("action signup credentials", credentials);
         return {
             type: AuthActions.SIGNUP_START,
             payload: credentials
@@ -62,7 +65,7 @@ export class AuthActions {
     }
 
     static isLoggedIn() {
-        console.log("ISLOGGEDIN ");
+        // console.log("Action ISLOGGEDIN ");
         return { type: AuthActions.ISLOGGEDIN }
     }
 

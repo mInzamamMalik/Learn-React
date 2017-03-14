@@ -27,65 +27,48 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-function isLogout(nextState, replace) {
 
-    // firebase.auth().onAuthStateChanged(function (usera) {
-
-    //     let user = firebase.auth().currentUser;
-    //     console.log("user: ", user);
-    //     if (user) {
-    //         console.log("user: ", user);
-
-    //         replace({
-    //             pathname: 'dashboard',
-    //             state: { nextPathname: nextState.location.pathname }
-    //         });
-    //     }
-    // });
-
-    // setTimeout(function () {
-    //    return replace({
-    //         pathname: 'dashboard',
-    //         state: { nextPathname: nextState.location.pathname }
-    //     });
-    //     let user = firebase.auth().currentUser;
-    //     console.log("user: ", user);
-    //     if (user) {
-    //         console.log("user: ", user);
-
-    //         // replace({
-    //         //     pathname: 'dashboard',
-    //         //     state: { nextPathname: nextState.location.pathname }
-    //         // });
-    //     }
-    // }, 3000);
-}
-function isLogin(nextState, replace) {
-
-    // if (user) {
-    //     replace({
-    //         pathname: 'dashboard',
-    //         state: { nextPathname: nextState.location.pathname }
-    //     });
-    // }
-}
 class App extends Component {
     constructor(props) {
         super(props);
         this.props.isLoggedIn();
+
+        this.isLogout = this.isLogout.bind(this);
+        this.isLogin = this.isLogin.bind(this);
+    }
+
+    isLogout(nextState, replace) {
+        // console.log("islogout guard: ", this.props.isAuthenticated);
+        // if (this.props.isAuthenticated) {
+        //     replace({
+        //         pathname: 'dashboard',
+        //         state: { nextPathname: nextState.location.pathname }
+        //     });
+        // }
+    }
+
+    isLogin(nextState, replace) {
+
+        // console.log("isLogin guard: ", this.props.isAuthenticated);
+        // if (!this.props.isAuthenticated) {
+        //     replace({
+        //         pathname: 'login',
+        //         state: { nextPathname: nextState.location.pathname }
+        //     });
+        // }
     }
 
     render() {
         return (
             <Router history={browserHistory}>
 
-                <Route path="/" component={LoginSignup} onEnter={isLogout}>
+                <Route path="/" component={LoginSignup} onEnter={this.isLogout}>
                     <IndexRoute component={Login} />
                     <Route path="login" component={Login} />
                     <Route path="signup" component={Signup} />
                 </Route>
 
-                <Route path="dashboard" component={Dashboard} onEnter={isLogin} >
+                <Route path="dashboard" component={Dashboard} onEnter={this.isLogin} >
                     <IndexRoute component={Profile} />
                     <Route path="profile" component={Profile} />
                 </Route>

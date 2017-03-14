@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
-import {AppBar} from 'material-ui';
+import { AppBar } from 'material-ui';
 
+function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.AuthReducer.isAuthenticated,
+    };
+}
 class Dashboard extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        console.log("nextProps", nextProps);
+        if (!nextProps.isAuthenticated) {
+            browserHistory.push('/login');
+        }
+    }
     render() {
         return (<div>
-            
-            
             <AppBar title="This is Dashboard"></AppBar>
-           
 
             <Link to="/dashboard/profile">Profile</Link>
             <Link to="/dashboard/about">About</Link>
@@ -19,5 +30,4 @@ class Dashboard extends Component {
         </div>)
     }
 }
-
-export default Dashboard;
+export default connect(mapStateToProps, null)(Dashboard)

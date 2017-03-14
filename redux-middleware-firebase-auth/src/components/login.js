@@ -35,9 +35,9 @@ class Login extends Component {
                 errorPopup: true
             })
         }
-        if (nextProps.isAuthenticated) {
-            browserHistory.push('/dashboard');
-        }
+        // if (nextProps.isAuthenticated) {
+        //     browserHistory.push('/dashboard');
+        // }
     }
 
     doLogin() {

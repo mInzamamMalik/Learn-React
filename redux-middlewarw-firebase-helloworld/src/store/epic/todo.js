@@ -1,5 +1,4 @@
 import { Observable } from "rxjs";
-
 import { TodoAction } from "./../action/todo";
 import * as firebase from 'firebase';
 

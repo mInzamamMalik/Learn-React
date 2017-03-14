@@ -2,7 +2,7 @@ import { AuthActions } from "./../action/auth";
 
 const INITIAL_STATE = {
     authUser: {},
-    isAuthenticated: false,
+    isAuthenticated: "",
     isProcessing: false,
     isRegistered: false,
     isError: false,
@@ -34,7 +34,7 @@ export function AuthReducer(state = INITIAL_STATE, action) {
         case AuthActions.ISLOGGEDIN_SUCCESSFUL:
             // console.log("islogin success reducer", action.payload);
             return { ...state, isAuthenticated: true, authUser: action.payload };
-        case AuthActions.ISLOGGEDIN_fail:
+        case AuthActions.ISLOGGEDIN_FAIL:
             return { ...state, isAuthenticated: false, authUser: {} };
 
         case AuthActions.LOGOUT:

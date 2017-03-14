@@ -13,9 +13,8 @@ function mapStateToProps(state) {
 class Dashboard extends Component {
 
     componentWillReceiveProps(nextProps) {
-        console.log("nextProps", nextProps);
         if (!nextProps.isAuthenticated) {
-            browserHistory.push('/login');
+            browserHistory.replace('login');
         }
     }
     render() {

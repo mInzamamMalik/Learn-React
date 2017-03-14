@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
-
 import { AppBar } from 'material-ui';
 
 function mapStateToProps(state) {
@@ -12,10 +11,9 @@ function mapStateToProps(state) {
 }
 class LoginSignup extends Component {
 
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.isAuthenticated) {
-            browserHistory.push('/dashboard');
+            browserHistory.replace('dashboard');
         }
     }
     render() {

@@ -19,5 +19,9 @@ export class firebaseService {
         })
 
     }
+    static logout() {//promise
+        console.log("logging out");
+        return firebase.auth().signOut();
+    }
 }
 

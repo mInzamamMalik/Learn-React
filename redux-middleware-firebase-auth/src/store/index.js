@@ -14,6 +14,7 @@ const rootEpic = combineEpics(
     AuthEpic.signup,
     AuthEpic.login,
     AuthEpic.isLogin,
+    AuthEpic.logout,
 );
 //combine reducers
 const rootReducer = combineReducers({

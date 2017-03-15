@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import store from "./store/reducer.js"
-import { counterAction } from './store/actions';
+import store from "./store"
+import { counterAction } from './store/action';
 
 class App extends Component {
 
-    incrementIfOdd() {
-        if (this.props.value % 2 !== 0) {
-            counterAction.increment();
-        }
+    constructor(props) {
+        super(props);
+        this.getFromStore = this.getFromStore.bind(this); //binding class 'this'
+
+        this.state = { number: 0 }; //setting up initial state
+        store.subscribe(this.getFromStore) //when any change occure in state 'this.getFromState' will be called autetically
     }
-    incrementAsync() {
-        setTimeout(() => {
-            counterAction.increment()
-        }, 1000)
+
+    getFromStore() {
+        this.setState({
+            number: store.getState()
+        });
+    }
+    inc() {
+        counterAction.increment(); //dispatch increment action
     }
     dec() {
-        counterAction.decrement();
+        counterAction.decrement(); //dispatch decrement action
     }
 
     render() {
         return (
             <div>
-                <p>{store.getState()}</p>
-                <button onClick={this.incrementAsync}>Increment</button>
+                <p>{this.state.number}</p>
+                <button onClick={this.inc}>Increment</button>
                 <button onClick={this.dec}>Decrement</button>
             </div>
         );

@@ -4,12 +4,7 @@ import App from './App';
 import './index.css';
 import store from "./store/reducer.js"
 
-var callback = () => {
-    ReactDOM.render(
-        <App />,
-        document.getElementById('root')
-    );
-}
-
-store.subscribe(callback)
-callback()
+ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+);

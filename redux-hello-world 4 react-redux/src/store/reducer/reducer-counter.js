@@ -2,6 +2,7 @@ const initialState = 0;
 
 export default function (state = initialState, action) {
 
+    console.log("all reducers: ", action);
     switch (action.type) {
 
         case "INCREMENT":

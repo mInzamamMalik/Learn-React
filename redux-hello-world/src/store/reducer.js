@@ -1,4 +1,8 @@
-export function counterReducer (state = 0, action) {
+import { createStore } from 'redux'
+
+const initialState = 0;
+
+function counterReducer(state = initialState, action) {
     switch (action.type) {
         case 'INCREMENT':
             return state + 1
@@ -8,3 +12,4 @@ export function counterReducer (state = 0, action) {
             return state
     }
 }
+export default createStore(counterReducer);

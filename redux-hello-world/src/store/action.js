@@ -1,7 +1,7 @@
-import store from './index';
+import store from './reducer';
 
 export class counterAction {
-    
+
     static increment() {
         store.dispatch({ type: 'INCREMENT' })
     }

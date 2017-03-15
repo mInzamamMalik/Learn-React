@@ -10,5 +10,4 @@ const counter = (state = 0, action) => {
             return state
     }
 }
-const store = createStore(counter)
-export default store;
+export default createStore(counter);

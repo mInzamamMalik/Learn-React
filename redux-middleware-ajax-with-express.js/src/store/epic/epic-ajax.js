@@ -25,8 +25,6 @@ class AjaxEpic {
             .switchMap(({ payload }) => {
                 return api.getNames()
                     .switchMap(({ response }) => {
-                        console.log(response)
-
                         return Observable.of({
                             type: ajaxAction.GET_NAMES_SUCCESS,
                             payload: response

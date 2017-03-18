@@ -7,9 +7,7 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
-    "cors": "^2.8.1",
     "express": "^4.15.2",
-    "mongoose": "^4.9.0",
     "path": "^0.12.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -19,7 +17,7 @@
     "rxjs": "^5.2.0"
   },
   "scripts": {
-    "start": "npm run build && node index",
+    "start": "npm run build && node server",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

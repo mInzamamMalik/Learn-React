@@ -25,7 +25,7 @@ class App extends Component {
     componentWillReceiveProps(nextProps) {
         console.log("nextProps: ",nextProps)
         if (nextProps.isError)
-            alert("error getting repos, check logs");
+            alert("ajax error, check logs");
     }
     render() {
         return (

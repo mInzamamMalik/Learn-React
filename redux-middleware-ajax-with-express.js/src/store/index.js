@@ -6,7 +6,8 @@ import { ajaxEpic } from './epic/epic-ajax';
 
 //combine epics
 const rootEpic = combineEpics(
-    ajaxEpic.getRepos,
+    ajaxEpic.insertName,
+    ajaxEpic.getName,
 );
 //combine reducers
 const rootReducer = combineReducers({

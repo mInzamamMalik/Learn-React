@@ -4,18 +4,36 @@ import { api } from './../../services/api';
 
 class AjaxEpic {
 
-    getRepos = (action$) =>
-        action$.ofType(ajaxAction.HTTPCALL)
+    insertName = (action$) =>
+        action$.ofType(ajaxAction.INSERT_NAME)
             .switchMap(({ payload }) => {
-                return api.getUserRepos(payload)
+                return api.insertName(payload)
                     .switchMap(({ response }) => {
+                        return (
+                            Observable.of({
+                                type: ajaxAction.GET_NAMES
+                            })
+                        )
+                    }).catch((error) => {
                         return Observable.of({
-                            type: ajaxAction.HTTPCALL_SUCCESS,
+                            type: ajaxAction.INSERT_NAME_FAILED,
+                        });
+                    })
+            })
+    getName = (action$) =>
+        action$.ofType(ajaxAction.GET_NAMES)
+            .switchMap(({ payload }) => {
+                return api.getNames()
+                    .switchMap(({ response }) => {
+                        console.log(response)
+
+                        return Observable.of({
+                            type: ajaxAction.GET_NAMES_SUCCESS,
                             payload: response
                         });
                     }).catch((error) => {
                         return Observable.of({
-                            type: ajaxAction.HTTPCALL_FAILED,
+                            type: ajaxAction.GET_NAMES_FAILED,
                         });
                     })
             })

@@ -11,21 +11,16 @@ export class TodoEpic {
             .switchMap(({ payload }) => {
                 return Observable.fromPromise(ref.push(payload))
                     .map((x) => {
-                        return { type: TodoAction.ADD_TODO_DONE };
-                    })
-                    .catch((err) => {
-                        return { type: TodoAction.ADD_TODO_FAIL };
-                    })
+                        return { type: TodoAction.NULL };
+                    })  
             })
+
     static markArchived = (action$) =>
         action$.ofType(TodoAction.MARK_TODO_ARCHIVED)
             .switchMap(({ payload }) => {
                 return Observable.fromPromise(ref.child(payload.key + "/isDone").set(payload.isDone))
                     .map((x) => {
-                        return { type: TodoAction.MARK_TODO_ARCHIVED_DONE };
-                    })
-                    .catch((err) => {
-                        return { type: TodoAction.MARK_TODO_ARCHIVED_FAIL };
+                        return { type: TodoAction.NULL };
                     })
             })
 
@@ -34,10 +29,7 @@ export class TodoEpic {
             .switchMap(({ payload }) => {
                 return Observable.fromPromise(ref.child(payload.key).set(null))
                     .map((x) => {
-                        return { type: TodoAction.DELETE_TODO_DONE };
-                    })
-                    .catch((err) => {
-                        return { type: TodoAction.DELETE_TODO_FAIL };
+                        return { type: TodoAction.NULL };
                     })
             })
 
@@ -55,12 +47,6 @@ export class TodoEpic {
                             }
                         })
                     })
-                    ref.on("child_removed", (snapshot) => {
-                        observer.next({
-                            type: TodoAction.GET_TODO_REMOVED,
-                            payload: snapshot.key
-                        })
-                    })
                     ref.on("child_changed", (snapshot) => {
                         observer.next({
                             type: TodoAction.GET_TODO_CHANGED,
@@ -70,6 +56,12 @@ export class TodoEpic {
                             }
                         })
                     })
+                    ref.on("child_removed", (snapshot) => {
+                        observer.next({
+                            type: TodoAction.GET_TODO_REMOVED,
+                            payload: snapshot.key
+                        })
+                    })
                 }).takeUntil(action$.ofType(TodoAction.GET_TODO_CANCELLED));
             })
 
@@ -77,7 +69,8 @@ export class TodoEpic {
         action$.ofType(TodoAction.GET_TODO_CANCELLED)
             .switchMap(({ payload }) => {
                 ref.off();
-                return Observable.of({ type: TodoAction.NULL }) //we dont want to do any work on GET_TODO_CANCELLED so we are dispatching NULL action
+                return Observable.of({ type: TodoAction.NULL })
+                //we dont want to do any work on GET_TODO_CANCELLED so we are dispatching NULL action
             })
 
 }

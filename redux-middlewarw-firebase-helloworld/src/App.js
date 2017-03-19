@@ -25,6 +25,10 @@ class Todo extends Component {
         this.props.getTodos(); //start getting todo from firebase
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isError) alert("Error Message: " + nextProps.errorMessage);
+    }
+
     addTodo(e) {
         e.preventDefault();
         this.props.addTodo({ todo: this.refs.todo.value, isDone: false });

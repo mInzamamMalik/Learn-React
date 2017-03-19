@@ -10,12 +10,14 @@ export class TodoEpic {
         action$.ofType(TodoAction.ADD_TODO)
             .switchMap(({ payload }) => {
 
-                console.log("adding started");
                 return Observable.fromPromise(ref.push(payload))
                     .map((x) => {
                         return {
                             type: TodoAction.ADD_TODO_DONE
                         };
+                    })
+                    .catch((err) => {
+                        console.error(err);
                     })
             })
     static markArchived = (action$) =>

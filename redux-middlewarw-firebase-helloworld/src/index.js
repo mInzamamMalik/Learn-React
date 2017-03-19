@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Todo from './App';
-import './index.css';
 
 import firebaseConfig from './config';
-
+import Todo from './App';
 import { Provider } from 'react-redux'
 import { store } from './store'
 

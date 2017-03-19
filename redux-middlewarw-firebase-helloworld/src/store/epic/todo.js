@@ -9,52 +9,44 @@ export class TodoEpic {
     static addTodo = (action$) =>
         action$.ofType(TodoAction.ADD_TODO)
             .switchMap(({ payload }) => {
-
                 return Observable.fromPromise(ref.push(payload))
                     .map((x) => {
-                        return {
-                            type: TodoAction.ADD_TODO_DONE
-                        };
+                        return { type: TodoAction.ADD_TODO_DONE };
                     })
                     .catch((err) => {
-                        console.error(err);
+                        return { type: TodoAction.ADD_TODO_FAIL };
                     })
             })
     static markArchived = (action$) =>
         action$.ofType(TodoAction.MARK_TODO_ARCHIVED)
             .switchMap(({ payload }) => {
-
-                console.log("Archive started: ", payload);
                 return Observable.fromPromise(ref.child(payload.key + "/isDone").set(payload.isDone))
                     .map((x) => {
-                        return {
-                            type: TodoAction.NULL
-                        };
+                        return { type: TodoAction.MARK_TODO_ARCHIVED_DONE };
+                    })
+                    .catch((err) => {
+                        return { type: TodoAction.MARK_TODO_ARCHIVED_FAIL };
                     })
             })
+
     static deleteTodo = (action$) =>
         action$.ofType(TodoAction.DELETE_TODO)
             .switchMap(({ payload }) => {
-
-                console.log("Deleting started: ", payload);
                 return Observable.fromPromise(ref.child(payload.key).set(null))
                     .map((x) => {
-                        return {
-                            type: TodoAction.NULL
-                        };
+                        return { type: TodoAction.DELETE_TODO_DONE };
+                    })
+                    .catch((err) => {
+                        return { type: TodoAction.DELETE_TODO_FAIL };
                     })
             })
 
     static getTodos = (action$) =>
         action$.ofType(TodoAction.GET_TODO)
             .switchMap(({ payload }) => {
-
-                console.log("getting todo started using: ", payload)
-
                 return new Observable((observer) => {
-                    ref.on("child_added", (snapshot) => {
-                        console.log("firebase data arrived: ");
 
+                    ref.on("child_added", (snapshot) => {
                         observer.next({
                             type: TodoAction.GET_TODO_ADDED,
                             payload: {
@@ -64,16 +56,12 @@ export class TodoEpic {
                         })
                     })
                     ref.on("child_removed", (snapshot) => {
-                        console.log("firebase data arrived: ", snapshot.key);
-
                         observer.next({
                             type: TodoAction.GET_TODO_REMOVED,
                             payload: snapshot.key
                         })
                     })
                     ref.on("child_changed", (snapshot) => {
-                        console.log("firebase data arrived: ", snapshot.key);
-
                         observer.next({
                             type: TodoAction.GET_TODO_CHANGED,
                             payload: {
@@ -88,12 +76,8 @@ export class TodoEpic {
     static getTodosCancel = (action$) =>
         action$.ofType(TodoAction.GET_TODO_CANCELLED)
             .switchMap(({ payload }) => {
-
                 ref.off();
-                return Observable.of({
-                    type: TodoAction.NULL
-                })
-
+                return Observable.of({ type: TodoAction.NULL }) //we dont want to do any work on GET_TODO_CANCELLED so we are dispatching NULL action
             })
 
 }

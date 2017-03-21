@@ -1,6 +1,3 @@
-
-console.log("2");
-
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 

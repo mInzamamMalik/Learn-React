@@ -70,7 +70,7 @@ class Todo extends Component<any, any> {
 
                     <button onClick={this.props.getTodosCancel}>
                         Cancel getting todo
-                </button>
+                    </button>
                 </form>
                 {(this.props.loading) ? <p>Loading...</p> : ""}
             </div>

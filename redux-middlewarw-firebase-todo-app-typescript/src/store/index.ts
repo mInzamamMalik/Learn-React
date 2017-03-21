@@ -1,40 +1,37 @@
-// https://redux-observable.js.org/docs/basics/SettingUpTheMiddleware.html
 
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+console.log("2");
+
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 // Application State IAppState
 interface IAppState {
-    counterReducer,
-    gitReducer,
-    fbReducer
+    TodoReducer
 }
+//requiring all reducers
+import { TodoReducer } from './reducer/todo';
 
-// reducers
-import { counterReducer } from './reducer/counter';
-import { gitReducer } from './reducer/git';
-import { fbReducer } from './reducer/fb';
+//requiring all epics
+import { TodoEpic } from './epic/todo';
 
-// epics
-import { gitEpic } from './epic/git';
-import { fbEpic } from './epic/fb';
-
-// Application Epics / Effects
+//combine epic
 const rootEpic = combineEpics(
-    gitEpic.getUserData,
-    fbEpic.getUserData
+    TodoEpic.addTodo,
+    TodoEpic.getTodos,
+    TodoEpic.getTodosCancel,
+    TodoEpic.markArchived,
+    TodoEpic.deleteTodo,
 );
-
-// Application Reducers
+//combine reducers
 const rootReducer = combineReducers<IAppState>({
-    counterReducer,
-    gitReducer,
-    fbReducer
-});
+    TodoReducer
+})
 
-
+//creating middleware
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
+//appling middleware
 const createStoreWithMiddleware = applyMiddleware(epicMiddleware)(createStore);
 
-export let store = createStoreWithMiddleware(rootReducer);
+//creating store
+export let store = createStoreWithMiddleware(rootReducer)

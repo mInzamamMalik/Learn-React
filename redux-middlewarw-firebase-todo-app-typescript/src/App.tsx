@@ -12,11 +12,11 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getTodos: () => dispatch(TodoAction.getTodos()),
-        getTodosCancel: () => dispatch(TodoAction.getTodosCancel()),
-        addTodo: (data) => dispatch(TodoAction.addTodo(data)),
-        deleteTodo: (data) => dispatch(TodoAction.deleteTodo(data)),
-        markTodoArchived: (data) => dispatch(TodoAction.markTodoArchived(data)),
+        getTodos:           (): void => dispatch(TodoAction.getTodos()),
+        getTodosCancel:     (): void => dispatch(TodoAction.getTodosCancel()),
+        addTodo:            (data): void => dispatch(TodoAction.addTodo(data)),
+        deleteTodo:         (data): void => dispatch(TodoAction.deleteTodo(data)),
+        markTodoArchived:   (data): void => dispatch(TodoAction.markTodoArchived(data)),
     };
 }
 //React.Component<props, state>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { RaisedButton, TextField } from 'material-ui';
+import { FlatButton, RaisedButton, TextField, Dialog } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
     from 'material-ui/Table';
 import { TodoAction } from "../store/action/data"
@@ -19,7 +19,7 @@ function mapDispatchToProps(dispatch) {
         getTodosCancel: (uid) => dispatch(TodoAction.getTodosCancel(uid)),
         addTodo: (uid, data) => dispatch(TodoAction.addTodo(uid, data)),
         deleteTodo: (uid, data) => dispatch(TodoAction.deleteTodo(uid, data)),
-        markTodoArchived: (uid, data) => dispatch(TodoAction.markTodoArchived(uid, data)),
+        updateTodo: (uid, key, data) => dispatch(TodoAction.updateTodo(uid, key, data)),
     };
 }
 const styles = {
@@ -32,39 +32,6 @@ const styles = {
         margin: '20px auto 10px',
     },
 };
-
-const tableData = [
-    {
-        name: 'John Smith',
-        status: 'Employed',
-        selected: true,
-    },
-    {
-        name: 'Randal White',
-        status: 'Unemployed',
-    },
-    {
-        name: 'Stephanie Sanders',
-        status: 'Employed',
-        selected: true,
-    },
-    {
-        name: 'Steve Brown',
-        status: 'Employed',
-    },
-    {
-        name: 'Joyce Whitten',
-        status: 'Employed',
-    },
-    {
-        name: 'Samuel Roberts',
-        status: 'Employed',
-    },
-    {
-        name: 'Adam Moore',
-        status: 'Employed',
-    },
-];
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -79,8 +46,14 @@ class Profile extends Component {
             deselectOnClickaway: true,
             showCheckboxes: false,
             height: '600px',
+
+            isEditing: false,
+            editingKey: null,
+            editingValue: null
         };
         this.addTodo = this.addTodo.bind(this);
+        this.editTodo = this.editTodo.bind(this);
+        this.editTodoSave = this.editTodoSave.bind(this);
         this.props.getTodos(this.props.profile.uid); //start getting todo from firebase
     }
     componentWillReceiveProps(nextProps) {
@@ -101,6 +74,18 @@ class Profile extends Component {
     deleteTodo(key) {
         this.props.deleteTodo(this.props.authUser.uid, { key: key });
     }
+    editTodo(key, dataObj) {
+        this.setState({ ...this.state, isEditing: true, editingKey: key, editingValue: dataObj })
+    }
+    editTodoSave() {
+        this.props.updateTodo(
+            this.props.authUser.uid,
+            this.state.editingKey,
+            { todo: this.refs.editTodo.getValue(), isDone: false }
+        );
+        this.setState({ ...this.state, isEditing: false, editingKey: null, editingValue: null })
+        this.refs.editTodo.value = "";
+    }
 
 
     render() {
@@ -111,14 +96,46 @@ class Profile extends Component {
                     <TableRowColumn>{index + 1}</TableRowColumn>
                     <TableRowColumn>{val.todo}</TableRowColumn>
                     <TableRowColumn>{val.isDone}</TableRowColumn>
-                    <TableRowColumn><RaisedButton onClick={() => { this.deleteTodo(key) }} label="Delete" /></TableRowColumn>
+                    <TableRowColumn>
+                        <RaisedButton onClick={() => { this.editTodo(key, val) }} label="Edit" />
+                        <RaisedButton onClick={() => { this.deleteTodo(key) }} label="Delete" />
+                    </TableRowColumn>
 
                 </TableRow>
             )
         })
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={false}
+                keyboardFocused={false}
+                onTouchTap={() => { this.setState({ ...this.state, isEditing: false }) }}
+            />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.editTodoSave}
+            />,
+        ];
 
         return (
             <div>
+                <Dialog
+                    title="Edit"
+                    actions={actions}
+                    modal={false}
+                    open={this.state.isEditing}
+                >
+                    <TextField
+                        ref="editTodo"
+                        floatingLabelText="Todo"
+                        floatingLabelStyle={styles.floatingLabelStyle}
+                        floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                        defaultValue={this.state.editingValue && this.state.editingValue.todo || "ddd"}
+                    />
+                </Dialog>
+
                 <form onSubmit={this.addTodo}>
                     <TextField
                         ref="todo"

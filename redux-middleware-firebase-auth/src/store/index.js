@@ -24,7 +24,7 @@ const rootEpic = combineEpics(
     TodoEpic.addTodo,
     TodoEpic.getTodos,
     TodoEpic.getTodosCancel,
-    TodoEpic.markArchived,
+    TodoEpic.updateTodo,
     TodoEpic.deleteTodo,
 );
 //combine reducers

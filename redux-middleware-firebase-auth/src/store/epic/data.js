@@ -14,10 +14,11 @@ export class TodoEpic {
                     })
             })
 
-    static markArchived = (action$) =>
+    static updateTodo = (action$) =>
         action$.ofType(TodoAction.MARK_TODO_ARCHIVED)
             .switchMap(({ payload }) => {
-                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).child(payload.key + "/isDone").set(payload.isDone))
+                console.log("updating epic: ", payload);
+                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).child(payload.key).set(payload.data))
                     .map((x) => {
                         return { type: TodoAction.NULL };
                     })

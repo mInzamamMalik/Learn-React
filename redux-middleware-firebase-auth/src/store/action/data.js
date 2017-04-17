@@ -21,8 +21,8 @@ export class TodoAction {
     static addTodo(uid, data) {
         return { type: TodoAction.ADD_TODO, payload: { uid, data } }
     }
-    static markTodoArchived(uid, data) {
-        return { type: TodoAction.MARK_TODO_ARCHIVED, payload: { uid, data } }
+    static updateTodo(uid, key, data) {
+        return { type: TodoAction.MARK_TODO_ARCHIVED, payload: { uid, key, data } }
     }
     static deleteTodo(uid, data) {
         return {

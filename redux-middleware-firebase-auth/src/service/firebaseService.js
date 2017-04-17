@@ -2,6 +2,8 @@ import * as firebase from 'firebase'
 
 export class firebaseService {
 
+    static database = firebase.database();
+
     static signup(email, password) {
         return firebase.auth().createUserWithEmailAndPassword(email, password);
     }
@@ -17,8 +19,8 @@ export class firebaseService {
                 res(user);
             });
         })
-
     }
+
     static logout() {//promise
         console.log("logging out");
         return firebase.auth().signOut();

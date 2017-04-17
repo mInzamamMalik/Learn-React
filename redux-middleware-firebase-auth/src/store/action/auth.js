@@ -9,6 +9,8 @@ export class AuthActions {
     static LOGIN_SUCCESSFUL = 'SIGNIN_SUCCESSFUL';
     static LOGIN_REJECTED = 'SIGNIN_REJECTED';
 
+    static GET_PROFILE = 'GET_PROFILE';
+
     static LOGOUT = 'LOGOUT';
     static LOGOUT_SUCCESSFUL = 'LOGOUT_SUCCESSFUL';
     static LOGOUT_REJECTED = 'LOGOUT_REJECTED';

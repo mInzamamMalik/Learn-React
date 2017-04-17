@@ -63,8 +63,8 @@ export class AuthEpic {
                 return Observable.fromPromise(firebaseService.login(payload.email, payload.password))
                     .map((authUser) => {
                         return {
-                            type: AuthActions.LOGIN_SUCCESSFUL,
-                            payload: authUser
+                            type: AuthActions.GET_PROFILE,
+                            authUser: authUser
                         };
                     })
                     .catch(function (error) {
@@ -81,8 +81,8 @@ export class AuthEpic {
                 return Observable.fromPromise(firebaseService.getUser()).map((user) => {
                     if (user) {
                         return {
-                            type: AuthActions.ISLOGGEDIN_SUCCESSFUL,
-                            payload: user
+                            type: AuthActions.GET_PROFILE,
+                            authUser: user
                         }
                     } else {
                         return {
@@ -91,6 +91,33 @@ export class AuthEpic {
                     }
                 })
             })
+
+    static getProfile = (action$) =>
+        action$.ofType(AuthActions.GET_PROFILE)
+            .switchMap(({ authUser }) => {
+                return new Observable((observer) => {
+
+                    firebaseService.database.ref("users/" + authUser.uid).on("value", (snapshot) => {
+                        console.log("snapshot.val()", snapshot.val(), authUser.uid);
+                        observer.next({
+                            type: AuthActions.ISLOGGEDIN_SUCCESSFUL,
+                            payload: {
+                                authUser: authUser,
+                                profile: snapshot.val()
+                            }
+                        })
+                    })
+                }).takeUntil(action$.ofType(AuthActions.GET_TODO_CANCELLED));
+            })
+
+    static getProfileCancel = (action$) =>
+        action$.ofType(AuthActions.GET_PROFILE_CANCEL)
+            .switchMap(({ uid }) => {
+                firebaseService.database.ref("users/" + uid).off();
+                return Observable.of({ type: AuthActions.NULL })
+                //we dont want to do any work on GET_TODO_CANCELLED so we are dispatching NULL action
+            })
+            
     static logout = (action$) =>
         action$.ofType(AuthActions.LOGOUT)
             .switchMap(({ payload }) => {
@@ -110,5 +137,6 @@ export class AuthEpic {
                         });
                     })
             })
+
 }
 

@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { AuthActions } from './../store/action/auth';
 import { RaisedButton, TextField } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
     from 'material-ui/Table';
 
 function mapStateToProps(state) {
     return {
+        profile: state.AuthReducer.profile,
         authUser: state.AuthReducer.authUser,
-    };
-}
-function mapDispatchToProps(dispatch) {
-    return {
-        logout: () => dispatch(AuthActions.logout())
     };
 }
 const styles = {
@@ -73,6 +68,7 @@ class Profile extends Component {
             showCheckboxes: true,
             height: '300px',
         };
+        // this.props.getProfile(this.props.authUser.uid);
     }
     handleToggle = (event, toggled) => {
         this.setState({
@@ -89,11 +85,6 @@ class Profile extends Component {
     render() {
         return (
             <div>
-                this is profile page
-
-                <RaisedButton onClick={() => { this.props.logout() }}> Logout</RaisedButton>
-
-
                 <Table
                     height={this.state.height}
                     fixedHeader={this.state.fixedHeader}
@@ -108,8 +99,8 @@ class Profile extends Component {
                     >
                         <TableRow>
                             <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{ textAlign: 'center' }}>
-                                Super Header
-              </TableHeaderColumn>
+                                {JSON.stringify(this.props.profile) || "no data"}
+                            </TableHeaderColumn>
                         </TableRow>
                         <TableRow>
                             <TableHeaderColumn tooltip="The ID">ID</TableHeaderColumn>
@@ -155,4 +146,4 @@ class Profile extends Component {
         );
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(mapStateToProps, null)(Profile)

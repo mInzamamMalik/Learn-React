@@ -1,6 +1,7 @@
 import { AuthActions } from "./../action/auth";
 
 const INITIAL_STATE = {
+    profile: {},
     authUser: {},
     isAuthenticated: "",
     isProcessing: false,
@@ -27,13 +28,15 @@ export function AuthReducer(state = INITIAL_STATE, action) {
         case AuthActions.LOGIN:
             return { ...state, isProcessing: true, isAuthenticated: false, isError: false };
         case AuthActions.LOGIN_SUCCESSFUL:
-            return { ...state, isProcessing: false, isAuthenticated: true, isError: false, authUser: action.payload, errorMessage: {} };
+            return {
+                ...state, authUser: action.payload.authUser, profile: action.payload.profile, isProcessing: false, isAuthenticated: true, isError: false, errorMessage: {}
+            };
         case AuthActions.LOGIN_REJECTED:
             return { ...state, isProcessing: false, isAuthenticated: false, authUser: {}, isError: true, errorMessage: action.payload.message };
 
         case AuthActions.ISLOGGEDIN_SUCCESSFUL:
             // console.log("islogin success reducer", action.payload);
-            return { ...state, isAuthenticated: true, authUser: action.payload };
+            return { ...state, authUser: action.payload.authUser, profile: action.payload.profile, isAuthenticated: true };
         case AuthActions.ISLOGGEDIN_FAIL:
             return { ...state, isAuthenticated: false, authUser: {} };
 
@@ -41,7 +44,7 @@ export function AuthReducer(state = INITIAL_STATE, action) {
             return { ...state, isProcessing: true };
         case AuthActions.LOGOUT_SUCCESSFUL:
             return { ...state, isProcessing: false, isAuthenticated: false, authUser: {} };
-        
+
         // case AuthActions.LOGOUT:
         //     return { ...state, isProcessing: true };
         // case AuthActions.LOGOUT_SUCCESSFUL:

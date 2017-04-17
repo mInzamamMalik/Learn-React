@@ -16,11 +16,13 @@ const rootEpic = combineEpics(
     AuthEpic.login,
     AuthEpic.isLogin,
     AuthEpic.logout,
+    AuthEpic.getProfile,
+    AuthEpic.getProfileCancel,
 );
 //combine reducers
 const rootReducer = combineReducers({
     gitReducer,
-    AuthReducer
+    AuthReducer,
 })
 
 //creating middleware

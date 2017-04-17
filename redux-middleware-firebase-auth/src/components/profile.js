@@ -71,13 +71,13 @@ class Profile extends Component {
         this.state = {
             fixedHeader: true,
             fixedFooter: true,
-            stripedRows: false,
+            stripedRows: true,
             showRowHover: false,
-            selectable: true,
+            selectable: false,
             multiSelectable: false,
             enableSelectAll: false,
             deselectOnClickaway: true,
-            showCheckboxes: true,
+            showCheckboxes: false,
             height: '300px',
         };
         this.addTodo = this.addTodo.bind(this);
@@ -105,7 +105,7 @@ class Profile extends Component {
         e.preventDefault();
         this.props.addTodo(
             this.props.authUser.uid,
-            { todo: this.refs.todo.value, isDone: false }
+            { todo: this.refs.todo.getValue(), isDone: false }
         );
         this.refs.todo.value = "";
     }
@@ -116,14 +116,12 @@ class Profile extends Component {
         let todoList = Object.keys(this.props.todos).map((key, index) => {
             let val = this.props.todos[key];
             return (
-                <TableRow key={index} selected={2}>
-                    <TableRowColumn>{index}</TableRowColumn>
+                <TableRow key={index}>
+                    <TableRowColumn>{index+1}</TableRowColumn>
                     <TableRowColumn>{val.todo}</TableRowColumn>
                     <TableRowColumn>{val.isDone}</TableRowColumn>
-                    <p>
-                        {(val.isDone) ? <button onClick={() => { this.deleteTodo(key) }}>Delete</button> : ""}
-                        <button onClick={() => { this.toggleMarkArchived(key, val.isDone) }} >{val.isDone ? "Undo Archive" : "Mark Archive"}</button>
-                    </p>
+                    <TableRowColumn><RaisedButton onClick={() => { this.deleteTodo(key) }}>Delete</RaisedButton></TableRowColumn>
+
                 </TableRow>
             )
         })
@@ -131,12 +129,18 @@ class Profile extends Component {
         return (
             <div>
                 <form onSubmit={this.addTodo}>
-                    <input type="text" placeholder="todo" ref="todo" /> <br />
-                    <button type="submit">Add Todo</button>
+                    <TextField
+                        ref="todo"
+                        floatingLabelText="Todo"
+                        floatingLabelStyle={styles.floatingLabelStyle}
+                        floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                    />
+                    <br />
+                    <RaisedButton primary={true} type="submit" label="Add Todo" />
 
-                    <button onClick={this.props.getTodosCancel}>
+                    {/*<RaisedButton onClick={this.props.getTodosCancel}>
                         Cancel getting todo
-                </button>
+                    </RaisedButton>*/}
                 </form>
 
 

@@ -73,34 +73,23 @@ class Profile extends Component {
             fixedFooter: true,
             stripedRows: true,
             showRowHover: false,
-            selectable: false,
+            selectable: true,
             multiSelectable: false,
             enableSelectAll: false,
             deselectOnClickaway: true,
             showCheckboxes: false,
-            height: '300px',
+            height: '600px',
         };
         this.addTodo = this.addTodo.bind(this);
+        this.props.getTodos(this.props.profile.uid); //start getting todo from firebase
     }
-
-    flag = false;
     componentWillReceiveProps(nextProps) {
-        if (!this.flag) {
-            console.log("getting data for uid: ", nextProps.profile.uid);
+        console.log("next props: ", nextProps.todos);
+        if (Object.keys(nextProps.todos).length === 0) {
+            console.log("getting data for uid: ", );
             this.props.getTodos(nextProps.profile.uid); //start getting todo from firebase
         }
-        this.flag = true
     }
-    handleToggle = (event, toggled) => {
-        this.setState({
-            [event.target.name]: toggled,
-        });
-    };
-
-    handleChange = (event) => {
-        this.setState({ height: event.target.value });
-    };
-
     addTodo(e) {
         e.preventDefault();
         this.props.addTodo(
@@ -109,7 +98,9 @@ class Profile extends Component {
         );
         this.refs.todo.value = "";
     }
-
+    deleteTodo(key) {
+        this.props.deleteTodo(this.props.authUser.uid, { key: key });
+    }
 
 
     render() {
@@ -117,10 +108,10 @@ class Profile extends Component {
             let val = this.props.todos[key];
             return (
                 <TableRow key={index}>
-                    <TableRowColumn>{index+1}</TableRowColumn>
+                    <TableRowColumn>{index + 1}</TableRowColumn>
                     <TableRowColumn>{val.todo}</TableRowColumn>
                     <TableRowColumn>{val.isDone}</TableRowColumn>
-                    <TableRowColumn><RaisedButton onClick={() => { this.deleteTodo(key) }}>Delete</RaisedButton></TableRowColumn>
+                    <TableRowColumn><RaisedButton onClick={() => { this.deleteTodo(key) }} label="Delete" /></TableRowColumn>
 
                 </TableRow>
             )

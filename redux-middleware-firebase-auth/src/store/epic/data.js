@@ -26,7 +26,7 @@ export class TodoEpic {
     static deleteTodo = (action$) =>
         action$.ofType(TodoAction.DELETE_TODO)
             .switchMap(({ payload }) => {
-                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).child(payload.key).set(null))
+                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).child(payload.data.key).set(null))
                     .map((x) => {
                         return { type: TodoAction.NULL };
                     })

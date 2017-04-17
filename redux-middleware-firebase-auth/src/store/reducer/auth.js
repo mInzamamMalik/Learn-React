@@ -43,7 +43,7 @@ export function AuthReducer(state = INITIAL_STATE, action) {
         case AuthActions.LOGOUT:
             return { ...state, isProcessing: true };
         case AuthActions.LOGOUT_SUCCESSFUL:
-            return { ...state, isProcessing: false, isAuthenticated: false, authUser: {} };
+            return INITIAL_STATE;
 
         // case AuthActions.LOGOUT:
         //     return { ...state, isProcessing: true };

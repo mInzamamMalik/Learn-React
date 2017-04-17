@@ -1,3 +1,4 @@
+import { AuthActions } from "./../action/auth";
 import { TodoAction } from "./../action/data";
 
 const INITIAL_STATE = {
@@ -9,7 +10,7 @@ export function TodoReducer(state = INITIAL_STATE, action) {
     switch (action.type) {
 
         case TodoAction.GET_TODO:
-            return { ...state, loading: true};
+            return { ...state, loading: true };
 
         case TodoAction.GET_TODO_ADDED:
             var newTodos = Object.assign({}, state.todos);
@@ -19,13 +20,16 @@ export function TodoReducer(state = INITIAL_STATE, action) {
         case TodoAction.GET_TODO_REMOVED:
             var newTodos = Object.assign({}, state.todos);
             delete newTodos[action.payload];
-            return { ...state, todos: newTodos, loading: false};
+            return { ...state, todos: newTodos, loading: false };
 
         case TodoAction.GET_TODO_CHANGED:
             var newTodos = Object.assign({}, state.todos);
             newTodos[action.payload.key] = action.payload.val;
             return { ...state, todos: newTodos, loading: false };
-       
+        
+        case AuthActions.LOGOUT_SUCCESSFUL:
+            return INITIAL_STATE;
+
         default:
             return state;
     }

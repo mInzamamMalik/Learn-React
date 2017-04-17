@@ -69,7 +69,7 @@ class Profile extends Component {
             this.props.authUser.uid,
             { todo: this.refs.todo.getValue(), isDone: false }
         );
-        this.refs.todo.value = "";
+        this.refs.todo.setState({ value: "" });
     }
     deleteTodo(key) {
         this.props.deleteTodo(this.props.authUser.uid, { key: key });
@@ -139,12 +139,12 @@ class Profile extends Component {
                 <form onSubmit={this.addTodo}>
                     <TextField
                         ref="todo"
-                        floatingLabelText="Todo"
+                        floatingLabelText="Your text here"
                         floatingLabelStyle={styles.floatingLabelStyle}
                         floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
                     />
                     <br />
-                    <RaisedButton primary={true} type="submit" label="Add Todo" />
+                    <RaisedButton primary={true} type="submit" label="Add Row" />
 
                     {/*<RaisedButton onClick={this.props.getTodosCancel}>
                         Cancel getting todo
@@ -167,13 +167,13 @@ class Profile extends Component {
                     >
                         <TableRow>
                             <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{ textAlign: 'center' }}>
-                                {JSON.stringify(this.props.profile) || "no data"}
+                                <p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>
                             </TableHeaderColumn>
                         </TableRow>
                         <TableRow>
-                            <TableHeaderColumn tooltip="The ID">ID</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="The ID">No.</TableHeaderColumn>
                             <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
-                            <TableHeaderColumn tooltip="The Status">Status</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="The Status">Actions</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody

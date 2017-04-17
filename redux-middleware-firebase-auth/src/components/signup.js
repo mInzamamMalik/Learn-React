@@ -78,8 +78,6 @@ class Signup extends Component {
                 <p>{this.props.errorMessage}</p>
             </Dialog>
 
-            <div>This is Login</div>
-
             <TextField defaultValue="abc" type="text" hintText="name" ref="name" /> <br />
             <TextField defaultValue="abc@abc.com" type="text" hintText="email" ref="email" /> <br />
             <TextField defaultValue="aaaaaa" type="password" hintText="password" ref="password" /> <br />
@@ -95,8 +93,8 @@ class Signup extends Component {
             </SelectField>
             <br/>
 
-            <RaisedButton primary={true} onClick={this.doSignup}>
-                Signup
+            <RaisedButton primary={true} onClick={this.doSignup} label="Signup">
+                
             </RaisedButton>
         </div >)
     }

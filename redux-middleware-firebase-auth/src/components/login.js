@@ -52,13 +52,11 @@ class Login extends Component {
     }
     render() {
         return (<div>
-            <div>this is Login</div>
-
             <TextField defaultValue="abc@abc.com" type="text" hintText="Email" ref="email" /> <br />
             <TextField defaultValue="aaaaaa" type="password" hintText="password" ref="password" /> <br />
 
-            <RaisedButton onClick={this.doLogin} primary={true}>
-                Login
+            <RaisedButton onClick={this.doLogin} primary={true} label="Login">
+
             </RaisedButton>
         </div>)
     }

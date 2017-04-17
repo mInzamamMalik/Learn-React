@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { AppBar } from 'material-ui';
+import { FlatButton, RaisedButton } from 'material-ui';
 
 function mapStateToProps(state) {
     return {
@@ -20,10 +21,9 @@ class LoginSignup extends Component {
         return (
             <div>
                 <AppBar title="This is landing page"></AppBar>
-
                 <ul>
-                    <Link to="/login">Login</Link>
-                    <Link to="/signup">Signup</Link>
+                    <FlatButton><Link to="/login">Login</Link></FlatButton>
+                    <FlatButton><Link to="/signup">Signup</Link></FlatButton>
                 </ul>
                 {this.props.children}
             </div>

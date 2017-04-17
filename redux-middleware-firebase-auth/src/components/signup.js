@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router'
 import { FlatButton, RaisedButton, TextField, Dialog, MenuItem, SelectField } from 'material-ui';
 import { AuthActions } from './../store/action/auth'
 
-
 function mapStateToProps(state) {
     return {
         isRegistered: state.AuthReducer.isRegistered,
@@ -19,13 +18,13 @@ function mapDispatchToProps(dispatch) {
     };
 }
 class Signup extends Component {
-
     constructor(props) {
         super(props)
         this.doSignup = this.doSignup.bind(this);
         this.handleRoleChange = this.handleRoleChange.bind(this);
         this.state = {
-            errorPopup: false
+            errorPopup: false,
+            role: "user"
         }
     }
 
@@ -52,7 +51,7 @@ class Signup extends Component {
 
         this.props.signup(
             {
-                "fullName": name,
+                "name": name,
                 "email": email,
                 "password": password,
                 "role": role,
@@ -94,6 +93,7 @@ class Signup extends Component {
                 <MenuItem value={"verifier"} primaryText="verifier" />
                 <MenuItem value={"admin"} primaryText="admin" />
             </SelectField>
+            <br/>
 
             <RaisedButton primary={true} onClick={this.doSignup}>
                 Signup

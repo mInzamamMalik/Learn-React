@@ -12,6 +12,7 @@ import { gitEpic } from './epic/git';
 const rootEpic = combineEpics(
     gitEpic.getUserData,
     AuthEpic.signup,
+    AuthEpic.writeUser,
     AuthEpic.login,
     AuthEpic.isLogin,
     AuthEpic.logout,

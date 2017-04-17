@@ -23,5 +23,13 @@ export class firebaseService {
         console.log("logging out");
         return firebase.auth().signOut();
     }
+
+    static push(path, obj) {
+        return firebase.database().ref(path).push(obj);
+    }
+    static set(path, obj) {
+        return firebase.database().ref(path).set(obj);
+    }
+
 }
 

@@ -2,6 +2,7 @@ export class AuthActions {
 
     static SIGNUP_START = 'SIGNUP_START';
     static SIGNUP_SUCCESSFUL = 'SIGNUP_SUCCESSFUL';
+    static SIGNUP_WRITE_USER = 'SIGNUP_WRITE_USER';
     static SIGNUP_REJECTED = 'SIGNUP_REJECTED';
 
     static LOGIN = 'SIGNIN';

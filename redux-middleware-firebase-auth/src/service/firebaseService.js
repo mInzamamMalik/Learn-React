@@ -32,6 +32,9 @@ export class firebaseService {
     static set(path, obj) {
         return firebase.database().ref(path).set(obj);
     }
+    static timestamp() {
+        return firebase.database.ServerValue.TIMESTAMP
+    }
 
 }
 

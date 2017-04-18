@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import Timestamp from 'react-timestamp';
 import { connect } from 'react-redux'
-import { FlatButton, RaisedButton, TextField, Dialog, Checkbox } from 'material-ui';
-import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
-    from 'material-ui/Table';
+import { FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
+import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { TodoAction } from "../store/action/data"
+import { firebaseService } from "../service/firebaseService"
+
 function mapStateToProps(state) {
     return {
         profile: state.AuthReducer.profile,
@@ -76,57 +78,99 @@ class Profile extends Component {
         this.props.addTodo(
             this.props.authUser.uid,
             {
-                "comapnyName": this.state.comapnyName,
-                "companyAddress": this.state.comapnyAddress,
+                "companyName": this.state.companyName,
+                "companyAddress": this.state.companyAddress,
                 "companyIsVisited": false,
                 "companyVisitedDate": null,
                 "companySendStatus": false,
                 "companyRemarks": "",
             }
         );
-        this.setState({ ...this.state, comapnyName: "", comapnyAddress: "" });
+        this.setState({ ...this.state, companyName: "", companyAddress: "" });
     }
     deleteTodo(key) {
         this.props.deleteTodo(this.props.authUser.uid, { key: key });
     }
     editTodo(key, dataObj) {
-        this.setState({ ...this.state, isEditing: true, editingKey: key, editingValue: dataObj })
+        this.setState({
+            ...this.state,
+            isEditing: true,
+            editingKey: key,
+            editCompanyName: dataObj.companyName,
+            editCompanyAddress: dataObj.companyAddress
+        })
     }
     editTodoSave() {
         this.props.updateTodo(
             this.props.authUser.uid,
             this.state.editingKey,
-            { todo: this.refs.editTodo.getValue(), isDone: false }
+            { companyName: this.state.editCompanyName, companyAddress: this.state.editCompanyAddress, }
         );
-        this.setState({ ...this.state, isEditing: false, editingKey: null, editingValue: null })
-        this.refs.editTodo.value = "";
+        this.setState({ ...this.state, isEditing: false, editingKey: "", companyAddress: "", editCompanyName: "" })
     }
     markCompanyVisited(key, visited) {
-
+        this.props.updateTodo(
+            this.props.authUser.uid,
+            key,
+            { companyIsVisited: !visited, companyVisitedDate: firebaseService.timestamp() }
+        );
     }
+    giveRemarks(key, remark) {
+        this.props.updateTodo(
+            this.props.authUser.uid,
+            key,
+            { companyRemarks: remark }
+        );
+    }
+    toggleSendstatus(key, companySendStatus) {
+        this.props.updateTodo(
+            this.props.authUser.uid,
+            key,
+            { companySendStatus: !companySendStatus }
+        );
+    }
+
 
 
     render() {
         let todoList = Object.keys(this.props.todos).map((key, index) => {
             let val = this.props.todos[key];
             return (
-                <TableRow key={index}>
-                    <TableRowColumn>{index + 1}</TableRowColumn>
-                    <TableRowColumn colSpan="2">{val.comapnyName}</TableRowColumn>
-                    <TableRowColumn colSpan="2">{val.companyAddress}</TableRowColumn>
-                    <TableRowColumn>
+                <TableRow id={index} key={index}>
+                    <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.companyName}</TableRowColumn>
+                    <TableRowColumn colSpan="3">{val.companyAddress}</TableRowColumn>
+                    <TableRowColumn colSpan="1">
                         <Checkbox
                             disabled={val.companyIsVisited}
                             checked={val.companyIsVisited}
                             onCheck={() => { this.markCompanyVisited(key, val.companyIsVisited) }} />
                     </TableRowColumn>
-                    <TableRowColumn>{val.companyVisitedDate}</TableRowColumn>
-                    <TableRowColumn>{val.companySendStatus}</TableRowColumn>
-                    <TableRowColumn>{val.companyRemarks}</TableRowColumn>
+                    <TableRowColumn colSpan="2">
+                        {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
+                    </TableRowColumn>
+                    <TableRowColumn colSpan="1">
+                        <Checkbox
+                            checked={val.companySendStatus}
+                            onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
+                    </TableRowColumn>
+                    <TableRowColumn colSpan="2">
+                        <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                    </TableRowColumn>
 
-                    <TableRowColumn>
-                        <RaisedButton onClick={() => { this.editTodo(key, val) }} label="Edit" />
-                        <RaisedButton onClick={() => { this.deleteTodo(key) }} label="Delete" />
+                    <TableRowColumn colSpan="2">
+                        <FontIcon
+                            className="material-icons"
+                            label="Delete"
+                            onClick={() => { this.deleteTodo(key) }}
+                        >delete_forever</FontIcon>
+
+                        <FontIcon
+                            className="material-icons"
+                            label="Edit"
+                            tooltip="Edit"
+                            onClick={() => { this.editTodo(key, val) }}
+                        >mode_edit</FontIcon>
                     </TableRowColumn>
                 </TableRow>
             )
@@ -155,18 +199,23 @@ class Profile extends Component {
                     open={this.state.isEditing}
                 >
                     <TextField
-                        ref="editTodo"
-                        floatingLabelText="Todo"
-                        floatingLabelStyle={styles.floatingLabelStyle}
-                        floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-                        defaultValue={this.state.editingValue && this.state.editingValue.todo || "ddd"}
+                        name="editCompanyName"
+                        floatingLabelText="Company Name"
+                        value={this.state.editCompanyName}
+                        onChange={this._handleFromChange}
+                    />
+                    <TextField
+                        name="editCompanyAddress"
+                        floatingLabelText="Company Address"
+                        value={this.state.editCompanyAddress}
+                        onChange={this._handleFromChange}
                     />
                 </Dialog>
 
                 <form onSubmit={this.addTodo}>
-                    <TextField name="comapnyName" value={this.state.comapnyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
+                    <TextField name="companyName" value={this.state.companyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
                     <br />
-                    <TextField name="comapnyAddress" value={this.state.comapnyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
+                    <TextField name="companyAddress" value={this.state.companyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
                     <br />
                     {/*<TextField floatingLabelText="Visited" onChange={this._handleFromChange} />
                     <br />*/}
@@ -192,19 +241,19 @@ class Profile extends Component {
                         enableSelectAll={this.state.enableSelectAll}
                     >
                         <TableRow>
-                            <TableHeaderColumn colSpan="9" tooltip="Super Header" style={{ textAlign: 'center' }}>
+                            <TableHeaderColumn colSpan="9" tooltip="Header" style={{ textAlign: 'center' }}>
                                 <p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>
                             </TableHeaderColumn>
                         </TableRow>
                         <TableRow>
-                            <TableHeaderColumn tooltip="serial number">No.</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
                             <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2">Address</TableHeaderColumn>
-                            <TableHeaderColumn>Visited</TableHeaderColumn>
-                            <TableHeaderColumn>Date</TableHeaderColumn>
-                            <TableHeaderColumn>Send Status</TableHeaderColumn>
-                            <TableHeaderColumn>Remarks</TableHeaderColumn>
-                            <TableHeaderColumn>Actions</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody

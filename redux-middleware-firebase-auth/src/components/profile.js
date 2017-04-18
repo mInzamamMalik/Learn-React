@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { FlatButton, RaisedButton, TextField, Dialog } from 'material-ui';
+import { FlatButton, RaisedButton, TextField, Dialog, Checkbox } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
     from 'material-ui/Table';
 import { TodoAction } from "../store/action/data"
@@ -54,6 +54,7 @@ class Profile extends Component {
         this.addTodo = this.addTodo.bind(this);
         this.editTodo = this.editTodo.bind(this);
         this.editTodoSave = this.editTodoSave.bind(this);
+        this._handleFromChange = this._handleFromChange.bind(this);
         this.props.getTodos(this.props.profile.uid); //start getting todo from firebase
     }
     componentWillReceiveProps(nextProps) {
@@ -63,13 +64,27 @@ class Profile extends Component {
             this.props.getTodos(nextProps.profile.uid); //start getting todo from firebase
         }
     }
+    _handleFromChange(e) {
+        // console.log("name: ", e.target.name);
+        // console.log("value: ", e.target.value);
+
+        this.setState({ ...this.state, [e.target.name]: e.target.value })
+    }
     addTodo(e) {
         e.preventDefault();
+        console.log("pushing todo component: ", this.state);
         this.props.addTodo(
             this.props.authUser.uid,
-            { todo: this.refs.todo.getValue(), isDone: false }
+            {
+                "comapnyName": this.state.comapnyName,
+                "companyAddress": this.state.comapnyAddress,
+                "companyIsVisited": false,
+                "companyVisitedDate": null,
+                "companySendStatus": false,
+                "companyRemarks": "",
+            }
         );
-        this.refs.todo.setState({ value: "" });
+        this.setState({ ...this.state, comapnyName: "", comapnyAddress: "" });
     }
     deleteTodo(key) {
         this.props.deleteTodo(this.props.authUser.uid, { key: key });
@@ -86,6 +101,9 @@ class Profile extends Component {
         this.setState({ ...this.state, isEditing: false, editingKey: null, editingValue: null })
         this.refs.editTodo.value = "";
     }
+    markCompanyVisited(key, visited) {
+
+    }
 
 
     render() {
@@ -94,13 +112,22 @@ class Profile extends Component {
             return (
                 <TableRow key={index}>
                     <TableRowColumn>{index + 1}</TableRowColumn>
-                    <TableRowColumn>{val.todo}</TableRowColumn>
-                    <TableRowColumn>{val.isDone}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.comapnyName}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.companyAddress}</TableRowColumn>
+                    <TableRowColumn>
+                        <Checkbox
+                            disabled={val.companyIsVisited}
+                            checked={val.companyIsVisited}
+                            onCheck={() => { this.markCompanyVisited(key, val.companyIsVisited) }} />
+                    </TableRowColumn>
+                    <TableRowColumn>{val.companyVisitedDate}</TableRowColumn>
+                    <TableRowColumn>{val.companySendStatus}</TableRowColumn>
+                    <TableRowColumn>{val.companyRemarks}</TableRowColumn>
+
                     <TableRowColumn>
                         <RaisedButton onClick={() => { this.editTodo(key, val) }} label="Edit" />
                         <RaisedButton onClick={() => { this.deleteTodo(key) }} label="Delete" />
                     </TableRowColumn>
-
                 </TableRow>
             )
         })
@@ -137,20 +164,19 @@ class Profile extends Component {
                 </Dialog>
 
                 <form onSubmit={this.addTodo}>
-                    <TextField
-                        ref="todo"
-                        floatingLabelText="Your text here"
-                        floatingLabelStyle={styles.floatingLabelStyle}
-                        floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-                    />
+                    <TextField name="comapnyName" value={this.state.comapnyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
                     <br />
-                    <RaisedButton primary={true} type="submit" label="Add Row" />
+                    <TextField name="comapnyAddress" value={this.state.comapnyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
+                    <br />
+                    {/*<TextField floatingLabelText="Visited" onChange={this._handleFromChange} />
+                    <br />*/}
+
+                    <RaisedButton primary={true} type="submit" label="Add Row" onChange={this._handleFromChange} />
 
                     {/*<RaisedButton onClick={this.props.getTodosCancel}>
                         Cancel getting todo
                     </RaisedButton>*/}
                 </form>
-
 
 
                 <Table
@@ -166,14 +192,19 @@ class Profile extends Component {
                         enableSelectAll={this.state.enableSelectAll}
                     >
                         <TableRow>
-                            <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{ textAlign: 'center' }}>
+                            <TableHeaderColumn colSpan="9" tooltip="Super Header" style={{ textAlign: 'center' }}>
                                 <p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>
                             </TableHeaderColumn>
                         </TableRow>
                         <TableRow>
-                            <TableHeaderColumn tooltip="The ID">No.</TableHeaderColumn>
-                            <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
-                            <TableHeaderColumn tooltip="The Status">Actions</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="serial number">No.</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Address</TableHeaderColumn>
+                            <TableHeaderColumn>Visited</TableHeaderColumn>
+                            <TableHeaderColumn>Date</TableHeaderColumn>
+                            <TableHeaderColumn>Send Status</TableHeaderColumn>
+                            <TableHeaderColumn>Remarks</TableHeaderColumn>
+                            <TableHeaderColumn>Actions</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody
@@ -191,7 +222,7 @@ class Profile extends Component {
                         ))}*/}
                         {todoList}
                     </TableBody>
-                    <TableFooter
+                    {/*<TableFooter
                         adjustForCheckbox={this.state.showCheckboxes}
                     >
                         <TableRow>
@@ -204,7 +235,7 @@ class Profile extends Component {
                                 Super Footer
               </TableRowColumn>
                         </TableRow>
-                    </TableFooter>
+                    </TableFooter>*/}
                 </Table>
 
 

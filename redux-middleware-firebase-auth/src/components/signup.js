@@ -87,8 +87,7 @@ class Signup extends Component {
                 onChange={this.handleRoleChange}
             >
                 <MenuItem value={"user"} primaryText="user" />
-                <MenuItem value={"product"} primaryText="product" />
-                <MenuItem value={"verifier"} primaryText="verifier" />
+                <MenuItem value={"product verifier"} primaryText="product" />
                 <MenuItem value={"admin"} primaryText="admin" />
             </SelectField>
             <br/>

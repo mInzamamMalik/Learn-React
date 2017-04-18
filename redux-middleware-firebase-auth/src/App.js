@@ -12,6 +12,7 @@ import Dashboard from './containers/dashboard'
 import Login from './components/login'
 import Signup from './components/signup'
 import Profile from './components/profile'
+import EmployeeList from './components/employeeList'
 import NoMatch from './components/404'
 
 function mapStateToProps(state) {
@@ -71,6 +72,7 @@ class App extends Component {
                 <Route path="dashboard" component={Dashboard} onEnter={this.isLogin} >
                     <IndexRoute component={Profile} />
                     <Route path="profile" component={Profile} />
+                    <Route path="/employeelist/:companyId" component={EmployeeList} />
                 </Route>
 
                 <Route path="*" component={NoMatch} />

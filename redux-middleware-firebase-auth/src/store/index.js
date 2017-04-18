@@ -29,7 +29,11 @@ const rootEpic = combineEpics(
     TodoEpic.updateTodo,
     TodoEpic.deleteTodo,
 
-    EmployeeEpic.getEmployees
+    EmployeeEpic.getEmployees,
+    EmployeeEpic.getEmployeesCancel,
+    EmployeeEpic.addEmployee,
+    EmployeeEpic.updateEmployee,
+    EmployeeEpic.deleteEmployee,
 );
 //combine reducers
 const rootReducer = combineReducers({

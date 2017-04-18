@@ -15,18 +15,18 @@ export class EmployeeAction {
     static getEmployees( companyUid) {
         return { type: EmployeeAction.GET_EMPLOYEE, payload: {  companyUid } }
     }
-    static getEmployeesCancel( companyUid, data) {
-        return { type: EmployeeAction.GET_EMPLOYEE_CANCELLED, payload: {  companyUid, data } }
+    static getEmployeesCancel( companyUid,  employee) {
+        return { type: EmployeeAction.GET_EMPLOYEE_CANCELLED, payload: {  companyUid,  employee } }
     }
-    static addEmployee( companyUid, data) {
-        return { type: EmployeeAction.ADD_EMPLOYEE, payload: {  companyUid, data } }
+    static addEmployee( companyUid,  employee) {
+        return { type: EmployeeAction.ADD_EMPLOYEE, payload: {  companyUid,  employee } }
     }
-    static updateEmployee( companyUid, key, data) {
-        return { type: EmployeeAction.MARK_EMPLOYEE_ARCHIVED, payload: {  companyUid, key, data } }
+    static updateEmployee( companyUid, key,  employee) {
+        return { type: EmployeeAction.MARK_EMPLOYEE_ARCHIVED, payload: {  companyUid, key,  employee } }
     }
-    static deleteEmployee( companyUid, data) {
+    static deleteEmployee( companyUid,  employee) {
         return {
-            type: EmployeeAction.DELETE_EMPLOYEE, payload: {  companyUid, data }
+            type: EmployeeAction.DELETE_EMPLOYEE, payload: {  companyUid,  employee }
         }
     }
 }

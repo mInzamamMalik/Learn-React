@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Timestamp from 'react-timestamp';
 import { connect } from 'react-redux'
-import { FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
+import { DatePicker, SelectField, MenuItem, FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { EmployeeAction } from "../store/action/employeeList"
 import { firebaseService } from "../service/firebaseService"
@@ -11,7 +11,6 @@ function mapStateToProps(state) {
         profile: state.AuthReducer.profile,
         authUser: state.AuthReducer.authUser,
         employees: state.EmployeeReducer.employees,
-
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -74,15 +73,18 @@ class EmployeeList extends Component {
     addTodo(e) {
         e.preventDefault();
         console.log("pushing todo component: ", this.state);
-        this.props.addTodo(
-            this.props.authUser.uid,
+        this.props.addEmployee(
+            this.props.params.companyId,
             {
-                "employeeName": this.state.employeeName,
-                "employeeGender": this.state.employeeAddress,
-                "employeeIsVisited": false,
-                "employeeVisitedDate": null,
-                "employeeSendStatus": false,
-                "employeeRemarks": "",
+                "employeeName": this.state.employeeName || null,
+                "employeeGender": this.state.employeeGender || null,
+                "employeeAge": this.state.employeeAge || null,
+                "employeePosition": this.state.employeePosition || null,
+                "employeeStatus": this.state.employeeStatus || null,
+                "employeeId": this.state.employeeId || null,
+                "employeeDob": this.state.employeeDob || null,
+                "employeePhone": this.state.employeePhone || null,
+                "employeeAddress": this.state.employeeAddress || null,
             }
         );
         this.setState({ ...this.state, employeeName: "", employeeAddress: "" });
@@ -235,15 +237,34 @@ class EmployeeList extends Component {
                     modal={false}
                     open={this.state.isAddingEmployee}
                 >
-                    <form onSubmit={this.addTodo}>
-                        <TextField name="companyName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />
+                    <form>
+                        <TextField name="employeeName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />
                         <br />
-                        <TextField name="companyGender" value={this.state.companyAddress} floatingLabelText="Gender" onChange={this._handleFromChange} />
+                        <SelectField name="employeeGender" value={this.state.employeeGender} floatingLabelText="Gender"  onChange={(e, index, value) => { this.setState({ ...this.state, employeeGender: value }); }}    >
+                            <MenuItem value={"male"} primaryText="Male" />
+                            <MenuItem value={"female"} primaryText="Female" />
+                        </SelectField>
                         <br />
-                        <TextField name="companyAge" type="number" value={this.state.companyAddress} floatingLabelText="Age" onChange={this._handleFromChange} />
+                        <TextField name="employeeAge" type="number" value={this.state.employeeAge} floatingLabelText="Age" onChange={this._handleFromChange} />
                         <br />
-                        <TextField name="companyPosition" value={this.state.companyAddress} floatingLabelText="Position" onChange={this._handleFromChange} />
+                        <TextField name="employeePosition" value={this.state.employeePosition} floatingLabelText="Position" onChange={this._handleFromChange} />
                         <br />
+                        <SelectField name="employeeStatus" value={this.state.employeeStatus} floatingLabelText="Status"  onChange={(e, index, value) => { this.setState({ ...this.state, employeeStatus: value }); }}>
+                            <MenuItem value={"Consent"} primaryText="Consent" />
+                            <MenuItem value={"Decline"} primaryText="Decline" />
+                            <MenuItem value={"N/A"} primaryText="N/A" />
+                        </SelectField>
+                        <br />
+                        <TextField name="employeeId" value={this.state.employeeId} floatingLabelText="Id" onChange={this._handleFromChange} />
+                        <br />
+                        <DatePicker name="employeeDob" floatingLabelText="Date of birth" onChange={(e, dateObj) => { this.setState({ ...this.setState, employeeDob: dateObj.getTime() }), console.log(dateObj, this.state); }} />
+
+                        <br />
+                        <TextField name="employeePhone" value={this.state.employeePhone} floatingLabelText="Contact Number" onChange={this._handleFromChange} />
+                        <br />
+                        <TextField name="employeeAddress" value={this.state.employeeAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
+                        <br />
+
                     </form>
                 </Dialog>
 

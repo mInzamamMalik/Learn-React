@@ -169,7 +169,6 @@ render() {
                     <FontIcon
                         className="material-icons"
                         label="Edit"
-                        tooltip="Edit"
                         onClick={() => { this.editTodo(key, val) }}
                     >mode_edit</FontIcon>
                 </TableRowColumn>

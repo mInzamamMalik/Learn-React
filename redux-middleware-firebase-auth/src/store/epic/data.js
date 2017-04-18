@@ -8,7 +8,7 @@ export class TodoEpic {
     static addTodo = (action$) =>
         action$.ofType(TodoAction.ADD_TODO)
             .switchMap(({ payload }) => {
-                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).push(payload.data))
+                return Observable.fromPromise(firebaseService.database.ref("company/" ).push(payload.data))
                     .map((x) => {
                         return { type: TodoAction.NULL };
                     })
@@ -18,7 +18,7 @@ export class TodoEpic {
         action$.ofType(TodoAction.MARK_TODO_ARCHIVED)
             .switchMap(({ payload }) => {
                 console.log("updating epic: ", payload);
-                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).child(payload.key).update(payload.data))
+                return Observable.fromPromise(firebaseService.database.ref("company/" ).child(payload.key).update(payload.data))
                     .map((x) => {
                         return { type: TodoAction.NULL };
                     })
@@ -27,7 +27,7 @@ export class TodoEpic {
     static deleteTodo = (action$) =>
         action$.ofType(TodoAction.DELETE_TODO)
             .switchMap(({ payload }) => {
-                return Observable.fromPromise(firebaseService.database.ref("data/" + payload.uid).child(payload.data.key).set(null))
+                return Observable.fromPromise(firebaseService.database.ref("company/" ).child(payload.data.key).set(null))
                     .map((x) => {
                         return { type: TodoAction.NULL };
                     })
@@ -38,7 +38,7 @@ export class TodoEpic {
             .switchMap(({ payload }) => {
                 return new Observable((observer) => {
 
-                    firebaseService.database.ref("data/" + payload.uid).on("child_added", (snapshot) => {
+                    firebaseService.database.ref("company/" ).on("child_added", (snapshot) => {
                         observer.next({
                             type: TodoAction.GET_TODO_ADDED,
                             payload: {
@@ -47,7 +47,7 @@ export class TodoEpic {
                             }
                         })
                     })
-                    firebaseService.database.ref("data/" + payload.uid).on("child_changed", (snapshot) => {
+                    firebaseService.database.ref("company/" ).on("child_changed", (snapshot) => {
                         observer.next({
                             type: TodoAction.GET_TODO_CHANGED,
                             payload: {
@@ -56,7 +56,7 @@ export class TodoEpic {
                             }
                         })
                     })
-                    firebaseService.database.ref("data/" + payload.uid).on("child_removed", (snapshot) => {
+                    firebaseService.database.ref("company/" ).on("child_removed", (snapshot) => {
                         observer.next({
                             type: TodoAction.GET_TODO_REMOVED,
                             payload: snapshot.key
@@ -68,7 +68,7 @@ export class TodoEpic {
     static getTodosCancel = (action$) =>
         action$.ofType(TodoAction.GET_TODO_CANCELLED)
             .switchMap(({ payload }) => {
-                firebaseService.database.ref("data/" + payload.uid).off();
+                firebaseService.database.ref("company/" ).off();
                 return Observable.of({ type: TodoAction.NULL })
                 //we dont want to do any work on GET_TODO_CANCELLED so we are dispatching NULL action
             })

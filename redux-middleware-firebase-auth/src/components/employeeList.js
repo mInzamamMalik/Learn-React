@@ -3,24 +3,24 @@ import Timestamp from 'react-timestamp';
 import { connect } from 'react-redux'
 import { FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import { TodoAction } from "../store/action/data"
+import { EmployeeAction } from "../store/action/employeeList"
 import { firebaseService } from "../service/firebaseService"
 
 function mapStateToProps(state) {
     return {
         profile: state.AuthReducer.profile,
         authUser: state.AuthReducer.authUser,
-        todos: state.TodoReducer.todos,
+        employees: state.EmployeeReducer.employees,
 
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getTodos: (uid) => dispatch(TodoAction.getTodos(uid)),
-        getTodosCancel: (uid) => dispatch(TodoAction.getTodosCancel(uid)),
-        addTodo: (uid, data) => dispatch(TodoAction.addTodo(uid, data)),
-        deleteTodo: (uid, data) => dispatch(TodoAction.deleteTodo(uid, data)),
-        updateTodo: (uid, key, data) => dispatch(TodoAction.updateTodo(uid, key, data)),
+        getEmployees: (companyUid) => dispatch(EmployeeAction.getEmployees(companyUid)),
+        getEmployeesCancel: (companyUid) => dispatch(EmployeeAction.getEmployeesCancel(companyUid)),
+        addEmployee: (companyUid, data) => dispatch(EmployeeAction.addEmployee(companyUid, data)),
+        deleteEmployee: (companyUid, data) => dispatch(EmployeeAction.deleteEmployee(companyUid, data)),
+        updateEmployee: (companyUid, key, data) => dispatch(EmployeeAction.updateEmployee(companyUid, key, data)),
     };
 }
 const styles = {
@@ -56,14 +56,14 @@ class EmployeeList extends Component {
         this.editTodo = this.editTodo.bind(this);
         this.editTodoSave = this.editTodoSave.bind(this);
         this._handleFromChange = this._handleFromChange.bind(this);
-        this.props.getTodos(this.props.profile.uid); //start getting todo from firebase
+        this.props.getEmployees(this.props.params.companyId); //start getting todo from firebase
     }
     componentWillReceiveProps(nextProps) {
-        console.log("next props: ", nextProps.todos);
-        if (Object.keys(nextProps.todos).length === 0) {
-            console.log("getting data for uid: ", );
-            this.props.getTodos(nextProps.profile.uid); //start getting todo from firebase
-        }
+        console.log("next props: ", nextProps.employees);
+        // if (Object.keys(nextProps.todos).length === 0) {
+        //     console.log("getting data for uid: ", );
+        //     this.props.getEmployees(this.props.params.companyId); //start getting todo from firebase
+        // }
     }
     _handleFromChange(e) {
         // console.log("name: ", e.target.name);
@@ -77,15 +77,15 @@ class EmployeeList extends Component {
         this.props.addTodo(
             this.props.authUser.uid,
             {
-                "companyName": this.state.companyName,
-                "companyAddress": this.state.companyAddress,
-                "companyIsVisited": false,
-                "companyVisitedDate": null,
-                "companySendStatus": false,
-                "companyRemarks": "",
+                "employeeName": this.state.employeeName,
+                "employeeGender": this.state.employeeAddress,
+                "employeeIsVisited": false,
+                "employeeVisitedDate": null,
+                "employeeSendStatus": false,
+                "employeeRemarks": "",
             }
         );
-        this.setState({ ...this.state, companyName: "", companyAddress: "" });
+        this.setState({ ...this.state, employeeName: "", employeeAddress: "" });
     }
     deleteTodo(key) {
         this.props.deleteTodo(this.props.authUser.uid, { key: key });
@@ -95,17 +95,17 @@ class EmployeeList extends Component {
             ...this.state,
             isEditing: true,
             editingKey: key,
-            editCompanyName: dataObj.companyName,
-            editCompanyAddress: dataObj.companyAddress
+            editEmployeeName: dataObj.employeeName,
+            editEmployeeAddress: dataObj.employeeAddress
         })
     }
     editTodoSave() {
         this.props.updateTodo(
             this.props.authUser.uid,
             this.state.editingKey,
-            { companyName: this.state.editCompanyName, companyAddress: this.state.editCompanyAddress, }
+            { employeeName: this.state.editEmployeeName, employeeAddress: this.state.editEmployeeAddress, }
         );
-        this.setState({ ...this.state, isEditing: false, editingKey: "", companyAddress: "", editCompanyName: "" })
+        this.setState({ ...this.state, isEditing: false, editingKey: "", employeeAddress: "", editEmployeeName: "" })
     }
     markCompanyVisited(key, visited) {
         this.props.updateTodo(
@@ -132,7 +132,7 @@ class EmployeeList extends Component {
 
 
     render() {
-        let todoList = Object.keys(this.props.todos).map((key, index) => {
+        /*let todoList = Object.keys(this.props.todos).map((key, index) => {
             let val = this.props.todos[key];
             return (
                 <TableRow id={index} key={index}>
@@ -173,8 +173,8 @@ class EmployeeList extends Component {
                     </TableRowColumn>
                 </TableRow>
             )
-        })
-        const actions = [
+        })*/
+        const editActions = [
             <FlatButton
                 label="Cancel"
                 primary={false}
@@ -188,13 +188,26 @@ class EmployeeList extends Component {
                 onTouchTap={this.editTodoSave}
             />,
         ];
+        const addActions = [
+            <FlatButton
+                label="Cancel"
+                primary={false}
+                keyboardFocused={false}
+                onTouchTap={() => { this.setState({ ...this.state, isAddingEmployee: false }) }}
+            />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.addTodo}
+            />,
+        ];
 
         return (
             <div>
-                employee list
                 <Dialog
                     title="Edit"
-                    actions={actions}
+                    actions={editActions}
                     modal={false}
                     open={this.state.isEditing}
                 >
@@ -212,21 +225,27 @@ class EmployeeList extends Component {
                     />
                 </Dialog>
 
-                <form onSubmit={this.addTodo}>
-                    <TextField name="companyName" value={this.state.companyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
-                    <br />
-                    <TextField name="companyAddress" value={this.state.companyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
-                    <br />
-                    {/*<TextField floatingLabelText="Visited" onChange={this._handleFromChange} />
-                    <br />*/}
-
-                    <RaisedButton primary={true} type="submit" label="Add Row" onChange={this._handleFromChange} />
-
-                    {/*<RaisedButton onClick={this.props.getTodosCancel}>
-                        Cancel getting todo
-                    </RaisedButton>*/}
-                </form>
-
+                <RaisedButton
+                    primary={true}
+                    label="Add Employee"
+                    onClick={() => { this.setState({ ...this.state, isAddingEmployee: true }) }} />
+                <Dialog
+                    title="Add Employee"
+                    actions={addActions}
+                    modal={false}
+                    open={this.state.isAddingEmployee}
+                >
+                    <form onSubmit={this.addTodo}>
+                        <TextField name="companyName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />
+                        <br />
+                        <TextField name="companyGender" value={this.state.companyAddress} floatingLabelText="Gender" onChange={this._handleFromChange} />
+                        <br />
+                        <TextField name="companyAge" type="number" value={this.state.companyAddress} floatingLabelText="Age" onChange={this._handleFromChange} />
+                        <br />
+                        <TextField name="companyPosition" value={this.state.companyAddress} floatingLabelText="Position" onChange={this._handleFromChange} />
+                        <br />
+                    </form>
+                </Dialog>
 
                 <Table
                     height={this.state.height}
@@ -269,7 +288,7 @@ class EmployeeList extends Component {
                                 <TableRowColumn>{row.status}</TableRowColumn>
                             </TableRow>
                         ))}*/}
-                        {todoList}
+                        {/*{todoList}*/}
                     </TableBody>
                     {/*<TableFooter
                         adjustForCheckbox={this.state.showCheckboxes}

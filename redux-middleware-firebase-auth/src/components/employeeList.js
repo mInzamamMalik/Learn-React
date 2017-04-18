@@ -87,7 +87,7 @@ class EmployeeList extends Component {
                 "employeeAddress": this.state.employeeAddress || null,
             }
         );
-        this.setState({ ...this.state, employeeName: "", employeeAddress: "" });
+        this.setState({ ...this.state, isAddingEmployee: false });
     }
     deleteTodo(key) {
         this.props.deleteTodo(this.props.authUser.uid, { key: key });
@@ -97,25 +97,42 @@ class EmployeeList extends Component {
             ...this.state,
             isEditing: true,
             editingKey: key,
-            editEmployeeName: dataObj.employeeName,
-            editEmployeeAddress: dataObj.employeeAddress
+            employeeName: dataObj.employeeName,
+            employeeGender: dataObj.employeeGender,
+            employeeAge: dataObj.employeeAge,
+            employeePosition: dataObj.employeePosition,
+            employeeStatus: dataObj.employeeStatus,
+            employeeId: dataObj.employeeId,
+            employeeDob: dataObj.employeeDob,
+            employeePhone: dataObj.employeePhone,
+            employeeAddress: dataObj.employeeAddress,
         })
     }
     editTodoSave() {
-        this.props.updateTodo(
-            this.props.authUser.uid,
+        this.props.updateEmployee(
+            this.props.params.companyId,
             this.state.editingKey,
-            { employeeName: this.state.editEmployeeName, employeeAddress: this.state.editEmployeeAddress, }
+            {
+                employeeName: this.state.employeeName,
+                employeeGender: this.state.employeeGender,
+                employeeAge: this.state.employeeAge,
+                employeePosition: this.state.employeePosition,
+                employeeStatus: this.state.employeeStatus,
+                employeeId: this.state.employeeId,
+                employeeDob: this.state.employeeDob,
+                employeePhone: this.state.employeePhone,
+                employeeAddress: this.state.employeeAddress,
+            }
         );
         this.setState({ ...this.state, isEditing: false, editingKey: "", employeeAddress: "", editEmployeeName: "" })
     }
-    markCompanyVisited(key, visited) {
-        this.props.updateTodo(
-            this.props.authUser.uid,
-            key,
-            { companyIsVisited: !visited, companyVisitedDate: firebaseService.timestamp() }
-        );
-    }
+    // markCompanyVisited(key, visited) {
+    //     this.props.updateTodo(
+    //         this.props.params.companyId,
+    //         key,
+
+    //     );
+    // }
     giveRemarks(key, remark) {
         this.props.updateTodo(
             this.props.authUser.uid,
@@ -131,33 +148,16 @@ class EmployeeList extends Component {
         );
     }
 
-
-
     render() {
-        /*let todoList = Object.keys(this.props.todos).map((key, index) => {
-            let val = this.props.todos[key];
+        let todoList = Object.keys(this.props.employees).map((key, index) => {
+            let val = this.props.employees[key];
             return (
                 <TableRow id={index} key={index}>
                     <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
-                    <TableRowColumn colSpan="2">{val.companyName}</TableRowColumn>
-                    <TableRowColumn colSpan="3">{val.companyAddress}</TableRowColumn>
-                    <TableRowColumn colSpan="1">
-                        <Checkbox
-                            disabled={val.companyIsVisited}
-                            checked={val.companyIsVisited}
-                            onCheck={() => { this.markCompanyVisited(key, val.companyIsVisited) }} />
-                    </TableRowColumn>
-                    <TableRowColumn colSpan="2">
-                        {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
-                    </TableRowColumn>
-                    <TableRowColumn colSpan="1">
-                        <Checkbox
-                            checked={val.companySendStatus}
-                            onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
-                    </TableRowColumn>
-                    <TableRowColumn colSpan="2">
-                        <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
-                    </TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.employeeName}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.employeeGender}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.employeePosition}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{val.employeeStatus}</TableRowColumn>
 
                     <TableRowColumn colSpan="2">
                         <FontIcon
@@ -172,10 +172,17 @@ class EmployeeList extends Component {
                             tooltip="Edit"
                             onClick={() => { this.editTodo(key, val) }}
                         >mode_edit</FontIcon>
+
+                        <FontIcon
+                            className="material-icons"
+                            label="Edit"
+                            tooltip="Edit"
+                            onClick={() => { this.view(key, val) }}
+                        >fullscreen</FontIcon>
                     </TableRowColumn>
                 </TableRow>
             )
-        })*/
+        })
         const editActions = [
             <FlatButton
                 label="Cancel"
@@ -213,18 +220,35 @@ class EmployeeList extends Component {
                     modal={false}
                     open={this.state.isEditing}
                 >
-                    <TextField
-                        name="editCompanyName"
-                        floatingLabelText="Company Name"
-                        value={this.state.editCompanyName}
-                        onChange={this._handleFromChange}
-                    />
-                    <TextField
-                        name="editCompanyAddress"
-                        floatingLabelText="Company Address"
-                        value={this.state.editCompanyAddress}
-                        onChange={this._handleFromChange}
-                    />
+                    <form>
+                        <TextField name="employeeName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />
+                        <br />
+                        <SelectField name="employeeGender" value={this.state.employeeGender} floatingLabelText="Gender" onChange={(e, index, value) => { this.setState({ ...this.state, employeeGender: value }); }}    >
+                            <MenuItem value={"male"} primaryText="Male" />
+                            <MenuItem value={"female"} primaryText="Female" />
+                        </SelectField>
+                        <br />
+                        <TextField name="employeeAge" type="number" value={this.state.employeeAge} floatingLabelText="Age" onChange={this._handleFromChange} />
+                        <br />
+                        <TextField name="employeePosition" value={this.state.employeePosition} floatingLabelText="Position" onChange={this._handleFromChange} />
+                        <br />
+                        <SelectField name="employeeStatus" value={this.state.employeeStatus} floatingLabelText="Status" onChange={(e, index, value) => { this.setState({ ...this.state, employeeStatus: value }); }}>
+                            <MenuItem value={"Consent"} primaryText="Consent" />
+                            <MenuItem value={"Decline"} primaryText="Decline" />
+                            <MenuItem value={"N/A"} primaryText="N/A" />
+                        </SelectField>
+                        <br />
+                        <TextField name="employeeId" value={this.state.employeeId} floatingLabelText="Id" onChange={this._handleFromChange} />
+                        <br />
+                        <DatePicker name="employeeDob" floatingLabelText="Date of birth" onChange={(e, dateObj) => { this.setState({ ...this.setState, employeeDob: dateObj.getTime() }), console.log(dateObj, this.state); }} />
+
+                        <br />
+                        <TextField name="employeePhone" value={this.state.employeePhone} floatingLabelText="Contact Number" onChange={this._handleFromChange} />
+                        <br />
+                        <TextField name="employeeAddress" value={this.state.employeeAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
+                        <br />
+
+                    </form>
                 </Dialog>
 
                 <RaisedButton
@@ -240,7 +264,7 @@ class EmployeeList extends Component {
                     <form>
                         <TextField name="employeeName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />
                         <br />
-                        <SelectField name="employeeGender" value={this.state.employeeGender} floatingLabelText="Gender"  onChange={(e, index, value) => { this.setState({ ...this.state, employeeGender: value }); }}    >
+                        <SelectField name="employeeGender" value={this.state.employeeGender} floatingLabelText="Gender" onChange={(e, index, value) => { this.setState({ ...this.state, employeeGender: value }); }}    >
                             <MenuItem value={"male"} primaryText="Male" />
                             <MenuItem value={"female"} primaryText="Female" />
                         </SelectField>
@@ -249,7 +273,7 @@ class EmployeeList extends Component {
                         <br />
                         <TextField name="employeePosition" value={this.state.employeePosition} floatingLabelText="Position" onChange={this._handleFromChange} />
                         <br />
-                        <SelectField name="employeeStatus" value={this.state.employeeStatus} floatingLabelText="Status"  onChange={(e, index, value) => { this.setState({ ...this.state, employeeStatus: value }); }}>
+                        <SelectField name="employeeStatus" value={this.state.employeeStatus} floatingLabelText="Status" onChange={(e, index, value) => { this.setState({ ...this.state, employeeStatus: value }); }}>
                             <MenuItem value={"Consent"} primaryText="Consent" />
                             <MenuItem value={"Decline"} primaryText="Decline" />
                             <MenuItem value={"N/A"} primaryText="N/A" />
@@ -281,18 +305,16 @@ class EmployeeList extends Component {
                         enableSelectAll={this.state.enableSelectAll}
                     >
                         <TableRow>
-                            <TableHeaderColumn colSpan="9" tooltip="Header" style={{ textAlign: 'center' }}>
+                            <TableHeaderColumn colSpan="11" tooltip="Header" style={{ textAlign: 'center' }}>
                                 <p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>
                             </TableHeaderColumn>
                         </TableRow>
                         <TableRow>
                             <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Employee Name</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Gender</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Position</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Status</TableHeaderColumn>
                             <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
@@ -309,7 +331,7 @@ class EmployeeList extends Component {
                                 <TableRowColumn>{row.status}</TableRowColumn>
                             </TableRow>
                         ))}*/}
-                        {/*{todoList}*/}
+                        {todoList}
                     </TableBody>
                     {/*<TableFooter
                         adjustForCheckbox={this.state.showCheckboxes}

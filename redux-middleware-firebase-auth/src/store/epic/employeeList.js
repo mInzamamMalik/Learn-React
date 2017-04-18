@@ -18,7 +18,7 @@ export class EmployeeEpic {
         action$.ofType(EmployeeAction.MARK_EMPLOYEE_ARCHIVED)
             .switchMap(({ payload }) => {
                 console.log("updating epic: ", payload);
-                return Observable.fromPromise(firebaseService.database.ref("employee/" + payload.companyUid).child(payload.employeeUid).update(payload.employee))
+                return Observable.fromPromise(firebaseService.database.ref("employee/" + payload.companyUid).child(payload.key).update(payload.employee))
                     .map((x) => {
                         return { type: EmployeeAction.NULL };
                     })

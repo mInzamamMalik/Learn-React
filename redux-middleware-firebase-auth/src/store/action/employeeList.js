@@ -24,9 +24,9 @@ export class EmployeeAction {
     static updateEmployee( companyUid, key,  employee) {
         return { type: EmployeeAction.MARK_EMPLOYEE_ARCHIVED, payload: {  companyUid, key,  employee } }
     }
-    static deleteEmployee( companyUid,  employee) {
+    static deleteEmployee( companyUid,  key) {
         return {
-            type: EmployeeAction.DELETE_EMPLOYEE, payload: {  companyUid,  employee }
+            type: EmployeeAction.DELETE_EMPLOYEE, payload: {  companyUid,  key }
         }
     }
 }

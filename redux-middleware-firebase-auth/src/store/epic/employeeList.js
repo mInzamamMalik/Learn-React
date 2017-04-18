@@ -27,7 +27,7 @@ export class EmployeeEpic {
     static deleteEmployee = (action$) =>
         action$.ofType(EmployeeAction.DELETE_EMPLOYEE)
             .switchMap(({ payload }) => {
-                return Observable.fromPromise(firebaseService.database.ref("employee/" + payload.companyUid).child(payload.employeeUid).set(null))
+                return Observable.fromPromise(firebaseService.database.ref("employee/" + payload.companyUid).child(payload.key).set(null))
                     .map((x) => {
                         return { type: EmployeeAction.NULL };
                     })

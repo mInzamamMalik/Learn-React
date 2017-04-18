@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
         getEmployees: (companyUid) => dispatch(EmployeeAction.getEmployees(companyUid)),
         getEmployeesCancel: (companyUid) => dispatch(EmployeeAction.getEmployeesCancel(companyUid)),
         addEmployee: (companyUid, data) => dispatch(EmployeeAction.addEmployee(companyUid, data)),
-        deleteEmployee: (companyUid, data) => dispatch(EmployeeAction.deleteEmployee(companyUid, data)),
+        deleteEmployee: (companyUid, key) => dispatch(EmployeeAction.deleteEmployee(companyUid, key)),
         updateEmployee: (companyUid, key, data) => dispatch(EmployeeAction.updateEmployee(companyUid, key, data)),
     };
 }
@@ -90,7 +90,7 @@ class EmployeeList extends Component {
         this.setState({ ...this.state, isAddingEmployee: false });
     }
     deleteTodo(key) {
-        this.props.deleteTodo(this.props.authUser.uid, { key: key });
+        this.props.deleteEmployee(this.props.params.companyId, key);
     }
     editTodo(key, dataObj) {
         this.setState({

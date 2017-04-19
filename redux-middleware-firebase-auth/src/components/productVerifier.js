@@ -55,6 +55,8 @@ class ProductVerifier extends Component {
         this.editTodo = this.editTodo.bind(this);
         this.editTodoSave = this.editTodoSave.bind(this);
         this.refreshSample = this.refreshSample.bind(this);
+        this.giveRemarks = this.giveRemarks.bind(this);
+        this.giveRemarksSample = this.giveRemarksSample.bind(this);
         this._handleFromChange = this._handleFromChange.bind(this);
         this.props.getProducts(); //start getting todo from firebase
     }
@@ -120,6 +122,12 @@ class ProductVerifier extends Component {
         }, 0)
     }
     giveRemarks(key, remark) {
+        this.props.updateProduct(
+            key,
+            { productRemarks: remark }
+        );
+    }
+    giveRemarksSample(key, remark) {
         this.props.updateProduct(
             this.state.sampleTableKey + "/productSamples/" + key,
             { remark: remark }
@@ -230,11 +238,11 @@ class ProductVerifier extends Component {
                     </TableRowColumn>
 
                     <TableRowColumn colSpan="2">
-                        <TextField disabled={!val.received} value={val.checkResult} floatingLabelText="Check Result" onChange={(e) => { this.giveResult(key, e.target.value) }} />
+                        <TextField disabled={!val.received} value={val.result||""} floatingLabelText="Check Result" onChange={(e) => { this.giveResult(key, e.target.value) }} />
                     </TableRowColumn>
 
                     <TableRowColumn colSpan="2">
-                        <TextField disabled={!val.received} value={val.remarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        <TextField disabled={!val.received} value={val.remark||""} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarksSample(key, e.target.value) }} />
                     </TableRowColumn>
                 </TableRow >
             )
@@ -256,7 +264,7 @@ class ProductVerifier extends Component {
 
         return (
             <div>
-            <Dialog
+                <Dialog
                     title="Edit"
                     actions={actions}
                     modal={false}

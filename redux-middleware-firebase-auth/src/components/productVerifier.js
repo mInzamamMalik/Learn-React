@@ -40,12 +40,12 @@ class ProductVerifier extends Component {
             fixedFooter: true,
             stripedRows: true,
             showRowHover: false,
-            selectable: true,
+            selectable: false,
             multiSelectable: false,
             enableSelectAll: false,
             deselectOnClickaway: true,
             showCheckboxes: false,
-            height: '600px',
+            height: '200px',
 
             isEditing: false,
             editingKey: null,
@@ -114,10 +114,9 @@ class ProductVerifier extends Component {
         );
     }
     giveRemarks(key, remark) {
-        this.props.updateTodo(
-            this.props.authUser.uid,
+        this.props.updateProduct(
             key,
-            { companyRemarks: remark }
+            { productRemarks: remark }
         );
     }
     toggleSendstatus(key, companySendStatus) {
@@ -145,15 +144,9 @@ class ProductVerifier extends Component {
                                 })
                             ).length}
                         </TableRowColumn>
-                      
-                        <TableRowColumn colSpan="1">
-                            <Checkbox
-                                checked={val.companySendStatus}
-                                onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
-                        </TableRowColumn>
                         <TableRowColumn colSpan="2">
-                            <TextField value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
-                        </TableRowColumn>                        
+                            <TextField value={val.productRemarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        </TableRowColumn>
                     </TableRow >
                 )
         })

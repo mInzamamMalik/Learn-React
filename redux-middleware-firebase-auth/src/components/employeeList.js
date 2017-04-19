@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
         deleteEmployee: (companyUid, key) => dispatch(EmployeeAction.deleteEmployee(companyUid, key)),
         updateEmployee: (companyUid, key, data) => dispatch(EmployeeAction.updateEmployee(companyUid, key, data)),
 
-        addProduct: (companyUid, product) => dispatch(ProductAction.addProduct(companyUid, product)),
+        addProduct: (product) => dispatch(ProductAction.addProduct(product)),
     };
 }
 const styles = {
@@ -150,15 +150,12 @@ class EmployeeList extends Component {
             return { id: val }
         })
 
-        this.props.addProduct(
-            this.props.params.companyId,
-            {
-                "productId": this.state.productId || null,
-                "productDesc": this.state.productDesc || null,
-                "productSamples": temp || null,
-                "productType": this.state.productType || null,
-            }
-        );
+        this.props.addProduct({
+            "productId": this.state.productId || null,
+            "productDesc": this.state.productDesc || null,
+            "productSamples": temp || null,
+            "productType": this.state.productType || null,
+        });
         this.setState({ ...this.state, isViewing: false });
     }
     // markCompanyVisited(key, visited) {

@@ -119,12 +119,15 @@ class ProductVerifier extends Component {
             { productRemarks: remark }
         );
     }
-    toggleSendstatus(key, companySendStatus) {
-        this.props.updateTodo(
-            this.props.authUser.uid,
-            key,
-            { companySendStatus: !companySendStatus }
+    toggleReceived(key, received) {
+        this.props.updateProduct(
+            this.state.sampleTableKey + "/productSamples/" + key,
+            { received: !received }
         );
+        //refreshing sample table
+        setTimeout(() => {
+            this.setState({ ...this.state, sampleTable: this.props.products[this.state.sampleTableKey].productSamples })
+        }, 0)
     }
 
     render() {
@@ -134,12 +137,12 @@ class ProductVerifier extends Component {
                 return (
                     <TableRow id={index} key={index}
                         onTouchTap={
-                            () => { this.setState({ ...this.state, sampleTableKey: key, sampleTable: val.productSamples }); console.log("sampletable: ", val) }
+                            () => { this.setState({ ...this.state, sampleTableKey: key, sampleTable: this.props.products[key].productSamples }); console.log("sampletable: ", val) }
                         }
                     >
                         <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
-                        <TableRowColumn colSpan="2">{val.productId}</TableRowColumn>
-                        <TableRowColumn colSpan="3">{Object.keys(val.productSamples).length}</TableRowColumn>
+                        <TableRowColumn colSpan="1">{val.productId}</TableRowColumn>
+                        <TableRowColumn colSpan="1">{Object.keys(val.productSamples).length}</TableRowColumn>
                         <TableRowColumn colSpan="1">
                             {Object.keys(
                                 val.productSamples.filter((val, index) => {
@@ -156,16 +159,41 @@ class ProductVerifier extends Component {
         })
         let sampleTable = Object.keys(this.state.sampleTable || []).map((key, index) => {
             let val = this.state.sampleTable[key];
-                return (
-                    <TableRow id={index} key={index}>
-                        <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
-                        <TableRowColumn colSpan="2">{val.id}</TableRowColumn>                     
-                        <TableRowColumn colSpan="2">dfdf</TableRowColumn>                     
-                        <TableRowColumn colSpan="2">
-                            <TextField value={val.productRemarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
-                        </TableRowColumn>
-                    </TableRow >
-                )
+            return (
+                <TableRow id={index} key={index}>
+                    {/*<TableRowColumn colSpan="1">{index + 1}</TableRowColumn>*/}
+                    <TableRowColumn colSpan="1">{val.id}</TableRowColumn>
+                    <TableRowColumn colSpan="1">
+                        <Checkbox
+                            disabled={val.received}
+                            checked={val.received}
+                            onCheck={() => { this.toggleReceived(key, val.received) }} />
+                    </TableRowColumn>
+
+                    <TableRowColumn colSpan="1">
+                        <Checkbox
+                            disabled={val.check || !val.received}
+                            checked={val.check}
+                            onCheck={() => { this.toggleCheck(key, val.check) }} />
+                    </TableRowColumn>
+
+                    <TableRowColumn colSpan="2">
+                        {(val.receivedDate) ? <Timestamp time={val.receivedDate / 1000} /> : ""}
+                    </TableRowColumn>
+
+                    <TableRowColumn colSpan="2">
+                        {(val.checkDate) ? <Timestamp time={val.checkDate / 1000} /> : ""}
+                    </TableRowColumn>
+
+                    <TableRowColumn colSpan="2">
+                        <TextField disabled={!val.received} value={val.checkResult} floatingLabelText="Check Result" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                    </TableRowColumn>
+
+                    <TableRowColumn colSpan="2">
+                        <TextField disabled={!val.received} value={val.remarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                    </TableRowColumn>
+                </TableRow >
+            )
         })
         const actions = [
             <FlatButton
@@ -207,6 +235,8 @@ class ProductVerifier extends Component {
 
                 <Tabs>
                     <Tab label="Tab One" >
+
+                        {/*Product Table*/}
                         <Table
                             height={this.state.height}
                             fixedHeader={this.state.fixedHeader}
@@ -220,19 +250,16 @@ class ProductVerifier extends Component {
                                 enableSelectAll={this.state.enableSelectAll}
                             >
                                 <TableRow>
-                                    <TableHeaderColumn colSpan="9" tooltip="Header" style={{ textAlign: 'center' }}>
-                                        {/*<p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>*/}
+                                    <TableHeaderColumn colSpan="6" tooltip="Header" style={{ textAlign: 'center' }}>
+                                        Product Table
                                     </TableHeaderColumn>
                                 </TableRow>
                                 <TableRow>
                                     <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
-                                    <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="1">Product Id</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="1">No. of Samples</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="1">No. of Samples Received</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="2">Remark</TableHeaderColumn>
                                 </TableRow>
                             </TableHeader>
                             <TableBody
@@ -250,9 +277,13 @@ class ProductVerifier extends Component {
                     </Tab>
                 </Tabs>
 
+
+
+
+
+
                 {/*sample table*/}
                 <Table
-                    height={this.state.height}
                     fixedHeader={this.state.fixedHeader}
                     fixedFooter={this.state.fixedFooter}
                     selectable={this.state.selectable}
@@ -269,14 +300,14 @@ class ProductVerifier extends Component {
                             </TableHeaderColumn>
                         </TableRow>
                         <TableRow>
-                            <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
+                            {/*<TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>*/}
+                            <TableHeaderColumn colSpan="1">Sample Id</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Received</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Test</TableHeaderColumn>
                             <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
-                            <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Chk Date</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Chk Result</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Remarks</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody

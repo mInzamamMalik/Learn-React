@@ -5,11 +5,13 @@ import { gitReducer } from './reducer/git';
 import { AuthReducer } from './reducer/auth';
 import { TodoReducer } from './reducer/data';
 import { EmployeeReducer } from './reducer/employeeList';
+import { ProductReducer } from './reducer/product';
 
 import { AuthEpic } from './epic/auth';
 import { gitEpic } from './epic/git';
 import { TodoEpic } from './epic/data';
 import { EmployeeEpic } from './epic/employeeList';
+import { ProductEpic } from './epic/product';
 
 
 //combine epic
@@ -34,13 +36,20 @@ const rootEpic = combineEpics(
     EmployeeEpic.addEmployee,
     EmployeeEpic.updateEmployee,
     EmployeeEpic.deleteEmployee,
+
+    ProductEpic.addProduct,
+    ProductEpic.updateProduct,
+    ProductEpic.deleteProduct,
+    ProductEpic.getProducts,
+    ProductEpic.getProductsCancel,
 );
 //combine reducers
 const rootReducer = combineReducers({
     gitReducer,
     AuthReducer,
     TodoReducer,
-    EmployeeReducer
+    EmployeeReducer,
+    ProductReducer
 })
 
 //creating middleware

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Tabs, Tab, List, ListItem, DatePicker, SelectField, MenuItem, FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { EmployeeAction } from "../store/action/employeeList"
+import { ProductAction } from "../store/action/product"
 import { firebaseService } from "../service/firebaseService"
 
 function mapStateToProps(state) {
@@ -20,6 +21,8 @@ function mapDispatchToProps(dispatch) {
         addEmployee: (companyUid, data) => dispatch(EmployeeAction.addEmployee(companyUid, data)),
         deleteEmployee: (companyUid, key) => dispatch(EmployeeAction.deleteEmployee(companyUid, key)),
         updateEmployee: (companyUid, key, data) => dispatch(EmployeeAction.updateEmployee(companyUid, key, data)),
+
+        addProduct: (companyUid, product) => dispatch(ProductAction.addProduct(companyUid, product)),
     };
 }
 const styles = {
@@ -335,6 +338,7 @@ class EmployeeList extends Component {
                     actions={viewActions}
                     modal={true}
                     open={this.state.isViewing}
+                    autoScrollBodyContent={true}
                 >
                     <Tabs>
                         <Tab label="View Employee" >

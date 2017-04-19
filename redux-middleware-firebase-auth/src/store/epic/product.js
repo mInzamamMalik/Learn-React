@@ -38,7 +38,7 @@ export class ProductEpic {
             .switchMap(({ payload }) => {
                 return new Observable((observer) => {
 
-                    firebaseService.database.ref("product").on("child_added", (snapshot) => {
+                    firebaseService.database.ref("/product").on("child_added", (snapshot) => {
                         
                         console.log("getting product: ", snapshot.val());
                         observer.next({

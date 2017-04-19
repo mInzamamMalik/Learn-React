@@ -7,12 +7,14 @@ const INITIAL_STATE = {
 }
 
 export function ProductReducer(state = INITIAL_STATE, action) {
+    console.log("reducer product: ", action);
     switch (action.type) {
 
         case ProductAction.GET_PRODUCT:
             return { ...state, loading: true };
 
         case ProductAction.GET_PRODUCT_ADDED:
+
             var newProducts = Object.assign({}, state.products);
             newProducts[action.payload.key] = action.payload.val;
             return { ...state, products: newProducts, loading: false };
@@ -26,7 +28,7 @@ export function ProductReducer(state = INITIAL_STATE, action) {
             var newProducts = Object.assign({}, state.products);
             newProducts[action.payload.key] = action.payload.val;
             return { ...state, products: newProducts, loading: false };
-        
+
         case AuthActions.LOGOUT_SUCCESSFUL:
             return INITIAL_STATE;
 

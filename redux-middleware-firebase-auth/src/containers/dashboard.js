@@ -26,11 +26,12 @@ class Dashboard extends Component {
             browserHistory.replace('login');
         }
 
-        if (nextProps.profile.role == "admin") {
-            browserHistory.replace('admin');
-        } else if (nextProps.profile.role == "product verifier") {
-            browserHistory.replace('productverifier');
-        }
+        // if (nextProps.profile.role == "admin") {
+        //     browserHistory.replace('admin');
+        // } else if (nextProps.isAuthenticated && nextProps.profile.role == "product verifier" && nextProps.location.pathname != "productverifier") {
+        //     console.log("redirecting to verifier: ", nextProps.location.pathname != "productverifier");
+        //     browserHistory.replace('productverifier');
+        // }
     }
     render() {
         return (<div>

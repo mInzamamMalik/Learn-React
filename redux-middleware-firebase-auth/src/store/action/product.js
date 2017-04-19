@@ -15,8 +15,8 @@ export class ProductAction {
     static getProducts() {
         return { type: ProductAction.GET_PRODUCT }
     }
-    static getProductsCancel(product) {
-        return { type: ProductAction.GET_PRODUCT_CANCELLED, payload: { product } }
+    static getProductsCancel() {
+        return { type: ProductAction.GET_PRODUCT_CANCELLED,  }
     }
     static addProduct(product) {
         return { type: ProductAction.ADD_PRODUCT, payload: { product } }

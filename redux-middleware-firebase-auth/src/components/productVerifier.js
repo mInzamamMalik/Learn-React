@@ -15,11 +15,11 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        addProduct: (companyUid, product) => dispatch(ProductAction.addProduct(companyUid, product)),
-        getProducts: (companyUid, product) => dispatch(ProductAction.getProducts(companyUid, product)),
-        getProductsCancel: (companyUid, product) => dispatch(ProductAction.getProductsCancel(companyUid, product)),
-        updateProduct: (companyUid, product) => dispatch(ProductAction.updateProduct(companyUid, product)),
-        deleteProduct: (companyUid, product) => dispatch(ProductAction.deleteProduct(companyUid, product)),
+        addProduct: (product) => dispatch(ProductAction.addProduct(product)),
+        getProducts: () => dispatch(ProductAction.getProducts()),
+        getProductsCancel: () => dispatch(ProductAction.getProductsCancel()),
+        updateProduct: (key, product) => dispatch(ProductAction.updateProduct(key, product)),
+        deleteProduct: (key) => dispatch(ProductAction.deleteProduct(key)),
     };
 }
 const styles = {
@@ -55,7 +55,7 @@ class ProductVerifier extends Component {
         this.editTodo = this.editTodo.bind(this);
         this.editTodoSave = this.editTodoSave.bind(this);
         this._handleFromChange = this._handleFromChange.bind(this);
-        // this.props.getProducts(); //start getting todo from firebase
+        this.props.getProducts(); //start getting todo from firebase
     }
     componentWillReceiveProps(nextProps) {
         console.log("next props: ", nextProps.products);
@@ -131,47 +131,50 @@ class ProductVerifier extends Component {
 
 
     render() {
-        /*let todoList = Object.keys(this.props.todos).map((key, index) => {
-            let val = this.props.todos[key];
-            return (
-                <TableRow id={index} key={index}>
-                    <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
-                    <TableRowColumn colSpan="2"><Link to={"/employeelist/" + key} >{val.companyName}</Link></TableRowColumn>
-                    <TableRowColumn colSpan="3">{val.companyAddress}</TableRowColumn>
-                    <TableRowColumn colSpan="1">
-                        <Checkbox
-                            disabled={val.companyIsVisited}
-                            checked={val.companyIsVisited}
-                            onCheck={() => { this.markCompanyVisited(key, val.companyIsVisited) }} />
-                    </TableRowColumn>
-                    <TableRowColumn colSpan="2">
-                        {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
-                    </TableRowColumn>
-                    <TableRowColumn colSpan="1">
-                        <Checkbox
-                            checked={val.companySendStatus}
-                            onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
-                    </TableRowColumn>
-                    <TableRowColumn colSpan="2">
-                        <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
-                    </TableRowColumn>
+        let todoList = Object.keys(this.props.products).map((key, index) => {
+            let val = this.props.products[key];
+            if (val.productType === "A")
+                return (
+                    <TableRow id={index} key={index}>
+                        <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
+                        <TableRowColumn colSpan="2">{val.productId}</TableRowColumn>
+                        <TableRowColumn colSpan="3">{Object.keys(val.productSamples).length}</TableRowColumn>
+                        <TableRowColumn colSpan="1">
+                            {Object.keys(
+                                val.productSamples.filter((val, index) => {
+                                    console.log("filter:", val, index);
+                                    if (val.received) return true
+                                })
+                            ).length}
+                        </TableRowColumn>
+                        <TableRowColumn colSpan="2">
+                            {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
+                        </TableRowColumn>
+                        <TableRowColumn colSpan="1">
+                            <Checkbox
+                                checked={val.companySendStatus}
+                                onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
+                        </TableRowColumn>
+                        <TableRowColumn colSpan="2">
+                            <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        </TableRowColumn>
 
-                    <TableRowColumn colSpan="2">
-                        <FontIcon
-                            className="material-icons"
-                            label="Delete"
-                            onClick={() => { this.deleteTodo(key) }}
-                        >delete_forever</FontIcon>
+                        <TableRowColumn colSpan="2">
+                            <FontIcon
+                                className="material-icons"
+                                label="Delete"
+                                onClick={() => { this.deleteTodo(key) }}
+                            >delete_forever</FontIcon>
 
-                        <FontIcon
-                            className="material-icons"
-                            label="Edit"
-                            onClick={() => { this.editTodo(key, val) }}
-                        >mode_edit</FontIcon>
-                    </TableRowColumn>
-                </TableRow >
-            )
-        })*/
+                            <FontIcon
+                                className="material-icons"
+                                label="Edit"
+                                onClick={() => { this.editTodo(key, val) }}
+                            >mode_edit</FontIcon>
+                        </TableRowColumn>
+                    </TableRow >
+                )
+        })
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -263,8 +266,8 @@ class ProductVerifier extends Component {
                                 showRowHover={this.state.showRowHover}
                                 stripedRows={this.state.stripedRows}
                             >
-                                {/*{todoList}*/}
-                            </TableBody>                            
+                                {todoList}
+                            </TableBody>
                         </Table>
                     </Tab>
                     <Tab>

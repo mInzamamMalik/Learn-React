@@ -128,11 +128,15 @@ class ProductVerifier extends Component {
     }
 
     render() {
-        let todoList = Object.keys(this.props.products).map((key, index) => {
+        let productTable = Object.keys(this.props.products).map((key, index) => {
             let val = this.props.products[key];
             if (val.productType === "A")
                 return (
-                    <TableRow id={index} key={index}>
+                    <TableRow id={index} key={index}
+                        onTouchTap={
+                            () => { this.setState({ ...this.state, sampleTableKey: key, sampleTable: val.productSamples }); console.log("sampletable: ", val) }
+                        }
+                    >
                         <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
                         <TableRowColumn colSpan="2">{val.productId}</TableRowColumn>
                         <TableRowColumn colSpan="3">{Object.keys(val.productSamples).length}</TableRowColumn>
@@ -144,6 +148,19 @@ class ProductVerifier extends Component {
                                 })
                             ).length}
                         </TableRowColumn>
+                        <TableRowColumn colSpan="2">
+                            <TextField value={val.productRemarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        </TableRowColumn>
+                    </TableRow >
+                )
+        })
+        let sampleTable = Object.keys(this.state.sampleTable || []).map((key, index) => {
+            let val = this.state.sampleTable[key];
+                return (
+                    <TableRow id={index} key={index}>
+                        <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
+                        <TableRowColumn colSpan="2">{val.id}</TableRowColumn>                     
+                        <TableRowColumn colSpan="2">dfdf</TableRowColumn>                     
                         <TableRowColumn colSpan="2">
                             <TextField value={val.productRemarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
                         </TableRowColumn>
@@ -188,25 +205,8 @@ class ProductVerifier extends Component {
                     />
                 </Dialog>
 
-                <form onSubmit={this.addTodo}>
-                    <TextField name="companyName" value={this.state.companyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
-                    <br />
-                    <TextField name="companyAddress" value={this.state.companyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
-                    <br />
-                    {/*<TextField floatingLabelText="Visited" onChange={this._handleFromChange} />
-                    <br />*/}
-
-                    <RaisedButton primary={true} type="submit" label="Add Row" onChange={this._handleFromChange} />
-
-                    {/*<RaisedButton onClick={this.props.getTodosCancel}>
-                        Cancel getting todo
-                    </RaisedButton>*/}
-                </form>
-
                 <Tabs>
-                    <Tab label="Item One" >
-
-
+                    <Tab label="Tab One" >
                         <Table
                             height={this.state.height}
                             fixedHeader={this.state.fixedHeader}
@@ -241,7 +241,7 @@ class ProductVerifier extends Component {
                                 showRowHover={this.state.showRowHover}
                                 stripedRows={this.state.stripedRows}
                             >
-                                {todoList}
+                                {productTable}
                             </TableBody>
                         </Table>
                     </Tab>
@@ -250,11 +250,45 @@ class ProductVerifier extends Component {
                     </Tab>
                 </Tabs>
 
-
-
-
+                {/*sample table*/}
+                <Table
+                    height={this.state.height}
+                    fixedHeader={this.state.fixedHeader}
+                    fixedFooter={this.state.fixedFooter}
+                    selectable={this.state.selectable}
+                    multiSelectable={this.state.multiSelectable}
+                >
+                    <TableHeader
+                        displaySelectAll={this.state.showCheckboxes}
+                        adjustForCheckbox={this.state.showCheckboxes}
+                        enableSelectAll={this.state.enableSelectAll}
+                    >
+                        <TableRow>
+                            <TableHeaderColumn colSpan="9" tooltip="Header" style={{ textAlign: 'center' }}>
+                                Sample Table
+                            </TableHeaderColumn>
+                        </TableRow>
+                        <TableRow>
+                            <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={this.state.showCheckboxes}
+                        deselectOnClickaway={this.state.deselectOnClickaway}
+                        showRowHover={this.state.showRowHover}
+                        stripedRows={this.state.stripedRows}
+                    >
+                        {sampleTable}
+                    </TableBody>
+                </Table>
             </div>
-
         );
     }
 }

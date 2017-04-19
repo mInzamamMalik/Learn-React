@@ -11,6 +11,7 @@ function mapStateToProps(state) {
     return {
         isAuthenticated: state.AuthReducer.isAuthenticated,
         authUser: state.AuthReducer.authUser,
+        profile: state.AuthReducer.profile,
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -23,6 +24,12 @@ class Dashboard extends Component {
     componentWillReceiveProps(nextProps) {
         if (!nextProps.isAuthenticated) {
             browserHistory.replace('login');
+        }
+
+        if (nextProps.profile.role == "admin") {
+            browserHistory.replace('admin');
+        } else if (nextProps.profile.role == "product verifier") {
+            browserHistory.replace('productverifier');
         }
     }
     render() {

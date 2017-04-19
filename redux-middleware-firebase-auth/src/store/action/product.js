@@ -12,21 +12,21 @@ export class ProductAction {
 
     static NULL = 'NULL';
 
-    static getProducts( companyUid) {
-        return { type: ProductAction.GET_PRODUCT, payload: {  companyUid } }
+    static getProducts() {
+        return { type: ProductAction.GET_PRODUCT }
     }
-    static getProductsCancel( companyUid,  product) {
-        return { type: ProductAction.GET_PRODUCT_CANCELLED, payload: {  companyUid,  product } }
+    static getProductsCancel(product) {
+        return { type: ProductAction.GET_PRODUCT_CANCELLED, payload: { product } }
     }
-    static addProduct( companyUid,  product) {
-        return { type: ProductAction.ADD_PRODUCT, payload: {  companyUid,  product } }
+    static addProduct(product) {
+        return { type: ProductAction.ADD_PRODUCT, payload: { product } }
     }
-    static updateProduct( companyUid, key,  product) {
-        return { type: ProductAction.MARK_PRODUCT_ARCHIVED, payload: {  companyUid, key,  product } }
+    static updateProduct(key, product) {
+        return { type: ProductAction.MARK_PRODUCT_ARCHIVED, payload: { key, product } }
     }
-    static deleteProduct( companyUid,  key) {
+    static deleteProduct(key) {
         return {
-            type: ProductAction.DELETE_PRODUCT, payload: {  companyUid,  key }
+            type: ProductAction.DELETE_PRODUCT, payload: { key }
         }
     }
 }

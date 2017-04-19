@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Timestamp from 'react-timestamp';
 import { connect } from 'react-redux'
-import { DatePicker, SelectField, MenuItem, FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
+import { List, ListItem, DatePicker, SelectField, MenuItem, FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { EmployeeAction } from "../store/action/employeeList"
 import { firebaseService } from "../service/firebaseService"
@@ -126,6 +126,21 @@ class EmployeeList extends Component {
         );
         this.setState({ ...this.state, isEditing: false, editingKey: "", employeeAddress: "", editEmployeeName: "" })
     }
+    viewTodo(dataObj) {
+        this.setState({
+            ...this.state,
+            isViewing: true,
+            employeeName: dataObj.employeeName,
+            employeeGender: dataObj.employeeGender,
+            employeeAge: dataObj.employeeAge,
+            employeePosition: dataObj.employeePosition,
+            employeeStatus: dataObj.employeeStatus,
+            employeeId: dataObj.employeeId,
+            employeeDob: dataObj.employeeDob,
+            employeePhone: dataObj.employeePhone,
+            employeeAddress: dataObj.employeeAddress,
+        })
+    }
     // markCompanyVisited(key, visited) {
     //     this.props.updateTodo(
     //         this.props.params.companyId,
@@ -177,7 +192,7 @@ class EmployeeList extends Component {
                             className="material-icons"
                             label="Edit"
                             tooltip="Edit"
-                            onClick={() => { this.view(key, val) }}
+                            onClick={() => { this.viewTodo(val) }}
                         >fullscreen</FontIcon>
                     </TableRowColumn>
                 </TableRow>
@@ -210,6 +225,14 @@ class EmployeeList extends Component {
                 keyboardFocused={true}
                 onTouchTap={this.addTodo}
             />,
+        ];
+        const viewActions = [
+            <FlatButton
+                label="Close"
+                primary={false}
+                keyboardFocused={true}
+                onTouchTap={() => { this.setState({ ...this.state, isViewing: false }) }}
+            />
         ];
 
         return (
@@ -290,6 +313,29 @@ class EmployeeList extends Component {
                         <br />
 
                     </form>
+                </Dialog>
+
+                <Dialog
+                    title="View Employee"
+                    actions={viewActions}
+                    modal={true}
+                    open={this.state.isViewing}
+                >
+                    {/*import Timestamp from 'react-timestamp';*/}
+
+                    <List>
+                        <ListItem primaryText={" Name: " + this.state.employeeName} />
+                        <ListItem primaryText={" Gender: " + this.state.employeeGender} />
+                        <ListItem primaryText={" Age: " + this.state.employeeAge} />
+                        <ListItem primaryText={" Position: " + this.state.employeePosition} />
+                        <ListItem primaryText={" Status: " + this.state.employeeStatus} />
+                        <ListItem primaryText={" Id: " + this.state.employeeId} />
+                        <ListItem >
+                            Date of Birth: {(this.state.employeeDob) ? <Timestamp time={this.state.employeeDob / 1000} /> : "-"}
+                        </ListItem>
+                        <ListItem primaryText={" Contact Number: " + this.state.employeePhone} />
+                        <ListItem primaryText={" Address: " + this.state.employeeAddress} />
+                    </List>
                 </Dialog>
 
                 <Table

@@ -128,8 +128,6 @@ class ProductVerifier extends Component {
         );
     }
 
-
-
     render() {
         let todoList = Object.keys(this.props.products).map((key, index) => {
             let val = this.props.products[key];
@@ -147,31 +145,15 @@ class ProductVerifier extends Component {
                                 })
                             ).length}
                         </TableRowColumn>
-                        <TableRowColumn colSpan="2">
-                            {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
-                        </TableRowColumn>
+                      
                         <TableRowColumn colSpan="1">
                             <Checkbox
                                 checked={val.companySendStatus}
                                 onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
                         </TableRowColumn>
                         <TableRowColumn colSpan="2">
-                            <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
-                        </TableRowColumn>
-
-                        <TableRowColumn colSpan="2">
-                            <FontIcon
-                                className="material-icons"
-                                label="Delete"
-                                onClick={() => { this.deleteTodo(key) }}
-                            >delete_forever</FontIcon>
-
-                            <FontIcon
-                                className="material-icons"
-                                label="Edit"
-                                onClick={() => { this.editTodo(key, val) }}
-                            >mode_edit</FontIcon>
-                        </TableRowColumn>
+                            <TextField value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        </TableRowColumn>                        
                     </TableRow >
                 )
         })

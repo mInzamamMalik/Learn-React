@@ -145,13 +145,17 @@ class EmployeeList extends Component {
         })
     }
     addProduct() {
+
+        var temp = this.state.productSamplesId.split(" ").map((val, index) => {
+            return { id: val }
+        })
+
         this.props.addProduct(
             this.props.params.companyId,
             {
                 "productId": this.state.productId || null,
                 "productDesc": this.state.productDesc || null,
-                "productSamples": this.state.productSamples || null,
-                "productSamplesId": this.state.productSamplesId || null,
+                "productSamples": temp || null,
                 "productType": this.state.productType || null,
             }
         );
@@ -362,9 +366,7 @@ class EmployeeList extends Component {
                             <br />
                             <TextField name="productDesc" type="text" value={this.state.productDesc} floatingLabelText="Description" onChange={this._handleFromChange} />
                             <br />
-                            <TextField name="productSamples" type="number" value={this.state.productSamples} floatingLabelText="Samples" onChange={this._handleFromChange} />
-                            <br />
-                            <TextField name="productSamplesId" type="text" value={this.state.productSamplesId} floatingLabelText="Samples Id" onChange={this._handleFromChange} />
+                            <TextField name="productSamplesId" type="text" value={this.state.productSamplesId} floatingLabelText="Samples Ids (Space Separated)" onChange={this._handleFromChange} />
                             <br />
                             <SelectField name="productType" value={this.state.productType} floatingLabelText="Type" onChange={(e, index, value) => { this.setState({ ...this.state, productType: value }); }}>
                                 <MenuItem value={"A"} primaryText="A" />

@@ -54,6 +54,7 @@ class EmployeeList extends Component {
             editingKey: null,
             editingValue: null
         };
+        this.startAddEmployee = this.startAddEmployee.bind(this);
         this.addTodo = this.addTodo.bind(this);
         this.editTodo = this.editTodo.bind(this);
         this.editTodoSave = this.editTodoSave.bind(this);
@@ -72,6 +73,21 @@ class EmployeeList extends Component {
         // console.log("value: ", e.target.value);
 
         this.setState({ ...this.state, [e.target.name]: e.target.value })
+    }
+    startAddEmployee() {
+        this.setState({
+            ...this.state,
+            isAddingEmployee: true,
+            employeeName: "",
+            employeeGender: "",
+            employeeAge: "",
+            employeePosition: "",
+            employeeStatus: "",
+            employeeId: "",
+            employeeDob: "",
+            employeePhone: "",
+            employeeAddress: "",
+        })
     }
     addTodo(e) {
         e.preventDefault();
@@ -258,6 +274,7 @@ class EmployeeList extends Component {
                     actions={editActions}
                     modal={false}
                     open={this.state.isEditing}
+                    autoScrollBodyContent={true}
                 >
                     <form>
                         <TextField name="employeeName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />
@@ -279,7 +296,7 @@ class EmployeeList extends Component {
                         <br />
                         <TextField name="employeeId" value={this.state.employeeId} floatingLabelText="Id" onChange={this._handleFromChange} />
                         <br />
-                        <DatePicker name="employeeDob" floatingLabelText="Date of birth" onChange={(e, dateObj) => { this.setState({ ...this.setState, employeeDob: dateObj.getTime() }), console.log(dateObj, this.state); }} />
+                        <DatePicker name="employeeDob" value={new Date(this.state.employeeDob)} floatingLabelText="Date of birth" onChange={(e, dateObj) => { this.setState({ ...this.setState, employeeDob: dateObj.getTime() }), console.log(dateObj, this.state); }} />
 
                         <br />
                         <TextField name="employeePhone" value={this.state.employeePhone} floatingLabelText="Contact Number" onChange={this._handleFromChange} />
@@ -293,12 +310,13 @@ class EmployeeList extends Component {
                 <RaisedButton
                     primary={true}
                     label="Add Employee"
-                    onClick={() => { this.setState({ ...this.state, isAddingEmployee: true }) }} />
+                    onClick={this.startAddEmployee} />
                 <Dialog
                     title="Add Employee"
                     actions={addActions}
                     modal={false}
                     open={this.state.isAddingEmployee}
+                    autoScrollBodyContent={true}
                 >
                     <form>
                         <TextField name="employeeName" value={this.state.employeeName} floatingLabelText="Name" onChange={this._handleFromChange} />

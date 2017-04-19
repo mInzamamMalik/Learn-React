@@ -149,9 +149,35 @@ class ProductVerifier extends Component {
     }
 
     render() {
-        let productTable = Object.keys(this.props.products).map((key, index) => {
+        let productTable1 = Object.keys(this.props.products).map((key, index) => {
             let val = this.props.products[key];
             if (val.productType === "A")
+                return (
+                    <TableRow id={index} key={index}
+                        onTouchTap={
+                            () => { this.setState({ ...this.state, sampleTableKey: key, sampleTable: this.props.products[key].productSamples }); console.log("sampletable: ", val) }
+                        }
+                    >
+                        <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
+                        <TableRowColumn colSpan="1">{val.productId}</TableRowColumn>
+                        <TableRowColumn colSpan="1">{Object.keys(val.productSamples).length}</TableRowColumn>
+                        <TableRowColumn colSpan="1">
+                            {Object.keys(
+                                val.productSamples.filter((val, index) => {
+                                    console.log("filter:", val, index);
+                                    if (val.received) return true
+                                })
+                            ).length}
+                        </TableRowColumn>
+                        <TableRowColumn colSpan="2">
+                            <TextField value={val.productRemarks} floatingLabelText="Remarks" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        </TableRowColumn>
+                    </TableRow >
+                )
+        })
+        let productTable2 = Object.keys(this.props.products).map((key, index) => {
+            let val = this.props.products[key];
+            if (val.productType === "B")
                 return (
                     <TableRow id={index} key={index}
                         onTouchTap={
@@ -230,7 +256,6 @@ class ProductVerifier extends Component {
 
         return (
             <div>
-                'product varifier'
             <Dialog
                     title="Edit"
                     actions={actions}
@@ -252,9 +277,8 @@ class ProductVerifier extends Component {
                 </Dialog>
 
                 <Tabs>
-                    <Tab label="Tab One" >
-
-                        {/*Product Table*/}
+                    <Tab label="Type A" >
+                        {/*Product Table 1*/}
                         <Table
                             height={this.state.height}
                             fixedHeader={this.state.fixedHeader}
@@ -286,12 +310,47 @@ class ProductVerifier extends Component {
                                 showRowHover={this.state.showRowHover}
                                 stripedRows={this.state.stripedRows}
                             >
-                                {productTable}
+                                {productTable1}
                             </TableBody>
                         </Table>
                     </Tab>
-                    <Tab>
-                        tab two
+                    <Tab label="Type B">
+                        {/*Product Table 2*/}
+                        <Table
+                            height={this.state.height}
+                            fixedHeader={this.state.fixedHeader}
+                            fixedFooter={this.state.fixedFooter}
+                            selectable={this.state.selectable}
+                            multiSelectable={this.state.multiSelectable}
+                        >
+                            <TableHeader
+                                displaySelectAll={this.state.showCheckboxes}
+                                adjustForCheckbox={this.state.showCheckboxes}
+                                enableSelectAll={this.state.enableSelectAll}
+                            >
+                                <TableRow>
+                                    <TableHeaderColumn colSpan="6" tooltip="Header" style={{ textAlign: 'center' }}>
+                                        Product Table
+                                    </TableHeaderColumn>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="1">Product Id</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="1">No. of Samples</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="1">No. of Samples Received</TableHeaderColumn>
+                                    <TableHeaderColumn colSpan="2">Remark</TableHeaderColumn>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody
+                                displayRowCheckbox={this.state.showCheckboxes}
+                                deselectOnClickaway={this.state.deselectOnClickaway}
+                                showRowHover={this.state.showRowHover}
+                                stripedRows={this.state.stripedRows}
+                            >
+                                {productTable2}
+                            </TableBody>
+                        </Table>
+
                     </Tab>
                 </Tabs>
 
@@ -299,8 +358,8 @@ class ProductVerifier extends Component {
 
 
 
-                <br/>
-                <br/>
+                <br />
+                <br />
                 {/*sample table*/}
                 <Table
                     fixedHeader={this.state.fixedHeader}

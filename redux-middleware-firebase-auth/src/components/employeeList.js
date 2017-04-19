@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Timestamp from 'react-timestamp';
 import { connect } from 'react-redux'
-import { List, ListItem, DatePicker, SelectField, MenuItem, FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
+import { Tabs, Tab, List, ListItem, DatePicker, SelectField, MenuItem, FlatButton, RaisedButton, TextField, Dialog, Checkbox, FontIcon } from 'material-ui';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { EmployeeAction } from "../store/action/employeeList"
 import { firebaseService } from "../service/firebaseService"
@@ -141,11 +141,23 @@ class EmployeeList extends Component {
             employeeAddress: dataObj.employeeAddress,
         })
     }
+    addProduct() {
+        this.props.addProduct(
+            this.props.params.companyId,
+            {
+                "productId": this.state.productId || null,
+                "productDesc": this.state.productDesc || null,
+                "productSamples": this.state.productSamples || null,
+                "productSamplesId": this.state.productSamplesId || null,
+                "productType": this.state.productType || null,
+            }
+        );
+        this.setState({ ...this.state, isViewing: false });
+    }
     // markCompanyVisited(key, visited) {
     //     this.props.updateTodo(
     //         this.props.params.companyId,
     //         key,
-
     //     );
     // }
     giveRemarks(key, remark) {
@@ -311,7 +323,10 @@ class EmployeeList extends Component {
                         <br />
                         <TextField name="employeeAddress" value={this.state.employeeAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
                         <br />
-
+                        <RaisedButton
+                            primary={true}
+                            label="Add Employee"
+                            onClick={() => { this.setState({ ...this.state, isAddingEmployee: true }) }} />
                     </form>
                 </Dialog>
 
@@ -321,21 +336,45 @@ class EmployeeList extends Component {
                     modal={true}
                     open={this.state.isViewing}
                 >
-                    {/*import Timestamp from 'react-timestamp';*/}
+                    <Tabs>
+                        <Tab label="View Employee" >
 
-                    <List>
-                        <ListItem primaryText={" Name: " + this.state.employeeName} />
-                        <ListItem primaryText={" Gender: " + this.state.employeeGender} />
-                        <ListItem primaryText={" Age: " + this.state.employeeAge} />
-                        <ListItem primaryText={" Position: " + this.state.employeePosition} />
-                        <ListItem primaryText={" Status: " + this.state.employeeStatus} />
-                        <ListItem primaryText={" Id: " + this.state.employeeId} />
-                        <ListItem >
-                            Date of Birth: {(this.state.employeeDob) ? <Timestamp time={this.state.employeeDob / 1000} /> : "-"}
-                        </ListItem>
-                        <ListItem primaryText={" Contact Number: " + this.state.employeePhone} />
-                        <ListItem primaryText={" Address: " + this.state.employeeAddress} />
-                    </List>
+                            <List>
+                                <ListItem primaryText={" Name: " + this.state.employeeName} />
+                                <ListItem primaryText={" Gender: " + this.state.employeeGender} />
+                                <ListItem primaryText={" Age: " + this.state.employeeAge} />
+                                <ListItem primaryText={" Position: " + this.state.employeePosition} />
+                                <ListItem primaryText={" Status: " + this.state.employeeStatus} />
+                                <ListItem primaryText={" Id: " + this.state.employeeId} />
+                                <ListItem >
+                                    Date of Birth: {(this.state.employeeDob) ? <Timestamp format="date" time={this.state.employeeDob / 1000} /> : "-"}
+                                </ListItem>
+                                <ListItem primaryText={" Contact Number: " + this.state.employeePhone} />
+                                <ListItem primaryText={" Address: " + this.state.employeeAddress} />
+                            </List>
+                        </Tab>
+                        <Tab label="Add product" >
+                            <TextField name="productId" type="text" value={this.state.productId} floatingLabelText="Id" onChange={this._handleFromChange} />
+                            <br />
+                            <TextField name="productDesc" type="text" value={this.state.productDesc} floatingLabelText="Description" onChange={this._handleFromChange} />
+                            <br />
+                            <TextField name="productSamples" type="number" value={this.state.productSamples} floatingLabelText="Samples" onChange={this._handleFromChange} />
+                            <br />
+                            <TextField name="productSamplesId" type="text" value={this.state.productSamplesId} floatingLabelText="Samples Id" onChange={this._handleFromChange} />
+                            <br />
+                            <SelectField name="productType" value={this.state.productType} floatingLabelText="Type" onChange={(e, index, value) => { this.setState({ ...this.state, productType: value }); }}>
+                                <MenuItem value={"A"} primaryText="A" />
+                                <MenuItem value={"B"} primaryText="B" />
+                            </SelectField>
+                            <br />
+                            <RaisedButton
+                                primary={true}
+                                label="Save Product"
+                                onClick={() => { this.addProduct(); this.setState({ ...this.state, isViewing: false }) }} />
+
+
+                        </Tab>
+                    </Tabs>
                 </Dialog>
 
                 <Table

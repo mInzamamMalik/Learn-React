@@ -45,7 +45,7 @@ class ProductVerifier extends Component {
             enableSelectAll: false,
             deselectOnClickaway: true,
             showCheckboxes: false,
-            height: '200px',
+            height: '300px',
 
             isEditing: false,
             editingKey: null,
@@ -54,6 +54,7 @@ class ProductVerifier extends Component {
         this.addTodo = this.addTodo.bind(this);
         this.editTodo = this.editTodo.bind(this);
         this.editTodoSave = this.editTodoSave.bind(this);
+        this.refreshSample = this.refreshSample.bind(this);
         this._handleFromChange = this._handleFromChange.bind(this);
         this.props.getProducts(); //start getting todo from firebase
     }
@@ -113,21 +114,38 @@ class ProductVerifier extends Component {
             { companyIsVisited: !visited, companyVisitedDate: firebaseService.timestamp() }
         );
     }
+    refreshSample() {
+        setTimeout(() => {
+            this.setState({ ...this.state, sampleTable: this.props.products[this.state.sampleTableKey].productSamples })
+        }, 0)
+    }
     giveRemarks(key, remark) {
         this.props.updateProduct(
-            key,
-            { productRemarks: remark }
+            this.state.sampleTableKey + "/productSamples/" + key,
+            { remark: remark }
         );
+        this.refreshSample();
+    }
+    giveResult(key, result) {
+        this.props.updateProduct(
+            this.state.sampleTableKey + "/productSamples/" + key,
+            { result: result }
+        );
+        this.refreshSample();
     }
     toggleReceived(key, received) {
         this.props.updateProduct(
             this.state.sampleTableKey + "/productSamples/" + key,
-            { received: !received }
+            { received: !received, receivedDate: firebaseService.timestamp() }
         );
-        //refreshing sample table
-        setTimeout(() => {
-            this.setState({ ...this.state, sampleTable: this.props.products[this.state.sampleTableKey].productSamples })
-        }, 0)
+        this.refreshSample();
+    }
+    toggleCheck(key, check) {
+        this.props.updateProduct(
+            this.state.sampleTableKey + "/productSamples/" + key,
+            { check: !check, checkDate: firebaseService.timestamp() }
+        );
+        this.refreshSample();
     }
 
     render() {
@@ -186,7 +204,7 @@ class ProductVerifier extends Component {
                     </TableRowColumn>
 
                     <TableRowColumn colSpan="2">
-                        <TextField disabled={!val.received} value={val.checkResult} floatingLabelText="Check Result" onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                        <TextField disabled={!val.received} value={val.checkResult} floatingLabelText="Check Result" onChange={(e) => { this.giveResult(key, e.target.value) }} />
                     </TableRowColumn>
 
                     <TableRowColumn colSpan="2">
@@ -281,7 +299,8 @@ class ProductVerifier extends Component {
 
 
 
-
+                <br/>
+                <br/>
                 {/*sample table*/}
                 <Table
                     fixedHeader={this.state.fixedHeader}

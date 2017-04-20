@@ -116,15 +116,15 @@ class EmployeeList extends Component {
             ...this.state,
             isEditing: true,
             editingKey: key,
-            employeeName: dataObj.employeeName,
-            employeeGender: dataObj.employeeGender,
-            employeeAge: dataObj.employeeAge,
-            employeePosition: dataObj.employeePosition,
-            employeeStatus: dataObj.employeeStatus,
-            employeeId: dataObj.employeeId,
-            employeeDob: dataObj.employeeDob,
-            employeePhone: dataObj.employeePhone,
-            employeeAddress: dataObj.employeeAddress,
+            employeeName: dataObj.employeeName || "",
+            employeeGender: dataObj.employeeGender || "",
+            employeeAge: dataObj.employeeAge || "",
+            employeePosition: dataObj.employeePosition || "",
+            employeeStatus: dataObj.employeeStatus || "",
+            employeeId: dataObj.employeeId || "",
+            employeeDob: dataObj.employeeDob || "",
+            employeePhone: dataObj.employeePhone || "",
+            employeeAddress: dataObj.employeeAddress || "",
         })
     }
     editTodoSave() {
@@ -296,7 +296,7 @@ class EmployeeList extends Component {
                         <br />
                         <TextField name="employeeId" value={this.state.employeeId} floatingLabelText="Id" onChange={this._handleFromChange} />
                         <br />
-                        <DatePicker name="employeeDob" value={new Date(this.state.employeeDob)} floatingLabelText="Date of birth" onChange={(e, dateObj) => { this.setState({ ...this.setState, employeeDob: dateObj.getTime() }), console.log(dateObj, this.state); }} />
+                        <DatePicker name="employeeDob" value={(this.state.employeeDob)? new Date(this.state.employeeDob):""} floatingLabelText="Date of birth" onChange={(e, dateObj) => { this.setState({ ...this.setState, employeeDob: dateObj.getTime() }), console.log(dateObj, this.state); }} />
 
                         <br />
                         <TextField name="employeePhone" value={this.state.employeePhone} floatingLabelText="Contact Number" onChange={this._handleFromChange} />

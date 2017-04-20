@@ -133,145 +133,145 @@ class Profile extends Component {
 
 
 
-render() {
-    let todoList = Object.keys(this.props.todos).map((key, index) => {
-        let val = this.props.todos[key];
+    render() {
+        let todoList = Object.keys(this.props.todos).map((key, index) => {
+            let val = this.props.todos[key];
+            return (
+                <TableRow id={index} key={index}>
+                    <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
+                    <TableRowColumn colSpan="2"><Link to={"/employeelist/" + key + "/"} >{val.companyName}</Link></TableRowColumn>
+                    <TableRowColumn colSpan="3">{val.companyAddress}</TableRowColumn>
+                    <TableRowColumn colSpan="1">
+                        <Checkbox
+                            disabled={val.companyIsVisited}
+                            checked={val.companyIsVisited}
+                            onCheck={() => { this.markCompanyVisited(key, val.companyIsVisited) }} />
+                    </TableRowColumn>
+                    <TableRowColumn colSpan="2">
+                        {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
+                    </TableRowColumn>
+                    <TableRowColumn colSpan="1">
+                        <Checkbox
+                            checked={val.companySendStatus}
+                            onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
+                    </TableRowColumn>
+                    <TableRowColumn colSpan="2">
+                        <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
+                    </TableRowColumn>
+
+                    <TableRowColumn colSpan="2">
+                        <FontIcon
+                            className="material-icons"
+                            label="Delete"
+                            onClick={() => { this.deleteTodo(key) }}
+                        >delete_forever</FontIcon>
+
+                        <FontIcon
+                            className="material-icons"
+                            label="Edit"
+                            onClick={() => { this.editTodo(key, val) }}
+                        >mode_edit</FontIcon>
+                    </TableRowColumn>
+                </TableRow >
+            )
+        })
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={false}
+                keyboardFocused={false}
+                onTouchTap={() => { this.setState({ ...this.state, isEditing: false }) }}
+            />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.editTodoSave}
+            />,
+        ];
+
         return (
-            <TableRow id={index} key={index}>
-                <TableRowColumn colSpan="1">{index + 1}</TableRowColumn>
-                <TableRowColumn colSpan="2"><Link to={"/employeelist/" + key} >{val.companyName}</Link></TableRowColumn>
-                <TableRowColumn colSpan="3">{val.companyAddress}</TableRowColumn>
-                <TableRowColumn colSpan="1">
-                    <Checkbox
-                        disabled={val.companyIsVisited}
-                        checked={val.companyIsVisited}
-                        onCheck={() => { this.markCompanyVisited(key, val.companyIsVisited) }} />
-                </TableRowColumn>
-                <TableRowColumn colSpan="2">
-                    {(val.companyVisitedDate) ? <Timestamp time={val.companyVisitedDate / 1000} /> : ""}
-                </TableRowColumn>
-                <TableRowColumn colSpan="1">
-                    <Checkbox
-                        checked={val.companySendStatus}
-                        onCheck={(e) => { this.toggleSendstatus(key, e.target.companySendStatus) }} />
-                </TableRowColumn>
-                <TableRowColumn colSpan="2">
-                    <TextField disabled={!val.companyIsVisited} value={val.companyRemarks} onChange={(e) => { this.giveRemarks(key, e.target.value) }} />
-                </TableRowColumn>
+            <div>
+                <Dialog
+                    title="Edit"
+                    actions={actions}
+                    modal={false}
+                    open={this.state.isEditing}
+                >
+                    <TextField
+                        name="editCompanyName"
+                        floatingLabelText="Company Name"
+                        value={this.state.editCompanyName}
+                        onChange={this._handleFromChange}
+                    />
+                    <TextField
+                        name="editCompanyAddress"
+                        floatingLabelText="Company Address"
+                        value={this.state.editCompanyAddress}
+                        onChange={this._handleFromChange}
+                    />
+                </Dialog>
 
-                <TableRowColumn colSpan="2">
-                    <FontIcon
-                        className="material-icons"
-                        label="Delete"
-                        onClick={() => { this.deleteTodo(key) }}
-                    >delete_forever</FontIcon>
-
-                    <FontIcon
-                        className="material-icons"
-                        label="Edit"
-                        onClick={() => { this.editTodo(key, val) }}
-                    >mode_edit</FontIcon>
-                </TableRowColumn>
-            </TableRow >
-        )
-    })
-    const actions = [
-        <FlatButton
-            label="Cancel"
-            primary={false}
-            keyboardFocused={false}
-            onTouchTap={() => { this.setState({ ...this.state, isEditing: false }) }}
-        />,
-        <FlatButton
-            label="Save"
-            primary={true}
-            keyboardFocused={true}
-            onTouchTap={this.editTodoSave}
-        />,
-    ];
-
-    return (
-        <div>
-            <Dialog
-                title="Edit"
-                actions={actions}
-                modal={false}
-                open={this.state.isEditing}
-            >
-                <TextField
-                    name="editCompanyName"
-                    floatingLabelText="Company Name"
-                    value={this.state.editCompanyName}
-                    onChange={this._handleFromChange}
-                />
-                <TextField
-                    name="editCompanyAddress"
-                    floatingLabelText="Company Address"
-                    value={this.state.editCompanyAddress}
-                    onChange={this._handleFromChange}
-                />
-            </Dialog>
-
-            <form onSubmit={this.addTodo}>
-                <TextField name="companyName" value={this.state.companyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
-                <br />
-                <TextField name="companyAddress" value={this.state.companyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
-                <br />
-                {/*<TextField floatingLabelText="Visited" onChange={this._handleFromChange} />
+                <form onSubmit={this.addTodo}>
+                    <TextField name="companyName" value={this.state.companyName} floatingLabelText="Company Name" onChange={this._handleFromChange} />
+                    <br />
+                    <TextField name="companyAddress" value={this.state.companyAddress} floatingLabelText="Address" onChange={this._handleFromChange} />
+                    <br />
+                    {/*<TextField floatingLabelText="Visited" onChange={this._handleFromChange} />
                     <br />*/}
 
-                <RaisedButton primary={true} type="submit" label="Add Row" onChange={this._handleFromChange} />
+                    <RaisedButton primary={true} type="submit" label="Add Row" onChange={this._handleFromChange} />
 
-                {/*<RaisedButton onClick={this.props.getTodosCancel}>
+                    {/*<RaisedButton onClick={this.props.getTodosCancel}>
                         Cancel getting todo
                     </RaisedButton>*/}
-            </form>
+                </form>
 
 
-            <Table
-                height={this.state.height}
-                fixedHeader={this.state.fixedHeader}
-                fixedFooter={this.state.fixedFooter}
-                selectable={this.state.selectable}
-                multiSelectable={this.state.multiSelectable}
-            >
-                <TableHeader
-                    displaySelectAll={this.state.showCheckboxes}
-                    adjustForCheckbox={this.state.showCheckboxes}
-                    enableSelectAll={this.state.enableSelectAll}
+                <Table
+                    height={this.state.height}
+                    fixedHeader={this.state.fixedHeader}
+                    fixedFooter={this.state.fixedFooter}
+                    selectable={this.state.selectable}
+                    multiSelectable={this.state.multiSelectable}
                 >
-                    <TableRow>
-                        <TableHeaderColumn colSpan="9" tooltip="Header" style={{ textAlign: 'center' }}>
-                            <p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>
-                        </TableHeaderColumn>
-                    </TableRow>
-                    <TableRow>
-                        <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
-                        <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody
-                    displayRowCheckbox={this.state.showCheckboxes}
-                    deselectOnClickaway={this.state.deselectOnClickaway}
-                    showRowHover={this.state.showRowHover}
-                    stripedRows={this.state.stripedRows}
-                >
-                    {/*{this.props.todos.map((row, index) => (
+                    <TableHeader
+                        displaySelectAll={this.state.showCheckboxes}
+                        adjustForCheckbox={this.state.showCheckboxes}
+                        enableSelectAll={this.state.enableSelectAll}
+                    >
+                        <TableRow>
+                            <TableHeaderColumn colSpan="9" tooltip="Header" style={{ textAlign: 'center' }}>
+                                <p>{this.props.profile.role}: {this.props.profile.name} - {this.props.profile.email}</p>
+                            </TableHeaderColumn>
+                        </TableRow>
+                        <TableRow>
+                            <TableHeaderColumn colSpan="1" tooltip="serial number">No.</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Company Name</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="3">Address</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Visited</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Date</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="1">Send Status</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2" tooltip="Click and hold on Text Field and start typing, remard saved with release of mouse click">Remarks</TableHeaderColumn>
+                            <TableHeaderColumn colSpan="2">Actions</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={this.state.showCheckboxes}
+                        deselectOnClickaway={this.state.deselectOnClickaway}
+                        showRowHover={this.state.showRowHover}
+                        stripedRows={this.state.stripedRows}
+                    >
+                        {/*{this.props.todos.map((row, index) => (
                             <TableRow key={index} selected={row.selected}>
                                 <TableRowColumn>{index}</TableRowColumn>
                                 <TableRowColumn>{row.name}</TableRowColumn>
                                 <TableRowColumn>{row.status}</TableRowColumn>
                             </TableRow>
                         ))}*/}
-                    {todoList}
-                </TableBody>
-                {/*<TableFooter
+                        {todoList}
+                    </TableBody>
+                    {/*<TableFooter
                         adjustForCheckbox={this.state.showCheckboxes}
                     >
                         <TableRow>
@@ -285,14 +285,14 @@ render() {
               </TableRowColumn>
                         </TableRow>
                     </TableFooter>*/}
-            </Table>
+                </Table>
 
 
 
 
-        </div>
+            </div>
 
-    );
-}
+        );
+    }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Profile)

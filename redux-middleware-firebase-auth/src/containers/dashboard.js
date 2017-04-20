@@ -21,17 +21,22 @@ function mapDispatchToProps(dispatch) {
 }
 class Dashboard extends Component {
 
+    flag = false;
     componentWillReceiveProps(nextProps) {
         if (!nextProps.isAuthenticated) {
             browserHistory.replace('login');
         }
 
-        // if (nextProps.profile.role == "admin") {
-        //     browserHistory.replace('admin');
-        // } else if (nextProps.isAuthenticated && nextProps.profile.role == "product verifier" && nextProps.location.pathname != "productverifier") {
-        //     console.log("redirecting to verifier: ", nextProps.location.pathname != "productverifier");
-        //     browserHistory.replace('productverifier');
-        // }
+        if (!this.flag && nextProps.profile.role) {
+            this.flag = true;
+            if (nextProps.profile.role == "admin") {
+                browserHistory.replace('admin');
+            } else if (nextProps.profile.role == "user") {
+                browserHistory.replace('profile');
+            } else if (nextProps.isAuthenticated && nextProps.profile.role == "product verifier" && nextProps.location.pathname != "productverifier") {
+                browserHistory.replace('productverifier');
+            }
+        }
     }
     render() {
         return (<div>

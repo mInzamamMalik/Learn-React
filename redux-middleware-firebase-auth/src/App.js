@@ -71,7 +71,6 @@ class App extends Component {
                 </Route>
 
                 <Route path="dashboard" component={Dashboard} onEnter={this.isLogin} >
-                    <IndexRoute component={ProductVerifier} />
                     <Route path="/profile" component={Profile} />
                     <Route path="/employeelist/:companyId" component={EmployeeList} />
                     <Route path="/productverifier" component={ProductVerifier} />

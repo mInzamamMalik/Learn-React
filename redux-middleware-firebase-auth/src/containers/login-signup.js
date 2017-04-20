@@ -8,13 +8,27 @@ import { FlatButton, RaisedButton } from 'material-ui';
 function mapStateToProps(state) {
     return {
         isAuthenticated: state.AuthReducer.isAuthenticated,
+        profile: state.AuthReducer.profile,
+
     };
 }
 class LoginSignup extends Component {
 
+    flag = false;
     componentWillReceiveProps(nextProps) {
         if (nextProps.isAuthenticated) {
+            console.log("nextProps redirect", nextProps);
             browserHistory.replace('dashboard');
+        }
+        if (!this.flag && nextProps.profile && nextProps.profile.role) {
+            this.flag = true;
+            if (nextProps.profile.role == "admin") {
+                browserHistory.replace('admin');
+            } else if (nextProps.profile.role == "user") {
+                browserHistory.replace('profile');
+            } else if (nextProps.isAuthenticated && nextProps.profile.role == "product verifier" && nextProps.location.pathname != "productverifier") {
+                browserHistory.replace('productverifier');
+            }
         }
     }
     render() {
